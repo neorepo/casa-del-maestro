@@ -1,0 +1,48 @@
+<section>
+    <div class="row align-items-center mb-4">
+        <div class="col">
+            <h1 class="h2">Asociados <a href="/add-edit.php" class="btn btn-primary btn-sm"
+                    title="Agregar asociado">Agregar</a>
+            </h1>
+        </div>
+        <div class="col-auto">
+            <a href="/exportar_excel.php" class="btn btn-light btn-sm" title="Exportar todos los registros">
+                <img src="/img/microsoft-excel-2019-48.svg" alt="Icono de excel" style="height: 22px;"
+                    class="align-bottom"> Exportar
+            </a>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-sm" id="tabla_asociado" style="width:100%">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Apellido</th>
+                    <th>Nombre</th>
+                    <th>Documento</th>
+                    <th>Cuil</th>
+                    <th>Condición</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                $count = 1;
+                foreach ($asociados as $asociado) : ?>
+                <tr>
+                    <td><?= $count++; ?></td>
+                    <td><?= htmlspecialchars($asociado['apellido'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    <td><?= htmlspecialchars($asociado['nombre'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    <td><?= htmlspecialchars($asociado['num_documento'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    <td><?= htmlspecialchars($asociado['num_cuil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    <td><?= htmlspecialchars($asociado['condicion_ingreso'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    <td class="text-center">
+                        <a href="/asociado_detalle.php?aid=<?= $asociado['id_asociado']; ?>"><i class="material-icons"
+                                title="Más" data-toggle="tooltip" data-placement="top">info</i></a>
+                    </td>
+                </tr>
+                <?php endforeach ?>
+            </tbody>
+        </table>
+    </div>
+</section>

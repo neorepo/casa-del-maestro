@@ -1,0 +1,210 @@
+<section class="section">
+
+    <div class="row align-items-center mb-4">
+        <div class="col">
+            <h1 class="h2"><?= $action ? 'Editar' : 'Agregar' ?> Asociado</h1>
+        </div>
+        <div class="col-auto">
+            <?php if( isset($_SESSION['aid']) ): ?>
+            <a href="/asociado_detalle.php?aid=<?= $_SESSION['aid']; ?>" class=""
+                title="Volver a detalle de asociado"><i class="material-icons align-bottom">fast_rewind</i>Volver</a>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <form action="/add-edit.php" method="post" class="asociado">
+        <input type="hidden" name="token" value="<?= Token::csrf(); ?>">
+        <div class="form-group">
+            <label for="apellido">Apellidos *</label>
+            <input type="text" name="apellido" id="apellido"
+                class="form-control form-control-lg <?= isset( $errors['apellido'] ) ? 'is-invalid' : ''; ?>"
+                value="<?= $data['apellido']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
+                autocapitalize="off" maxlength="40">
+            <div class="invalid-feedback"><?= $errors['apellido'] ?? ''; ?></div>
+        </div>
+
+        <div class="form-group">
+            <label for="nombre">Nombres *</label>
+            <input type="text" name="nombre" id="nombre"
+                class="form-control form-control-lg <?= isset($errors['nombre']) ? 'is-invalid' : ''; ?>"
+                value="<?= $data['nombre']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
+                autocapitalize="off" maxlength="40">
+            <div class="invalid-feedback"><?= $errors['nombre'] ?? ''; ?></div>
+        </div>
+
+        <div class="form-group">
+            <label for="fecha-nacimiento">Fecha de nacimiento (dd/mm/aaaa) *</label>
+            <input type="text" name="fecha_nacimiento" id="fecha-nacimiento"
+                class="form-control form-control-lg <?= isset($errors['fecha_nacimiento']) ? 'is-invalid' : ''; ?>"
+                value="<?= $data['fecha_nacimiento']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
+                autocapitalize="off">
+            <div class="invalid-feedback"><?= $errors['fecha_nacimiento'] ?? ''; ?></div>
+        </div>
+
+        <div class="form-group">
+            <label for="tipo-documento">Tipo de documento *</label>
+            <select name="tipo_documento" id="tipo-documento"
+                class="custom-select custom-select-lg <?= isset($errors['tipo_documento']) ? 'is-invalid' : ''; ?>">
+                <option value="0">- Seleccionar -</option>
+                <option value="DNI">DNI (Documento Nacional de Identidad)</option>
+                <option value="LC">LC (Libreta Cívica)</option>
+                <option value="LE">LE (Libreta de Enrolamiento)</option>
+                <!-- <option value="PASAPORTE">PASAPORTE</option> -->
+            </select>
+            <div class="invalid-feedback"><?= $errors['tipo_documento'] ?? '';  ?></div>
+        </div>
+
+        <div class="form-group">
+            <label for="nro-documento">Número de documento (ocho dígitos) *</label>
+            <input type="text" name="num_documento" id="nro-documento"
+                class="form-control form-control-lg <?= isset($errors['num_documento']) ? 'is-invalid' : ''; ?>"
+                data-toggle="tooltip" data-placement="left" title="Completar con ceros a la izquierda si es necesario"
+                value="<?= $data['num_documento']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
+                autocapitalize="off">
+            <div class="invalid-feedback"><?= $errors['num_documento'] ?? '';  ?></div>
+        </div>
+
+        <div class="form-group">
+            <label for="nro-cuil">Número de cuil *</label>
+            <a class="float-right" href="http://www0.unsl.edu.ar/~jolguin/cuit.php" target="_blank">Cálculo de
+                CUIT/CUIL</a>
+            <input type="text" name="num_cuil" id="nro-cuil"
+                class="form-control form-control-lg <?= isset($errors['num_cuil']) ? 'is-invalid' : ''; ?>"
+                data-toggle="tooltip" data-placement="left" title="Sin guiones, puntos, espacios u otros símbolos"
+                value="<?= $data['num_cuil']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
+                autocapitalize="off">
+            <div class="invalid-feedback"><?= $errors['num_cuil'] ?? '';  ?></div>
+        </div>
+
+        <div class="form-group">
+            <label for="condicion-ingreso">Condición de ingreso <span class="required">*</span></label>
+            <select name="condicion_ingreso" id="condicion-ingreso"
+                class="custom-select custom-select-lg <?= isset($errors['condicion_ingreso']) ? 'is-invalid' : ''; ?>">
+                <option value="0">- Seleccionar -</option>
+                <option value="Activo">Activo</option>
+                <option value="Adherente">Adherente</option>
+                <option value="Jubilado">Jubilado</option>
+            </select>
+            <div class="invalid-feedback"><?= $errors['condicion_ingreso'] ?? '';  ?></div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Correo electrónico</label>
+            <input type="email" name="email" id="email"
+                class="form-control form-control-lg <?= isset($errors['email']) ? 'is-invalid' : ''; ?>"
+                value="<?= $data['email']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
+                autocapitalize="off">
+            <div class="invalid-feedback"><?= $errors['email'] ?? ''; ?></div>
+        </div>
+
+        <div class="form-group">
+            <label for="telefono-movil">Teléfono móvil <span class="required">*</span></label>
+            <input type="text" name="telefono_movil" id="telefono-movil"
+                class="form-control form-control-lg <?= isset($errors['telefono_movil']) ? 'is-invalid' : ''; ?>"
+                value="<?= $data['telefono_movil']; ?>" data-toggle="tooltip" data-placement="left"
+                title="Ingresá tu número de celular con código de área, sin espacios, puntos u otros símbolos."
+                spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
+            <div class="invalid-feedback"><?= $errors['telefono_movil'] ?? ''; ?></div>
+        </div>
+
+        <div class="form-group">
+            <label for="telefono-linea">Teléfono de línea</label>
+            <input type="text" name="telefono_linea" id="telefono-linea"
+                class="form-control form-control-lg <?= isset($errors['telefono_linea']) ? 'is-invalid' : ''; ?>"
+                value="<?= $data['telefono_linea']; ?>" data-toggle="tooltip" data-placement="left"
+                title="Ingresá tu número de teléfono con código de área, sin espacios, puntos u otros símbolos."
+                spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
+            <div class="invalid-feedback"><?= $errors['telefono_linea'] ?? ''; ?></div>
+        </div>
+
+        <div class="form-group">
+            <label for="domicilio">Domicilio <span class="required">*</span></label>
+            <input type="text" name="domicilio" id="domicilio"
+                class="form-control form-control-lg <?= isset($errors['domicilio']) ? 'is-invalid' : ''; ?>"
+                value="<?= $data['domicilio']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
+                autocapitalize="off">
+            <div class="invalid-feedback"><?= $errors['domicilio'] ?? ''; ?></div>
+        </div>
+
+        <div class="form-group">
+            <label for="id-provincia">Provincia <span class="required">*</span></label>
+            <select name="id_provincia" id="id-provincia"
+                class="custom-select custom-select-lg <?= isset($errors['id_provincia']) ? 'is-invalid' : ''; ?>">
+                <option value="0">- Seleccionar -</option>
+                <option value="1">BUENOS AIRES</option>
+                <option value="2">CATAMARCA</option>
+                <option value="3">CHACO</option>
+                <option value="4">CHUBUT</option>
+                <option value="5">CIUDAD AUTONOMA DE BUENOS AIRES</option>
+                <option value="6">CORDOBA</option>
+                <option value="7">CORRIENTES</option>
+                <option value="8">ENTRE RIOS</option>
+                <option value="9">FORMOSA</option>
+                <option value="10">JUJUY</option>
+                <option value="11">LA PAMPA</option>
+                <option value="12">LA RIOJA</option>
+                <option value="13">MENDOZA</option>
+                <option value="14">MISIONES</option>
+                <option value="15">NEUQUEN</option>
+                <option value="16">RIO NEGRO</option>
+                <option value="17">SALTA</option>
+                <option value="18">SAN JUAN</option>
+                <option value="19">SAN LUIS</option>
+                <option value="20">SANTA CRUZ</option>
+                <option value="21">SANTA FE</option>
+                <option value="22">SANTIAGO DEL ESTERO</option>
+                <option value="23">TIERRA DEL FUEGO</option>
+                <option value="24">TUCUMAN</option>
+            </select>
+            <div class="invalid-feedback"><?= $errors['id_provincia'] ?? ''; ?></div>
+        </div>
+
+        <div class="form-group">
+            <label for="id-localidad">Localidad <span class="required">*</span></label>
+            <select name="id_localidad" id="id-localidad"
+                class="custom-select custom-select-lg <?= isset($errors['id_localidad']) ? 'is-invalid' : ''; ?>">
+                <option value="0">- Seleccionar -</option>
+                <?php foreach($localidades as $localidad) : ?>
+                <option value="<?= $localidad['id_localidad'] ?>"><?= $localidad['nombre'] . ' (' . $localidad['cp'] . ')'; ?></option>
+                <?php endforeach; ?>
+            </select>
+            <div class="invalid-feedback"><?= $errors['id_localidad'] ?? ''; ?></div>
+        </div>
+
+        <div class="form-group">
+            <label for="sexo">Sexo *</label>
+            <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input <?= isset($errors['sexo']) ? 'is-invalid' : ''; ?>"
+                    id="femenino" name="sexo" value="F">
+                <label class="custom-control-label" for="femenino" style="font-weight: normal;">Femenino</label>
+            </div>
+            <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input <?= isset($errors['sexo']) ? 'is-invalid' : ''; ?>"
+                    id="masculino" name="sexo" value="M">
+                <label class="custom-control-label" for="masculino" style="font-weight: normal;">Masculino</label>
+                <div class="invalid-feedback"><?= $errors['sexo'] ?? ''; ?></div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="/" class="btn btn-secondary">Cancelar</a>
+
+    </form>
+</section>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // document.querySelector('#sexo').value = "<?= $data['sexo']; ?>";
+        document.querySelector('#tipo-documento').value = "<?= $data['tipo_documento']; ?>";
+        document.querySelector('#condicion-ingreso').value = "<?= $data['condicion_ingreso']; ?>";
+        document.querySelector('#id-provincia').value = "<?= $data['id_provincia']; ?>";
+        document.querySelector('#id-localidad').value = "<?= $data['id_localidad']; ?>";
+
+        let generos = document.querySelectorAll('input[name = "sexo"]');
+        // console.log(generos);
+        generos.forEach(element => {
+            if (element.value == "<?= $data['sexo']; ?>") {
+                element.checked = true;
+            }
+        });
+    });
+</script>

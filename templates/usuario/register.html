@@ -1,0 +1,87 @@
+<section class="section" style="max-width: 450px;">
+
+    <div class="mb-4">
+        <h1 class="h2">Nuevo Usuario</h1>
+    </div>
+
+    <?php if (!$registerError): ?>
+    <div class="alert alert-info" role="alert">
+        No pudimos insertar el usuario. Por favor intentelo más tarde
+    </div>
+    <?php endif; ?>
+
+    <form action="/usuario_register.php" method="POST">
+        <input type="hidden" name="token" value="<?= Token::csrf(); ?>">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="apellido">Apellidos <span class="required">*</span></label>
+                <input type="text" class="form-control form-control-lg <?= isset($errors['apellido']) ? 'is-invalid' : ''; ?>"
+                    name="apellido" id="apellido" value="<?= $data['apellido']; ?>" spellcheck="false"
+                    autocomplete="off" autocorrect="off" autocapitalize="off" maxlength="40">
+                <div class="invalid-feedback"><?= $errors['apellido'] ?? ''; ?></div>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="nombre">Nombres <span class="required">*</span></label>
+                <input type="text" class="form-control form-control-lg <?= isset($errors['nombre']) ? 'is-invalid' : ''; ?>"
+                    name="nombre" id="nombre" value="<?= $data['nombre']; ?>" spellcheck="false" autocomplete="off"
+                    autocorrect="off" autocapitalize="off" maxlength="40">
+                <div class="invalid-feedback"><?= $errors['nombre'] ?? ''; ?></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="usuario">Número de documento (ocho dígitos) <span class="required">*</span></label>
+            <input type="text" class="form-control form-control-lg <?= isset($errors['usuario']) ? 'is-invalid' : ''; ?>"
+                name="usuario" id="usuario" value="<?= $data['usuario']; ?>" data-toggle="tooltip" data-placement="left"
+                title="Completar con ceros a la izquierda si es necesario" spellcheck="false" autocomplete="off"
+                autocorrect="off" autocapitalize="off">
+            <div class="invalid-feedback"><?= $errors['usuario'] ?? ''; ?></div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Correo electrónico <span class="required">*</span></label>
+            <input type="email" class="form-control form-control-lg <?= isset($errors['email']) ? 'is-invalid' : ''; ?>"
+                name="email" id="email" value="<?= $data['email']; ?>" spellcheck="false" autocomplete="off"
+                autocorrect="off" autocapitalize="off">
+            <div class="invalid-feedback"><?= $errors['email'] ?? ''; ?></div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="password">Contraseña <span class="required">*</span></label>
+                <input type="password"
+                    class="form-control form-control-lg <?= isset($errors['password']) ? 'is-invalid' : ''; ?>" name="password"
+                    id="password" value="<?= $data['password']; ?>" data-toggle="tooltip" data-placement="left"
+                    title="Utiliza ocho caracteres como mínimo con una combinación de letras, números y símbolos"
+                    spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
+                <div class="invalid-feedback"><?= $errors['password'] ?? ''; ?></div>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="confirm-password">Confirmación <span class="required">*</span></label>
+                <input type="password"
+                    class="form-control form-control-lg <?= isset($errors['confirm_password']) ? 'is-invalid' : ''; ?>"
+                    name="confirm_password" id="confirm-password" value="<?= $data['confirm_password']; ?>"
+                    spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
+                <div class="invalid-feedback"><?= $errors['confirm_password'] ?? ''; ?></div>
+            </div>
+        </div>
+
+        <!-- CHECKBOX Mostrar contraseña -->
+        <div class="form-group">
+            <input type="checkbox" id="show-password"
+                style="position: relative; top: 2px;height: 16px;width: 16px;">
+            <label for="show-password" style="font-weight: normal;">Mostrar contraseña</label>
+        </div>
+
+        <div class="row align-items-center">
+            <div class="col">
+                <button class="btn btn-success" type="submit">Crear usuario</button>
+            </div>
+            <div class="col-auto">
+                <a href="/usuario_login.php">¿Ya tienes una cuenta?</a>
+            </div>
+        </div>
+
+    </form>
+
+</section>
