@@ -3,7 +3,7 @@
 let provincia, localidad;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Si existe el id de provincia y de localidad 
+    // Si existe el id de provincia y el id de localidad 
     if (document.querySelector("#id-provincia") && document.querySelector("#id-localidad")) {
 
         provincia = document.querySelector("#id-provincia");
@@ -111,7 +111,7 @@ function isValidProvinceId(id) {
 
 function get_int(n) {
     if (n != null) {
-        // Si es un número entero
+        // Si es un caracter numérico entero
         if (/^[+-]?\d+$/.test(n)) {
             return true;
         }

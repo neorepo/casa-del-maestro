@@ -174,3 +174,5 @@ Sintaxis heredoc
 
 // https://www.php.net/manual/es/language.constants.predefined.php
 echo __DIR__; es equivalente a dirname(__FILE__);
+
+neo.code.edu@gmail.com

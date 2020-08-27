@@ -53,7 +53,7 @@ function existeLocalidadDeProvincia($id_localidad, $id_provincia) {
 
 function findById($id_asociado) {
     $q = 'SELECT a.id_asociado, a.apellido, a.nombre, a.sexo, a.fecha_nacimiento, a.tipo_documento, a.num_documento, a.num_cuil, 
-    a.condicion_ingreso, a.email, t.telefono_movil, t.telefono_linea, a.domicilio, p.id_provincia, p.nombre AS provincia, l.id_localidad, 
+    a.condicion_ingreso, a.email, a.created, t.telefono_movil, t.telefono_linea, a.domicilio, p.id_provincia, p.nombre AS provincia, l.id_localidad, 
     l.nombre AS localidad, l.cp FROM asociado a INNER JOIN telefono t ON a.id_asociado = t.id_asociado INNER JOIN localidad l ON a.id_localidad = l.id_localidad 
     INNER JOIN provincia p ON l.id_provincia = p.id_provincia WHERE a.deleted = 0 AND a.id_asociado = ?; ';
 
@@ -148,7 +148,7 @@ function existeEmailUsuario($email_usuario, $id_usuario = null) {
 function isValidProvinceId($id) {
     if ( get_int($id) ) {
         $id = (int) $id;
-        // Si es un número entero entre 1-24 inclusivo. Los ids de las 24 provincias en la tabla de la base de datos
+        // Si es un número entero entre 1-24 inclusivo. Los ids de las 24 provincias en la tabla provincia de la base de datos
         if ($id > 0 && $id < 25) {
             return true;
         }
@@ -220,7 +220,7 @@ function get_date($format = '%A, %#d de %B de %Y') {/*'%Y-%m-%d %H:%M:%S'*/
 
 /**
  * Convierte la fecha del formato de base de datos año-mes-día (2000-03-06)
- * al formato de humanos día-mes-año (06/03/2000)
+ * al formato de día-mes-año (06/03/2000)
  */
 function dateToPage($date) {
     $date = explode('-', $date);
@@ -228,12 +228,17 @@ function dateToPage($date) {
 }
 
 /**
- * Convierte la fecha del formato humano día-mes-año (06/03/2000)
+ * Convierte la fecha del formato día-mes-año (06/03/2000)
  * al formato de base de datos año-mes-día (2000-03-06)
  */
 function dateToDb($date) {
     $date = explode('/', $date);
     return  $date[2] . '-' . $date[1] .'-' . $date[0]; 
+}
+
+function formatDateTime($datetime) {
+    $dt = new DateTime($datetime);
+    return $dt->format('d/m/Y H:i:s');// $date->format('j/n/Y') => 26/8/2020
 }
 
 /**
@@ -353,21 +358,6 @@ function validar_cuit($cuit) { // 27-27369830-2
     return $digito == $verif;
 }
 
-function RandomToken($length = 32) {
-    if (!isset($length) || intval($length) <= 8) {
-        $length = 32;
-    }
-    if (function_exists('random_bytes')) {
-        return bin2hex(random_bytes($length));
-    }
-    if (function_exists('mcrypt_create_iv')) {
-        // return bin2hex(mcrypt_create_iv($length, MCRYPT_DEV_URANDOM));
-    }
-    if (function_exists('openssl_random_pseudo_bytes')) {
-        return bin2hex(openssl_random_pseudo_bytes($length));
-    }
-}
-
 /**
 * Redirects user to destination, which can be
 * a URL or a relative path on the local host.
@@ -464,7 +454,7 @@ function verifyPassword($password, $passwordHash) {
 }
 
 function onlyletters($value) {
-    return preg_match('/^[A-Za-záéíóúÁÉÍÓÚÑñÜü\' ]+$/', $value);
+    return preg_match('/^[A-Za-záéíóúÁÉÍÓÚÑñÜü\'. ]+$/', $value);
 }
 
 function onlynumbers($value) {

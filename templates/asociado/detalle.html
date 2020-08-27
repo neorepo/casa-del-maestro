@@ -7,6 +7,10 @@
     <table class="table table-borderless table-sm detail">
         <tbody>
             <tr>
+                <th>Fecha y Hora de Registro</th>
+                <td><?= htmlspecialchars($data['created'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+            </tr>
+            <tr>
                 <th>Sexo</th>
                 <td><?= htmlspecialchars($data['sexo'], ENT_NOQUOTES, 'UTF-8'); ?></td>
             </tr>
@@ -60,16 +64,16 @@
             </tr>
             <tr>
                 <td><a href="/" class="" title="Volver a la lista"><i
-                            class="material-icons align-bottom">fast_rewind</i> Volver</a></td>
+                            class="material-icons">fast_rewind</i> Volver</a></td>
                 <td>
                     <!-- Enviamos el aid por GET -->
                     <a href="/add-edit.php?aid=<?= $data['id_asociado']; ?>" title="Editar registro"><i
-                            class="material-icons align-bottom" style="color: #ffa500;">edit</i></a>
+                            class="material-icons" style="color: #ffa500;">edit</i></a>
                     <!-- Enviamos el aid por POST para eliminar -->
                     <form action="/asociado_eliminar.php" method="POST" style="display: inline-block;" title="Eliminar registro">
                         <input type="hidden" name="token" value="<?= Token::csrf(); ?>">
                         <input type="hidden" name="aid" value="<?= $data['id_asociado']; ?>">
-                        <button type="submit" class="detail-icon" onclick="return confirm('¿Desea eliminar el registro?');"><i class="material-icons align-bottom"
+                        <button type="submit" class="detail-icon" onclick="return confirm('¿Desea eliminar el registro?');"><i class="material-icons"
                                 style="color: #dc143b;">delete</i></button>
                     </form>
                     <!-- <a href="#" title="Exportar registro"><span class="material-icons" style="color: #FF2116;">picture_as_pdf</span></a> -->

@@ -11,6 +11,7 @@ $data = getAsociadoPorId();
 
 $data['telefono_linea'] = $data['telefono_linea'] ?? '';
 $data['fecha_nacimiento'] = dateToPage( $data['fecha_nacimiento'] );
+$data['created'] = formatDateTime( $data['created'] );
 
 $data['sexo'] = ($data['sexo'] == 'F') ? 'Femenino' : 'Masculino';
 
