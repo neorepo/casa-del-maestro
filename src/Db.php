@@ -17,8 +17,8 @@ class Db
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_EMULATE_PREPARES => false
             ));
-
         } catch (PDOException $e) {
+            $e->getMessage();
             trigger_error('Could not connect to database:' . $e->getMessage(), E_USER_ERROR);
             exit;
         }

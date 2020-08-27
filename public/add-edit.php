@@ -16,14 +16,13 @@ if ($action) {
     $data = getAsociadoPorId();
     // Asignamos el id del asociado a la variable de sesión para saber que registro editar
     $_SESSION['aid'] = $data['id_asociado'];
-    // Si existe el tel_linea y es distinto de null, volvemos a re asignar el valor
-    $data['telefono_linea'] = $data['telefono_linea'] ?? ''; // es equivalente a utilizar la función isset
     $data['fecha_nacimiento'] = dateToPage( $data['fecha_nacimiento'] );
     $localidades = getLocalidadesPorIdProvincia( (int) $data['id_provincia'] );
 } else {
+    // email es un campo unique en la base de datos, nunca puede estar vacío
     $data = ['id_asociado' => '','apellido' => '','nombre' => '','fecha_nacimiento' => '','tipo_documento' => '0',
-    'num_documento' => '','num_cuil' => '','condicion_ingreso' => '0','email' => '','telefono_movil' => '',
-    'telefono_linea' => '','domicilio' => '','id_provincia' => '0','id_localidad' => '0','sexo' => ''
+    'num_documento' => '','num_cuil' => '','condicion_ingreso' => '0','email' => null,'telefono_movil' => '',
+    'telefono_linea' => null,'domicilio' => '','id_provincia' => '0','id_localidad' => '0','sexo' => ''
     ];
 }
 
@@ -281,11 +280,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $id_asociado = $_SESSION['aid'];
                 //Despues de procesar todo eliminamos el id almacenado en el array session
                 unset($_SESSION['aid']);
-                Flash::addFlash('Los datos fueron guardados correctamente', 'primary');
+                Flash::addFlash('Los datos fueron guardados correctamente.', 'primary');
                 redirect('/asociado_detalle.php?aid=' . $id_asociado);
             } else {
                 unset($_SESSION['aid']);
-                Flash::addFlash('Lo sentimos, no pudimos guardar el registro', 'danger');
+                Flash::addFlash('Lo sentimos, no pudimos guardar el registro.', 'danger');
                 redirect('/');
             }
         }
@@ -356,8 +355,8 @@ function insertarAsociado($data) {
         $q = 'INSERT INTO asociado (apellido, nombre, sexo, fecha_nacimiento, tipo_documento, num_documento, num_cuil, condicion_ingreso, 
         email, domicilio, id_localidad, created, last_modified) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     
-        $result = Db::query($q, capitalize($data['apellido']), capitalize($data['nombre']), $data['sexo'], $fecha_nacimiento, $data['tipo_documento'], $data['num_documento'], 
-        $data['num_cuil'], $data['condicion_ingreso'], $data['email'], $data['domicilio'], $data['id_localidad'], $created, $last_modified);
+        $result = Db::query($q, capitalize($data['apellido']), capitalize($data['nombre']), $data['sexo'], $fecha_nacimiento, $data['tipo_documento'],
+        $data['num_documento'], $data['num_cuil'], $data['condicion_ingreso'], $data['email'], $data['domicilio'], $data['id_localidad'], $created, $last_modified);
 
         // Seteamos el id del nuevo asociado insertado en la base de datos en la variable de sessión, 
         // Para re dirigir a la página de detalle
@@ -370,6 +369,7 @@ function insertarAsociado($data) {
         // commit the transaction
         $conn->commit();
     } catch (PDOException $e) {
+        print $e->getMessage();
         // roll back the transaction if something failed
         $conn->rollback();
         $conn = null;

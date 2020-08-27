@@ -26,13 +26,13 @@ function existeNumDeCuilAsociado($num_cuil, $id_asociado = null) {
     }
 }
 
-function existeEmailAsociado($email_asociado, $id_asociado = null) {
+function existeEmailAsociado($email, $id_asociado = null) {
     if ($id_asociado == null) {
         $q = 'SELECT email FROM asociado WHERE email = ? ;';
-        return Db::query($q, $email_asociado);
+        return Db::query($q, $email);
     } else {
         $q = 'SELECT email FROM asociado WHERE email = ? AND id_asociado != ? ;';
-        return Db::query($q, $email_asociado, $id_asociado);
+        return Db::query($q, $email, $id_asociado);
     }
 }
 
@@ -127,13 +127,13 @@ function existeNumDeDocumentoUsuario($num_documento, $id_usuario = null) {
     }
 }
 
-function existeEmailUsuario($email_usuario, $id_usuario = null) {
+function existeEmailUsuario($email, $id_usuario = null) {
     if ($id_usuario == null) {
         $q = 'SELECT email FROM usuario WHERE email = ? ;';
-        return Db::query($q, $email_usuario);
+        return Db::query($q, $email);
     } else {
         $q = 'SELECT email FROM usuario WHERE email = ? AND id_usuario != ? ;';
-        return Db::query($q, $email_usuario, $id_usuario);
+        return Db::query($q, $email, $id_usuario);
     }
 }
 
@@ -252,14 +252,14 @@ function escape($data) {
  * Convierte a mayúsculas el primer caracter de cada palabra
  */
 function capitalize($string) {
-    return ucwords(strtolower($string));
+    return ucwords( mb_strtolower($string, 'UTF-8') );
 }
 
 /**
  * Válida la longitud de un string
  */
 function check_length($string, $minlength, $maxlength) {
-    $strlen = strlen($string);
+    $strlen = mb_strlen($string);
     if ($strlen >= $minlength && $strlen <= $maxlength) {
         return true;
     }
@@ -330,7 +330,7 @@ function validar_cuit($cuit) { // 27-27369830-2
     $cuit = preg_replace('/[^\d]/', '', (string) $cuit);
     $cuit_tipos = [20, 23, 24, 27, 30, 33, 34];
 
-    if (strlen($cuit) != 11) {
+    if (mb_strlen($cuit) != 11) {
         return false;
     }
 

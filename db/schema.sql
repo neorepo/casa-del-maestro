@@ -22856,7 +22856,7 @@ CREATE TABLE asociado (
   created DATETIME NOT NULL,
   last_modified DATETIME NOT NULL,
   deleted TINYINT (1) NOT NULL DEFAULT 0 CHECK(deleted IN(0, 1)),
-  PRIMARY KEY (id_asociado),
+  ,
   UNIQUE INDEX asociado_num_documento (num_documento),
   UNIQUE INDEX asociado_num_cuil (num_cuil),
   UNIQUE INDEX asociado_email (email),
@@ -22900,7 +22900,7 @@ CREATE INDEX idx_usuario_email ON usuario (email) ;
 -- https://www.sqlite.org/queryplanner.html
 -- INDEX
 CREATE INDEX idx_localidad_provincia ON localidad (nombre, id_provincia);
-
+PRIMARY KEY (id_asociado)
 CREATE INDEX idx_asociado_documento_cuil_email ON asociado (num_documento, num_cuil, email);
 CREATE INDEX idx_asociado_apellido ON asociado (apellido);
 
