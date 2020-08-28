@@ -109,10 +109,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $data['num_documento'] = escape( $_POST["num_documento"] );
 
-            if ( !preg_match('/^[\d]{8}$/', $data['num_documento']) ) {
-                $errors['num_documento'] = 'El formato o el número de documento ingresado no es válido.';
-            } else {
-
+            if ( preg_match('/^[\d]{8}$/', $data['num_documento']) ) {
+                
                 if ( isset( $_SESSION['aid'] ) ) {
                     $result = existeNumDeDocumentoAsociado( $data['num_documento'], $_SESSION['aid'] );
                 } else {
@@ -122,6 +120,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (count($result) == 1) {
                     $errors['num_documento'] = 'Este número de documento ya se encuentra registrado.';
                 }
+            } else {
+                $errors['num_documento'] = 'El formato o el número de documento ingresado no es válido.';
             }
         } else {
             $errors['num_documento'] = "Ingrese el número de documento.";
@@ -132,9 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $data['num_cuil'] = escape( $_POST["num_cuil"] );
 
-            if ( !validar_cuit( $data['num_cuil'] ) ) {
-                $errors['num_cuil'] = "El formato o el número de cuil ingresado no es válido.";
-            } else {
+            if ( validar_cuit( $data['num_cuil'] ) ) {
 
                 if( isset( $_SESSION['aid'] ) ) {
                     $result = existeNumDeCuilAsociado( $data['num_cuil'], $_SESSION['aid'] );
@@ -145,6 +143,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (count($result) == 1) {
                     $errors['num_cuil'] = 'Este número de cuil ya se encuentra registrado.';
                 }
+            } else {
+                $errors['num_cuil'] = "El formato o el número de cuil ingresado no es válido.";
             }
         } else {
             $errors['num_cuil'] = "Ingrese el número de cuil.";
@@ -167,10 +167,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $data['email'] = escape( $_POST['email'] );
 
-            if ( !valid_email( $data['email'] ) ) {
-                $errors['email'] = 'El correo electrónico no es válido.';
-            } else {
-
+            if ( valid_email( $data['email'] ) ) {
+                
                 if( isset( $_SESSION['aid'] ) ) {
                     $result = existeEmailAsociado( $data['email'], $_SESSION['aid'] );
                 } else {
@@ -180,6 +178,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (count($result) == 1) {
                     $errors['email'] = 'Este correo electrónico ya se encuentra registrado.';
                 }
+            } else {
+                $errors['email'] = 'El correo electrónico no es válido.';
             }
         }
         // No es un campo requerido
@@ -192,10 +192,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $data['telefono_movil'] = escape( $_POST["telefono_movil"] );
 
-            if ( !validar_tel( $data['telefono_movil'] ) ) {
-                $errors['telefono_movil'] = "El formato o el número de teléfono ingresado no es válido.";
-            } else {
-
+            if ( validar_tel( $data['telefono_movil'] ) ) {
+                
                 if( isset( $_SESSION['aid'] ) ) {
                     $result = existeTelefonoMovilAsociado( $data['telefono_movil'], $_SESSION['aid'] );
                 } else {
@@ -205,6 +203,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (count($result) == 1) {
                     $errors['telefono_movil'] = 'Este telefono móvil ya se encuentra registrado.';
                 }
+            } else {
+                $errors['telefono_movil'] = "El formato o el número de teléfono ingresado no es válido.";
             }
         } else {
             $errors['telefono_movil'] = "Ingrese el número móvil.";
@@ -229,20 +229,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Validación del id de la provincia
         if (!empty($_POST['id_provincia'])) {
+
             $data['id_provincia'] = escape( $_POST["id_provincia"] );
             
-            if( !isValidProvinceId($data['id_provincia']) ) {
-                $errors['id_provincia'] = "Seleccione una provincia de la lista.";
-            } else {
+            if( isValidProvinceId( $data['id_provincia'] ) ) {
                 // Cargamos las localidades despues de que tenemos el id de provincia
                 $localidades = getLocalidadesPorIdProvincia( (int) $data['id_provincia'] );
+            } else {
+                $errors['id_provincia'] = "Seleccione una provincia de la lista.";
             }
         } else {
             $errors['id_provincia'] = "Seleccione una provincia.";
         }
 
-        // Validación del id de la localidad, aquí también se verifica que la localidad
-        // pertenezca a la provincia selecionada
+        // Validación del id de la localidad, aquí también se verifica que la localidad pertenezca a la provincia selecionada
         if ( !empty($_POST['id_localidad']) ) {
 
             $data['id_localidad'] = escape( $_POST["id_localidad"] );
@@ -280,7 +280,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
          */
         if( empty($errors) ) {
     
-            // Decisión sobre insertar o actualizar datos
+            // Insertar o actualizar datos
             if ( save( $data ) ) {
                 // Recuperamos el id del asociado seteado en el metódo insertarAsociado() para re dirigir a la página de detalle
                 $id_asociado = $_SESSION['aid'];

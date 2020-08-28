@@ -12,7 +12,7 @@ $data = [
     'password' => ''
 ];
 
-$errors = null;
+$errors = [];
 $logonSuccess = true;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors['password'] = 'Ingrese su contraseña.';
         }
     
-        if ($errors == null) {
+        if ( empty( $errors ) ) {
             if ( authenticateUser( $data['usuario'], $data['password']) ) {
                 redirect('/');
             } else {
@@ -76,5 +76,3 @@ function authenticateUser($usuario, $password) {
     }
     return false;
 }
-
-// crimson33

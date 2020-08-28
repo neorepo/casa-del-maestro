@@ -1,6 +1,9 @@
 <?php
 
 date_default_timezone_set('AMERICA/ARGENTINA/BUENOS_AIRES');
+ini_set("display_errors", true);
+error_reporting(E_ALL | E_STRICT);
+mb_internal_encoding('UTF-8');
 
 // requirements
 require("constants.php");
@@ -11,7 +14,6 @@ session_name('ID');
 session_start();
 
 require_once '../src/Token.php';
-
 require_once '../src/Db.php';
 require_once '../src/Flash.php';
 

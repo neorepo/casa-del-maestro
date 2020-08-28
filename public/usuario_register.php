@@ -16,7 +16,7 @@ $data = [
     'confirm_password' => ''
 ];
 
-$errors = null;
+$errors = [];
 $minlength = 3;
 $maxlength = 40;
 $registerError = true;
@@ -66,15 +66,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $data['usuario'] = escape( $_POST["usuario"] );
 
-            if ( !preg_match('/^[\d]{8}$/', $data['usuario']) ) {
-                $errors['usuario'] = 'El formato o el número de documento ingresado no es válido.';
-            } else {
-
+            if ( preg_match('/^[\d]{8}$/', $data['usuario']) ) {
                 $result = existeNumDeDocumentoUsuario( $data['usuario'] );
-
+                
                 if (count($result) == 1) {
                     $errors['usuario'] = 'Este número de documento ya se encuentra registrado.';
                 }
+            } else {
+                $errors['usuario'] = 'El formato o el número de documento ingresado no es válido.';
             }
         } else {
             $errors['usuario'] = "Ingrese el número de documento.";
@@ -85,43 +84,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $data['email'] = escape( $_POST['email'] );
 
-            if ( !valid_email( $data['email'] ) ) {
-                $errors['email'] = 'El correo electrónico no es válido.';
-            } else {
+            if ( valid_email( $data['email'] ) ) {
                 $result = existeEmailUsuario( $data['email'] );
                 if (count($result) == 1) {
                     $errors['email'] = 'Este correo electrónico ya se encuentra registrado.';
                 }
+            } else {
+                $errors['email'] = 'El correo electrónico no es válido.';
             }
         } else {
             $errors['email'] = 'Por favor, ingrese su correo electrónico.';
         }
 
         // Validación de las contraseñas
-        if (empty($_POST['password'])) {
-            $errors['password'] = 'Ingrese una contraseña.';
-        } else {
-    
+        if (!empty($_POST['password'])) {
+            
             $data['password'] = escape( $_POST['password'] );
     
-            if (empty($_POST['confirm_password'])) {
-                $errors['confirm_password'] = 'Confirme su contraseña.';
-            } else {
+            if (!empty($_POST['confirm_password'])) {
 
                 $data['confirm_password'] = escape( $_POST['confirm_password'] );
-
+                
                 // Comparación segura a nivel binario sensible a mayúsculas y minúsculas.
                 if (strcmp($data['password'], $data['confirm_password']) !== 0) {
                     $errors['confirm_password'] = 'Las contraseñas que ingresó no coinciden.';
                 }
+            } else {
+                $errors['confirm_password'] = 'Confirme su contraseña.';
             }
+        } else {
+            $errors['password'] = 'Ingrese una contraseña.';
         }
 
         /**
          * Si no existen errores
          */
-        if( !$errors ) {
-            if (insertarUsuario( $data )) {
+        if( empty( $errors ) ) {
+            if ( insertarUsuario( $data ) ) {
                 Flash::addFlash('Ahora puedes acceder al sistema.');
                 redirect('/');
             } else {

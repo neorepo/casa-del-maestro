@@ -10,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if( isValidProvinceId( $_POST['id_provincia'] ) ) {
 
         $data['success'] = true;
-        
         $data['localidades'] = getLocalidadesPorIdProvincia( (int) $_POST['id_provincia'] );
     }
 

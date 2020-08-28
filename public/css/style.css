@@ -26,9 +26,24 @@ label {
     border-color: inherit;
 }
 
+button.detail-icon {
+    padding: 0;
+    background: transparent;
+    border: none;
+}
+button.detail-icon:focus {
+    outline: none;
+}
+
 .material-icons {
     font-size: 22px;
     vertical-align: bottom;
+}
+.material-icons.delete {
+    color: #dc143b;
+}
+.material-icons.edit {
+    color: #ffa500;
 }
 
 /* BACK TO TOP */
@@ -94,13 +109,3 @@ label {
     }
 }
 /*END BACK TO TOP*/
-
-button.detail-icon {
-    padding: 0;
-    background: transparent;
-    border: none;
-}
-
-button.detail-icon:focus {
-    outline: none;
-}

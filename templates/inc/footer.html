@@ -25,7 +25,7 @@
     })
 
     $(document).ready(function () {
-        $('#tabla_asociado').DataTable({
+        $('#tabla-asociado').DataTable({
             // "order": [[ 0, "desc" ]],
             // "pagingType": "full_numbers",
             "language": {
@@ -47,8 +47,7 @@
     });
 
     if (document.querySelector('.alert')) {
-        let nodeList = document.querySelectorAll('.alert');
-        nodeList.forEach(element => {
+        document.querySelectorAll('.alert').forEach(element => {
             fadeOut(element);
         });
     }
