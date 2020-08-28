@@ -2,12 +2,13 @@
 
     <div class="row align-items-center mb-4">
         <div class="col">
-            <h1 class="h2"><?= $action ? 'Editar' : 'Agregar' ?> Asociado</h1>
+            <h1 class="h2"><?= isset( $_SESSION['aid'] ) ? 'Editar asociado' : 'Agregar asociado'; ?></h1>
         </div>
+        
         <div class="col-auto">
             <?php if( isset($_SESSION['aid']) ): ?>
-            <a href="/asociado_detalle.php?aid=<?= $_SESSION['aid']; ?>" class=""
-                title="Volver a detalle de asociado"><i class="material-icons">fast_rewind</i>Volver</a>
+            <a href="/asociado_detalle.php?aid=<?= $_SESSION['aid']; ?>" title="Volver a detalle de asociado">
+                <i class="material-icons">fast_rewind</i>Volver</a>
             <?php endif; ?>
         </div>
     </div>

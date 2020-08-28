@@ -187,3 +187,6 @@ CREATE TABLE usuario (
 INSERT INTO usuario(apellido,nombre,email)VALUES
 ('Doe', 'John', null),
 ('Doe', 'Jeff', null);
+
+Para generación del FAVICON
+https://favicon.io/

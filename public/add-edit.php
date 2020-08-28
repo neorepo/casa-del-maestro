@@ -6,7 +6,7 @@ require '../includes/bootstrap.php';
 $action = array_key_exists('aid', $_GET);
 
 $data = [];
-$errors = null;
+$errors = [];
 $localidades = [];
 $minlength = 3;
 $maxlength = 40;
@@ -19,7 +19,13 @@ if ($action) {
     $data['fecha_nacimiento'] = dateToPage( $data['fecha_nacimiento'] );
     $localidades = getLocalidadesPorIdProvincia( (int) $data['id_provincia'] );
 } else {
-    // email es un campo unique en la base de datos, nunca puede estar vacío
+    /**
+     * El campo EMAIL es un campo unique en la base de datos, y no es un campo obligatorio
+     * en el formulario de registro, de manera que nunca puede estar vacío (''). Sí así fuese,
+     * generaría un error cuando se intente insertar registros, puesto que no puede haber dos
+     * registros con un mismo valor vacío, lo mismo sucede con el campo telefono_linea aunque
+     * aquí no habría ningún problema ya que no es un campo unique.
+     */
     $data = ['id_asociado' => '','apellido' => '','nombre' => '','fecha_nacimiento' => '','tipo_documento' => '0',
     'num_documento' => '','num_cuil' => '','condicion_ingreso' => '0','email' => null,'telefono_movil' => '',
     'telefono_linea' => null,'domicilio' => '','id_provincia' => '0','id_localidad' => '0','sexo' => ''
@@ -43,9 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ( !onlyletters( $data['apellido'] ) ) {
                 $errors['apellido'] = 'Solo se permiten letras (a-zA-Z), y espacios en blanco.';
             } elseif ( !minlength( $data['apellido'], $minlength) ) {
-                $errors['apellido'] = 'Aumenta la longitud a ' . $minlength . 'caracteres como mínimo.';
+                $errors['apellido'] = 'Aumenta la longitud a ' . $minlength . ' caracteres como mínimo.';
             } elseif ( !maxlength($data['apellido'], $maxlength) ) {
-                $errors['apellido'] = 'Reduce la longitud a ' . $maxlength . 'caracteres o menos.';
+                $errors['apellido'] = 'Reduce la longitud a ' . $maxlength . ' caracteres o menos.';
             }
         } else {
             $errors['apellido'] = 'Por favor, ingrese su apellido.';
@@ -59,9 +65,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ( !onlyletters( $data['nombre'] ) ) {
                 $errors['nombre'] = 'Solo se permiten letras (a-zA-Z), y espacios en blanco.';
             } elseif ( !minlength( $data['nombre'], $minlength) ) {
-                $errors['nombre'] = 'Aumenta la longitud a ' . $minlength . 'caracteres como mínimo.';
+                $errors['nombre'] = 'Aumenta la longitud a ' . $minlength . ' caracteres como mínimo.';
             } elseif ( !maxlength($data['nombre'], $maxlength) ) {
-                $errors['nombre'] = 'Reduce la longitud a ' . $maxlength . 'caracteres o menos.';
+                $errors['nombre'] = 'Reduce la longitud a ' . $maxlength . ' caracteres o menos.';
             }
         } else {
             $errors['nombre'] = 'Por favor, ingrese su nombre.';
@@ -272,7 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         /**
          * Si no existen errores
          */
-        if( !$errors ) {
+        if( empty($errors) ) {
     
             // Decisión sobre insertar o actualizar datos
             if ( save( $data ) ) {
@@ -369,7 +375,6 @@ function insertarAsociado($data) {
         // commit the transaction
         $conn->commit();
     } catch (PDOException $e) {
-        print $e->getMessage();
         // roll back the transaction if something failed
         $conn->rollback();
         $conn = null;
