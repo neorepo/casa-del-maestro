@@ -22841,7 +22841,7 @@ INSERT INTO localidad (id_localidad,nombre,cp,id_provincia) VALUES (1111,'CABEZA
  (27948,'VILLA CELINA',1774,1);
 
 CREATE TABLE asociado (
-  id_asociado INT NOT NULL AUTO_INCREMENT,
+  id_asociado INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   apellido VARCHAR (100) NOT NULL,
   nombre VARCHAR (100) NOT NULL,
   sexo CHAR (1) NOT NULL CHECK(sexo IN('F', 'M')),
@@ -22850,13 +22850,12 @@ CREATE TABLE asociado (
   num_documento CHAR (8) NOT NULL,
   num_cuil CHAR (11) NOT NULL,
   condicion_ingreso ENUM ('Activo', 'Adherente', 'Jubilado') NOT NULL,
-  email VARCHAR (50),
+  email VARCHAR (50) NULL,
   domicilio VARCHAR (100) NOT NULL,
   id_localidad INT UNSIGNED NOT NULL,
   created DATETIME NOT NULL,
   last_modified DATETIME NOT NULL,
   deleted TINYINT (1) NOT NULL DEFAULT 0 CHECK(deleted IN(0, 1)),
-  ,
   UNIQUE INDEX asociado_num_documento (num_documento),
   UNIQUE INDEX asociado_num_cuil (num_cuil),
   UNIQUE INDEX asociado_email (email),
@@ -22900,8 +22899,6 @@ CREATE INDEX idx_usuario_email ON usuario (email) ;
 -- https://www.sqlite.org/queryplanner.html
 -- INDEX
 CREATE INDEX idx_localidad_provincia ON localidad (nombre, id_provincia);
-PRIMARY KEY (id_asociado)
 CREATE INDEX idx_asociado_documento_cuil_email ON asociado (num_documento, num_cuil, email);
 CREATE INDEX idx_asociado_apellido ON asociado (apellido);
-
 CREATE INDEX idx_telefono_movil ON telefono (id_asociado, telefono_movil);

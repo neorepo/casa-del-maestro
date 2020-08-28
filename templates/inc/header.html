@@ -73,12 +73,8 @@
     
     <?php if ($flashes): ?>
     <?php foreach($flashes as $flash): ?>
-    <?php
-        $icon = ($flash['class'] != 'danger') ? 'check' : 'clear';
-    ?>
-    <!-- style="vertical-align: bottom;" -->
     <div class="alert alert-<?= $flash['class'] ?> text-center" role="alert"><i
-            class="material-icons"><?= $icon; ?></i> <?= $flash['message'] ?></div>
+            class="material-icons"><?= ($flash['class'] != 'danger') ? 'check' : 'clear'; ?></i> <?= $flash['message'] ?></div>
     <?php endforeach ?>
     <?php endif ?>
     <main class="container py-5">

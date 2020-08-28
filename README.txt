@@ -63,7 +63,7 @@ Con el teléfono móvil no tendriamos problemas ya que es un campo obligatorio.
 -------------------------------------
 
 Consideraciones acerca de la validación de un número entero positivo.
-Antes de consultar a la base de datos se estaba validando que el id fuese un número entero positivo.
+Antes de consultar a la base de datos se validaba que el id fuese un número entero positivo.
 por ejemplo:
 
 SELECT * FROM asociado WHERE id_asociado = 3;
@@ -176,17 +176,6 @@ Sintaxis heredoc
 echo __DIR__; es equivalente a dirname(__FILE__);
 
 neo.code.edu@gmail.com
-
-CREATE TABLE usuario (
-  id_usuario INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  apellido VARCHAR (50) NOT NULL,
-  nombre VARCHAR (50) NOT NULL,
-  email VARCHAR (50) NULL UNIQUE
-) ENGINE = INNODB CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
-
-INSERT INTO usuario(apellido,nombre,email)VALUES
-('Doe', 'John', null),
-('Doe', 'Jeff', null);
 
 Para generación del FAVICON
 https://favicon.io/
