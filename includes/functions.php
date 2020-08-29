@@ -74,17 +74,17 @@ function getAsociadoPorId() {
     try {
         $id = getUrlParam('aid');
     } catch (Exception $ex) {
-        throw new Exception('No ASOCIADO identifier provided.');
+        render('error/404.html', ['title' => 'Error', 'message' => 'no se proporcionó ningún identificador de asociado.']);
     }
-
-    if (!is_numeric($id)) {
-        throw new Exception('Invalid ASOCIADO identifier provided.');
+    
+    if ( !is_numeric($id) ) {
+        render('error/404.html', ['title' => 'Error', 'message' => 'se proporcionó un identificador de asociado no válido.']);
     }
-
+    
     $rows = findById($id);
-
+    
     if ( count($rows) == 0 ) {
-        throw new Exception('Unknown ASOCIADO identifier provided.');
+        render('error/404.html', ['title' => 'Error', 'message' => 'se proporcionó un identificador de asociado desconocido.']);
     }
 
     return $rows[0]; // Siempre retornará un asociado
@@ -434,6 +434,8 @@ function render($template, $values = []) {
 
         // render footer
         require("../templates/inc/footer.html");
+
+        exit;
     }
 
     // else err

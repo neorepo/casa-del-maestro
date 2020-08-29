@@ -72,7 +72,6 @@ function loadLocalities(response) {
     }
 }
 
-
 function sendHttpRequest(method, url, data, callback) {
 
     const xhr = getXhr();

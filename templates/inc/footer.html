@@ -55,6 +55,19 @@
     function fadeOut(el) {
         setTimeout(function () { /*el.style.display = 'none';*/ el.remove(); }, 13000);
     }
+
+    // Evitar enviar el formulario presionando la tecla ENTER en un input field
+    if (document.querySelector('form')) {
+        // También se puede utilizar el evento onkeydown
+        document.querySelector('form').onkeypress = (e) => {
+            if (e.which == 13) {
+                // Evitamos que se ejecuté el evento
+                e.preventDefault();
+                // Retornamos false
+                return false;
+            }
+        }
+    }
 </script>
 
 <script src="js/main.js"></script>

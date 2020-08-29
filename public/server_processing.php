@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $data['success'] = true;
         $data['localidades'] = getLocalidadesPorIdProvincia( (int) $_POST['id_provincia'] );
     }
-
-    echo json_encode($data);
-    exit;
 }
+
+echo json_encode($data);
+exit;

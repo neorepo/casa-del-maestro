@@ -26,12 +26,12 @@ label {
     border-color: inherit;
 }
 
-button.detail-icon {
+button.icon-style {
     padding: 0;
     background: transparent;
     border: none;
 }
-button.detail-icon:focus {
+button.icon-style:focus {
     outline: none;
 }
 
