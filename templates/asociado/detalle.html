@@ -1,7 +1,9 @@
 <section class="" style="max-width: 540px;">
 
     <div class="mb-4">
-        <h1 class="h2"><?= htmlspecialchars($data['apellido'] . " " . $data['nombre'], ENT_NOQUOTES, 'UTF-8'); ?></h1>
+        <h1 class="h2">
+            <i class="material-icons align-middle">person</i> <?= htmlspecialchars( $data['apellido'] . " " . $data['nombre'] ); ?>
+        </h1>
     </div>
 
     <table class="table table-borderless table-sm detail">

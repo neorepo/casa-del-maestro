@@ -238,7 +238,7 @@ function dateToDb($date) {
 
 function formatDateTime($datetime) {
     $dt = new DateTime($datetime);
-    return $dt->format('d/m/Y H:i:s');// $date->format('j/n/Y') => 26/8/2020
+    return $dt->format('d/m/Y H:i:s');// $date->format('j/n/Y') => 6/8/2020
 }
 
 /**
