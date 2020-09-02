@@ -105,7 +105,7 @@ function eliminarAsociado($id_asociado) {
  */
 function listarAsociados() {
     $q = 'SELECT id_asociado, apellido, nombre, num_documento, num_cuil, 
-              condicion_ingreso FROM asociado WHERE deleted = 0 ORDER BY apellido; ';
+    condicion_ingreso FROM asociado WHERE deleted = 0 ORDER BY apellido, condicion_ingreso; ';
     return Db::query($q);
 }
 
@@ -238,7 +238,7 @@ function dateToDb($date) {
 
 function formatDateTime($datetime) {
     $dt = new DateTime($datetime);
-    return $dt->format('d/m/Y H:i:s');// $date->format('j/n/Y') => 6/8/2020
+    return $dt->format('d/m/Y');// $date->format('j/n/Y') => 6/8/2020
 }
 
 /**

@@ -37,6 +37,7 @@ button.icon-style:focus {
 
 .material-icons {
     font-size: 22px;
+    color: #0E1B55;
     vertical-align: bottom;
 }
 .material-icons.delete {
@@ -44,6 +45,9 @@ button.icon-style:focus {
 }
 .material-icons.edit {
     color: #ffa500;
+}
+.material-icons.pdf {
+    color: #f40f02;
 }
 
 /* BACK TO TOP */
