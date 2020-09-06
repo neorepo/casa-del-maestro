@@ -171,17 +171,25 @@ function isPositiveInt($n) {
 }
 
 /**
- * Válida un string con caracteres numéricos
- * $r = '/^[+-]?\d*(?:\.\d*)?$/'; float
+ * Válida un string con caracteres numéricos enteros
  */
 function get_int($n) {
-    if ($n != null) {
-        // Si es un caracter numérico entero
-        if (preg_match('/^[+-]?\d+$/', $n)) {
-            return true;
-        }
+    if ($n == null) {
+        return false;
     }
-    return false;
+    // Si es un caracter numérico entero
+    return preg_match('/^[+-]?\d+$/', $n);
+}
+
+/**
+ * Válida un string con caracteres numéricos decimales
+ */
+function get_float($n) {
+    if ($n == null) {
+        return false;
+    }
+    // Si es un caracter numérico decimal
+    return preg_match('/^[+-]?\d*(?:\.\d*)?$/', $n);
 }
 
 /**
