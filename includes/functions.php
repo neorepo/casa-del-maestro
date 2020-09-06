@@ -229,7 +229,7 @@ function get_date($format = '%A, %#d de %B de %Y') {/*'%Y-%m-%d %H:%M:%S'*/
 
 /**
  * Convierte la fecha del formato de base de datos año-mes-día (2000-03-06)
- * al formato de día-mes-año (06/03/2000)
+ * al formato día-mes-año (06/03/2000)
  */
 function dateToPage($date) {
     $date = explode('-', $date);
@@ -361,7 +361,7 @@ function validar_cuit($cuit) { // 27-27369830-2
     $verif = 11 - ($acumulado % 11);
 
     // Si el resultado es 11, el dígito verificador será 0
-    // Sino, será el dígito verificador
+    // Si no, será el dígito verificador
     $verif = $verif == 11 ? 0 : $verif;
 
     return $digito == $verif;
