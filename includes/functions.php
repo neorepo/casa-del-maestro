@@ -172,6 +172,7 @@ function isPositiveInt($n) {
 
 /**
  * Válida un string con caracteres numéricos
+ * $r = '/^[+-]?\d*(?:\.\d*)?$/'; float
  */
 function get_int($n) {
     if ($n != null) {
