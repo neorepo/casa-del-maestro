@@ -171,7 +171,7 @@ function isPositiveInt($n) {
 }
 
 /**
- * Válida un string con caracteres númericos
+ * Válida un string con caracteres numéricos
  */
 function get_int($n) {
     if ($n != null) {
