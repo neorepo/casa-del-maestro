@@ -134,7 +134,7 @@ class Validator {
      */
     private function unique($field, $value, $condition) {
         $q = 'SELECT ' . $field . ' FROM ' . $condition . ' WHERE ' . $field . ' = ? ;';
-        $result = Db::query($q, $value);
-        return count($result) != 1;
+        $rows = Db::query($q, $value);
+        return count($rows) != 1;
     }
 }

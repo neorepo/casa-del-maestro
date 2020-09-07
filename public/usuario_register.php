@@ -67,9 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data['usuario'] = escape( $_POST["usuario"] );
 
             if ( preg_match('/^[\d]{8}$/', $data['usuario']) ) {
-                $result = existeNumDeDocumentoUsuario( $data['usuario'] );
+                $rows = existeNumDeDocumentoUsuario( $data['usuario'] );
                 
-                if (count($result) == 1) {
+                if (count($rows) == 1) {
                     $errors['usuario'] = 'Este número de documento ya se encuentra registrado.';
                 }
             } else {
@@ -85,8 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data['email'] = escape( $_POST['email'] );
 
             if ( valid_email( $data['email'] ) ) {
-                $result = existeEmailUsuario( $data['email'] );
-                if (count($result) == 1) {
+                $rows = existeEmailUsuario( $data['email'] );
+                if (count($rows) == 1) {
                     $errors['email'] = 'Este correo electrónico ya se encuentra registrado.';
                 }
             } else {
@@ -120,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
          * Si no existen errores
          */
         if( empty( $errors ) ) {
+            
             if ( insertarUsuario( $data ) ) {
                 Flash::addFlash('Ahora puedes acceder al sistema.');
                 redirect('/');

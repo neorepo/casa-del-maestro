@@ -112,12 +112,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ( preg_match('/^[\d]{8}$/', $data['num_documento']) ) {
                 
                 if ( isset( $_SESSION['aid'] ) ) {
-                    $result = existeNumDeDocumentoAsociado( $data['num_documento'], $_SESSION['aid'] );
+                    $rows = existeNumDeDocumentoAsociado( $data['num_documento'], $_SESSION['aid'] );
                 } else {
-                    $result = existeNumDeDocumentoAsociado( $data['num_documento'] );
+                    $rows = existeNumDeDocumentoAsociado( $data['num_documento'] );
                 }
 
-                if (count($result) == 1) {
+                if (count($rows) == 1) {
                     $errors['num_documento'] = 'Este número de documento ya se encuentra registrado.';
                 }
             } else {
@@ -135,12 +135,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ( validar_cuit( $data['num_cuil'] ) ) {
 
                 if( isset( $_SESSION['aid'] ) ) {
-                    $result = existeNumDeCuilAsociado( $data['num_cuil'], $_SESSION['aid'] );
+                    $rows = existeNumDeCuilAsociado( $data['num_cuil'], $_SESSION['aid'] );
                 } else {
-                    $result = existeNumDeCuilAsociado( $data['num_cuil'] );
+                    $rows = existeNumDeCuilAsociado( $data['num_cuil'] );
                 }
 
-                if (count($result) == 1) {
+                if (count($rows) == 1) {
                     $errors['num_cuil'] = 'Este número de cuil ya se encuentra registrado.';
                 }
             } else {
@@ -170,12 +170,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ( valid_email( $data['email'] ) ) {
                 
                 if( isset( $_SESSION['aid'] ) ) {
-                    $result = existeEmailAsociado( $data['email'], $_SESSION['aid'] );
+                    $rows = existeEmailAsociado( $data['email'], $_SESSION['aid'] );
                 } else {
-                    $result = existeEmailAsociado( $data['email'] );
+                    $rows = existeEmailAsociado( $data['email'] );
                 }
 
-                if (count($result) == 1) {
+                if (count($rows) == 1) {
                     $errors['email'] = 'Este correo electrónico ya se encuentra registrado.';
                 }
             } else {
@@ -195,12 +195,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ( validar_tel( $data['telefono_movil'] ) ) {
                 
                 if( isset( $_SESSION['aid'] ) ) {
-                    $result = existeTelefonoMovilAsociado( $data['telefono_movil'], $_SESSION['aid'] );
+                    $rows = existeTelefonoMovilAsociado( $data['telefono_movil'], $_SESSION['aid'] );
                 } else {
-                    $result = existeTelefonoMovilAsociado( $data['telefono_movil'] );
+                    $rows = existeTelefonoMovilAsociado( $data['telefono_movil'] );
                 }
 
-                if (count($result) == 1) {
+                if (count($rows) == 1) {
                     $errors['telefono_movil'] = 'Este telefono móvil ya se encuentra registrado.';
                 }
             } else {
@@ -250,9 +250,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if( isPositiveInt( $data['id_localidad'] ) )  {
 
                 // Si el id de la provincia es vacío, devolvera 0 filas
-                $result = existeLocalidadDeProvincia( (int) $data['id_localidad'], (int) $data['id_provincia'] );
+                $rows = existeLocalidadDeProvincia( (int) $data['id_localidad'], (int) $data['id_provincia'] );
 
-                if (count($result) == 0) {
+                if (count($rows) == 0) {
                     $errors['id_localidad'] = 'Seleccione una localidad de la lista.';
                 }
             } else {
