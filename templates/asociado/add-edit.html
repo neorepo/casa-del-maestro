@@ -4,7 +4,7 @@
         <div class="col">
             <h1 class="h2"><?= isset( $_SESSION['aid'] ) ? 'Editar asociado' : 'Agregar asociado'; ?></h1>
         </div>
-        
+
         <div class="col-auto">
             <?php if( isset($_SESSION['aid']) ): ?>
             <a href="/asociado_detalle.php?aid=<?= $_SESSION['aid']; ?>" title="Volver a detalle de asociado">
@@ -166,7 +166,8 @@
                 class="custom-select custom-select-lg <?= isset($errors['id_localidad']) ? 'is-invalid' : ''; ?>">
                 <option value="0">- Seleccionar -</option>
                 <?php foreach($localidades as $localidad) : ?>
-                <option value="<?= $localidad['id_localidad'] ?>"><?= $localidad['nombre'] . ' (' . $localidad['cp'] . ')'; ?></option>
+                <option value="<?= $localidad['id_localidad'] ?>">
+                    <?= $localidad['nombre'] . ' (' . $localidad['cp'] . ')'; ?></option>
                 <?php endforeach; ?>
             </select>
             <div class="invalid-feedback"><?= $errors['id_localidad'] ?? ''; ?></div>

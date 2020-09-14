@@ -2,38 +2,115 @@
 
 let provincia, localidad;
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Si existe el id de provincia y el id de localidad 
-    if (document.querySelector("#id-provincia") && document.querySelector("#id-localidad")) {
+$(document).ready(function () {
+    initDataTable();
+});
 
+document.addEventListener('DOMContentLoaded', () => {
+    initOnchangeProvincia();
+    initErrorFields();
+    initShowPasswords();
+    initFlashes();
+    preventFormSubmit();
+});
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+
+function initDataTable() {
+    $('#tabla-asociado').DataTable({
+        // "order": [[ 0, "desc" ]],
+        // "pagingType": "full_numbers",
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ registros",
+            "zeroRecords": "No se encontró nada, lo siento",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            "infoEmpty": "No hay registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "",
+            "sSearchPlaceholder": 'Buscar...',
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sPrevious": "Anterior",
+                "sNext": "Siguiente",
+                "sLast": "Último"
+            }
+        }
+    });
+}
+
+function preventFormSubmit() {
+    // Evitar enviar el formulario presionando la tecla ENTER en un input field
+    if (document.querySelector('form')) {
+        // También se puede utilizar el evento onkeydown
+        document.querySelector('form').onkeypress = (e) => {
+            if (e.key === "Enter") { // antes which: 13, keyCode: 13
+                // Evitamos que se ejecuté el evento
+                e.preventDefault();
+                // Retornamos false
+                return false;
+            }
+        }
+    }
+}
+
+function initOnchangeProvincia() {
+    // Si existe el id de provincia y el id de localidad 
+    if (document.querySelector("#id-provincia")
+        && document.querySelector("#id-localidad")) {
         provincia = document.querySelector("#id-provincia");
         localidad = document.querySelector("#id-localidad");
-
         provincia.onchange = () => {
-
             // Validamos el id de provincia
-            if ( isValidProvinceId(provincia.value) ) {
-
-                data_request( parseInt(provincia.value) );
+            if (isValidProvinceId(provincia.value)) {
+                data_request(parseInt(provincia.value));
             } else {
                 reset();
             }
         }
     }
+}
 
+function initShowPasswords() {
     // Muestra las contraseñas en el formulario de registro de usuario
-    if (document.querySelector('#password') && document.querySelector('#confirm-password')) {
+    if (document.querySelector('#password')
+        && document.querySelector('#confirm-password')) {
 
         if (document.querySelector('#show-password')) {
             document.querySelector('#show-password').onclick = showPasswords;
         }
     }
+}
 
+function initFlashes() {
+    if (document.querySelector('.alert')) {
+        document.querySelectorAll('.alert').forEach(element => {
+            fadeOut(element);
+        });
+    }
+}
+
+function fadeOut(el) {
+    setTimeout(function () { /*el.style.display = 'none';*/ el.remove(); }, 6000);
+}
+
+function showPasswords() {
+    let x = document.querySelector('#password');
+    let y = document.querySelector('#confirm-password');
+    if (x.type === 'password' && y.type === 'password') {
+        x.type = y.type = 'text';
+    } else {
+        x.type = y.type = 'password';
+    }
+}
+
+function initErrorFields() {
     // Captura el primer error que exista en los formularios de registro
     if (document.querySelector('.is-invalid')) {
         document.querySelector('.is-invalid').focus();
     }
-});
+}
 
 function data_request(id_provincia) {
     let data = "id_provincia=" + encodeURIComponent(id_provincia);
@@ -116,14 +193,4 @@ function get_int(n) {
         }
     }
     return false;
-}
-
-function showPasswords() {
-    let x = document.querySelector('#password');
-    let y = document.querySelector('#confirm-password');
-    if (x.type === 'password' && y.type === 'password') {
-        x.type = y.type = 'text';
-    } else {
-        x.type = y.type = 'password';
-    }
 }

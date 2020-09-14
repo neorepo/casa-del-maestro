@@ -1,14 +1,17 @@
 <section>
     <div class="row align-items-center mb-4">
         <div class="col">
-            <h1 class="h2">Asociados <a href="/add-edit.php" title="Agregar asociado"><i class="material-icons align-middle">add_circle</i></a>
+            <h1 class="h2">Asociados <a href="/add-edit.php" title="Agregar asociado"><i
+                        class="material-icons align-middle">add_circle</i></a>
             </h1>
             <!-- <a href="/add-edit.php" class="btn btn-primary btn-sm" title="Agregar asociado">Agregar</a> -->
         </div>
         <div class="col-auto">
-            <a href="" class="btn btn-light btn-sm" title="Exportar en pdf"><i class="material-icons pdf">picture_as_pdf</i></a>
+            <a href="" class="btn btn-light btn-sm" title="Exportar en pdf"><i
+                    class="material-icons pdf">picture_as_pdf</i></a>
             <a href="/exportar_excel.php" class="btn btn-light btn-sm" title="Exportar en excel">
-                <img src="/img/microsoft-excel-2019-48.svg" alt="Icono de excel exportar" style="height: 22px;vertical-align: bottom;"></a>
+                <img src="/img/microsoft-excel-2019-48.svg" alt="Icono de excel exportar"
+                    style="height: 22px;vertical-align: bottom;"></a>
         </div>
     </div>
     <div class="table-responsive">
@@ -36,7 +39,8 @@
                     <td><?= htmlspecialchars($asociado['num_cuil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     <td><?= htmlspecialchars($asociado['condicion_ingreso'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     <td class="text-center">
-                        <a href="/asociado_detalle.php?aid=<?= $asociado['id_asociado']; ?>" title="Más"><i class="material-icons">info</i></a>
+                        <a href="/asociado_detalle.php?aid=<?= $asociado['id_asociado']; ?>" title="Más"><i
+                                class="material-icons">info</i></a>
                     </td>
                 </tr>
                 <?php endforeach ?>
