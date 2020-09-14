@@ -85,14 +85,10 @@ function initShowPasswords() {
 
 function initFlashes() {
     if (document.querySelector('.alert')) {
-        document.querySelectorAll('.alert').forEach(element => {
-            fadeOut(element);
+        document.querySelectorAll('.alert').forEach(el => {
+            setTimeout(function () { /*el.style.display = 'none';*/ el.remove(); }, 6000);
         });
     }
-}
-
-function fadeOut(el) {
-    setTimeout(function () { /*el.style.display = 'none';*/ el.remove(); }, 6000);
 }
 
 function showPasswords() {

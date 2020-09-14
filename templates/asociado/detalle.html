@@ -73,6 +73,8 @@
                     <!-- Enviamos el aid por GET -->
                     <a href="/add-edit.php?aid=<?= $data['id_asociado']; ?>" title="Editar registro"><i
                             class="material-icons">edit</i></a>
+                    <a href="/asociado_eliminar.php?aid=<?= $data['id_asociado']; ?>" title="Eliminar registro"
+                        id="delete-link"><i class="material-icons">delete</i></a>
                     <!-- Enviamos el aid a eliminar por POST  -->
                     <form action="/asociado_eliminar.php" method="POST" style="display: inline-block;"
                         title="Eliminar registro">
@@ -82,9 +84,89 @@
                             onclick="return confirm('¿Desea eliminar el registro?');"><i
                                 class="material-icons">delete</i></button>
                     </form>
-                    <!-- <a href="#" title="Exportar registro"><span class="material-icons" style="color: #FF2116;">picture_as_pdf</span></a> -->
                 </td>
             </tr>
         </tbody>
     </table>
 </section>
+
+<style>
+    #delete-dialog {
+        display: none;
+        z-index: 1002;
+        padding: 1rem;
+        outline: 0;
+        height: auto;
+        position: fixed;
+        border: 1px solid rgba(0, 0, 0, .2);
+        width: auto;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        font-size: 14px;
+        /* box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.4); */
+    }
+
+    .backdrop {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.5);
+        /* background-color: #8c8c8c; */
+        z-index: 100;
+    }
+</style>
+
+<div id="delete-dialog" title="¿Eliminar este registro?">
+    <p>Este registro será eliminado. ¿Estás seguro?</p>
+    <div style="display:flex;justify-content: flex-end;">
+        <button id="btn-aceptar" style="margin: .25rem;">Aceptar</button>
+        <button id="btn-cancelar" style="margin: .25rem;">Cancelar</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initDeleteDialog();
+    });
+
+    function initDeleteDialog() {
+        if (document.querySelector('#delete-dialog')
+            && document.querySelector('#delete-link')
+            && document.querySelector('#btn-aceptar')
+            && document.querySelector('#btn-cancelar')) {
+            var backdrop;
+            var deleteDialog = document.querySelector('#delete-dialog');
+            var deleteLink = document.querySelector('#delete-link');
+            var btnAceptar = document.querySelector('#btn-aceptar');
+            var btnCancelar = document.querySelector('#btn-cancelar');
+
+            deleteLink.onclick = () => {
+                deleteDialog.style.display = 'block';
+                backdrop = document.createElement('div');
+                backdrop.classList.add('backdrop');
+                document.body.appendChild(backdrop);
+
+                // backdrop.addEventListener('click', () => {
+                //     backdrop.remove();
+                //     deleteDialog.style.display = 'none';
+                // });
+                return false;
+            }
+            btnCancelar.onclick = () => {
+                deleteDialog.style.display = 'none';
+                backdrop.remove();
+                return false;
+            }
+            btnAceptar.onclick = () => {
+                location.href = deleteLink.getAttribute('href');
+                deleteDialog.style.display = 'none';
+                backdrop.remove();
+            }
+        }
+    }
+</script>
