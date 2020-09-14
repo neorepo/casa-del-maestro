@@ -116,7 +116,6 @@
         top: 0;
         left: 0;
         background: rgba(0, 0, 0, 0.5);
-        /* background-color: #8c8c8c; */
         z-index: 100;
     }
 </style>
@@ -134,39 +133,48 @@
         initDeleteDialog();
     });
 
+    let backdrop;
+    let deleteDialog;
+
     function initDeleteDialog() {
         if (document.querySelector('#delete-dialog')
             && document.querySelector('#delete-link')
             && document.querySelector('#btn-aceptar')
             && document.querySelector('#btn-cancelar')) {
-            var backdrop;
-            var deleteDialog = document.querySelector('#delete-dialog');
+
+            deleteDialog = document.querySelector('#delete-dialog');
+            
             var deleteLink = document.querySelector('#delete-link');
             var btnAceptar = document.querySelector('#btn-aceptar');
             var btnCancelar = document.querySelector('#btn-cancelar');
 
             deleteLink.onclick = () => {
                 deleteDialog.style.display = 'block';
+
                 backdrop = document.createElement('div');
                 backdrop.classList.add('backdrop');
                 document.body.appendChild(backdrop);
 
-                // backdrop.addEventListener('click', () => {
-                //     backdrop.remove();
-                //     deleteDialog.style.display = 'none';
-                // });
-                return false;
-            }
-            btnCancelar.onclick = () => {
-                deleteDialog.style.display = 'none';
-                backdrop.remove();
+                backdrop.onclick = closeDialog;
+
                 return false;
             }
             btnAceptar.onclick = () => {
+                closeDialog();
                 location.href = deleteLink.getAttribute('href');
-                deleteDialog.style.display = 'none';
-                backdrop.remove();
             }
+            btnCancelar.onclick = () => {
+                closeDialog();
+            }
+        }
+    }
+
+    function closeDialog() {
+        if (backdrop) {
+            backdrop.remove();
+        }
+        if (deleteDialog) {
+            deleteDialog.style.display = 'none';
         }
     }
 </script>
