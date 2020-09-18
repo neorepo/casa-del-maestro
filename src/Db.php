@@ -2,34 +2,38 @@
 
 require_once '../config/Config.php';
 
+/**
+ * La clase Db provee conexión a base de datos
+ * Esta clase esta revisada y terminada
+ */
 class Db
 {
 
-    private $conn = null;
+    private $db;
     private static $_instance = null;
 
     private function __construct()
     {
-        $config = Config::getConfig('sqlite');
+        $config = Config::getConfig('sqlitedb');
         try {
-            $this->conn = new PDO($config['dsn'], $config['username'], $config['password'], array(
+            $this->db = new PDO($config['dsn'], $config['username'], $config['password'], array(
                 PDO::ATTR_PERSISTENT => true,
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_EMULATE_PREPARES => false
             ));
         } catch (PDOException $e) {
-            trigger_error('Could not connect to database:' . $e->getMessage(), E_USER_ERROR);
+            trigger_error('Could not connect to database: ' . $e->getMessage(), E_USER_ERROR);
             exit;
         }
     }
 
     /* Devolvemos la conexión
-     * El método getConnection no puede ser static porque no será llamado desde fuera de la clase DataBase.
+     * El método getDb no puede ser static porque no será llamado desde fuera de la clase Db.
      * todo sera gestionado por el único método static que es getInstance el cual si será llamado desde fuera.
      */
-    private function getConnection()
+    private function getDb()
     {
-        return $this->conn;
+        return $this->db;
     }
 
     // Magic method clone is empty to prevent duplication of connection
@@ -46,7 +50,7 @@ class Db
     // close db connection
     public function __destruct()
     {
-        $this->conn = null;
+        $this->db = null;
     }
 
     public static function getInstance()
@@ -54,7 +58,7 @@ class Db
         if (!self::$_instance instanceof self) {
             self::$_instance = new self;
         }
-        return self::$_instance->getConnection();
+        return self::$_instance->getDb();
     }
 
     /**

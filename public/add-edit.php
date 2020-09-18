@@ -321,65 +321,64 @@ function save($data) {
 
 function actualizarAsociado($data) {
     $last_modified = date('Y-m-d H:i:s');
-    $fecha_nacimiento = dateToDb($data['fecha_nacimiento']);
-    try {
-        $conn = Db::getInstance();
-        // begin the transaction
-        $conn->beginTransaction();
+    $data['fecha_nacimiento'] = dateToDb($data['fecha_nacimiento']);
 
-        $q = 'UPDATE asociado set apellido = ?, nombre = ?, sexo = ?, fecha_nacimiento = ?, tipo_documento = ?, num_documento = ?, num_cuil = ?,
+    try {
+        $db = Db::getInstance();
+        // begin the transaction
+        $db->beginTransaction();
+
+        $sql = 'UPDATE asociado set apellido = ?, nombre = ?, sexo = ?, fecha_nacimiento = ?, tipo_documento = ?, num_documento = ?, num_cuil = ?,
         condicion_ingreso = ?, email = ?, domicilio = ?, id_localidad = ?, last_modified = ? WHERE id_asociado = ? ; ';
     
-        $result = Db::query($q, capitalize($data['apellido']), capitalize($data['nombre']), $data['sexo'], $fecha_nacimiento, $data['tipo_documento'], 
+        Db::query($sql, capitalize($data['apellido']), capitalize($data['nombre']), $data['sexo'], $data['fecha_nacimiento'], $data['tipo_documento'], 
         $data['num_documento'], $data['num_cuil'], $data['condicion_ingreso'], $data['email'], $data['domicilio'], $data['id_localidad'], 
         $last_modified, $data['id_asociado']);
     
-        $q = 'UPDATE telefono set telefono_movil = ?, telefono_linea = ?, last_modified = ? WHERE id_asociado = ? ; ';
+        $sql = 'UPDATE telefono set telefono_movil = ?, telefono_linea = ?, last_modified = ? WHERE id_asociado = ? ; ';
     
-        $result = Db::query($q, $data['telefono_movil'], $data['telefono_linea'], $last_modified, $data['id_asociado']);
+        Db::query($sql, $data['telefono_movil'], $data['telefono_linea'], $last_modified, $data['id_asociado']);
 
         // commit the transaction
-        $conn->commit();
+        $db->commit();
     } catch (PDOException $e) {
         // roll back the transaction if something failed
-        $conn->rollback();
-        $conn = null;
+        $db->rollback();
+        //trigger_error('Error:' . $e->getMessage(), E_USER_ERROR);
         return false;
     }
-    $conn = null;
     return true;
 }
 
 function insertarAsociado($data) {
     $created = $last_modified = date('Y-m-d H:i:s');
-    $fecha_nacimiento = dateToDb($data['fecha_nacimiento']);
+    $data['fecha_nacimiento'] = dateToDb($data['fecha_nacimiento']);
     try {
-        $conn = Db::getInstance();
+        $db = Db::getInstance();
         // begin the transaction
-        $conn->beginTransaction();
+        $db->beginTransaction();
 
-        $q = 'INSERT INTO asociado (apellido, nombre, sexo, fecha_nacimiento, tipo_documento, num_documento, num_cuil, condicion_ingreso, 
+        $sql = 'INSERT INTO asociado (apellido, nombre, sexo, fecha_nacimiento, tipo_documento, num_documento, num_cuil, condicion_ingreso, 
         email, domicilio, id_localidad, created, last_modified) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     
-        $result = Db::query($q, capitalize($data['apellido']), capitalize($data['nombre']), $data['sexo'], $fecha_nacimiento, $data['tipo_documento'],
+        Db::query($sql, capitalize($data['apellido']), capitalize($data['nombre']), $data['sexo'], $data['fecha_nacimiento'], $data['tipo_documento'],
         $data['num_documento'], $data['num_cuil'], $data['condicion_ingreso'], $data['email'], $data['domicilio'], $data['id_localidad'], $created, $last_modified);
 
         // Seteamos el id del nuevo asociado insertado en la base de datos en la variable de sessión, 
         // Para re dirigir a la página de detalle
         $data['id_asociado'] = $_SESSION['aid'] = Db::getInstance()->lastInsertId();
     
-        $q = 'INSERT INTO telefono (telefono_movil, telefono_linea, id_asociado, created, last_modified) VALUES(?, ?, ?, ?, ?)';
+        $sql = 'INSERT INTO telefono (telefono_movil, telefono_linea, id_asociado, created, last_modified) VALUES(?, ?, ?, ?, ?)';
     
-        $result = Db::query($q, $data['telefono_movil'], $data['telefono_linea'], $data['id_asociado'], $created, $last_modified);
+        Db::query($sql, $data['telefono_movil'], $data['telefono_linea'], $data['id_asociado'], $created, $last_modified);
     
         // commit the transaction
-        $conn->commit();
+        $db->commit();
     } catch (PDOException $e) {
         // roll back the transaction if something failed
-        $conn->rollback();
-        $conn = null;
+        $db->rollback();
+        //trigger_error('Error:' . $e->getMessage(), E_USER_ERROR);
         return false;
     }
-    $conn = null;
     return true;
 }

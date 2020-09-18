@@ -45,11 +45,13 @@ function preventFormSubmit() {
     if (document.querySelector('form')) {
         // También se puede utilizar el evento onkeydown
         document.querySelector('form').onkeypress = (e) => {
-            if (e.key === "Enter") { // antes which: 13, keyCode: 13
-                // Evitamos que se ejecuté el evento
-                e.preventDefault();
-                // Retornamos false
-                return false;
+            if (e.target.tagName !== "TEXTAREA") {
+                if (e.key === "Enter") {
+                    // Evitamos que se ejecuté el evento
+                    e.preventDefault();
+                    // Retornamos false
+                    return false;
+                }
             }
         }
     }
