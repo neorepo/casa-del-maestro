@@ -10,21 +10,23 @@ class Db
 
     private function __construct()
     {
+        $config = Config::getConfig('sqlite');
         try {
-            $config = Config::getConfig('sqlite');
             $this->conn = new PDO($config['dsn'], $config['username'], $config['password'], array(
                 PDO::ATTR_PERSISTENT => true,
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_EMULATE_PREPARES => false
             ));
         } catch (PDOException $e) {
-            $e->getMessage();
             trigger_error('Could not connect to database:' . $e->getMessage(), E_USER_ERROR);
             exit;
         }
     }
 
-    // Devolvemos la conexión
+    /* Devolvemos la conexión
+     * El método getConnection no puede ser static porque no será llamado desde fuera de la clase DataBase.
+     * todo sera gestionado por el único método static que es getInstance el cual si será llamado desde fuera.
+     */
     private function getConnection()
     {
         return $this->conn;

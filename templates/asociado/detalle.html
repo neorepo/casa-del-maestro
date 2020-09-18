@@ -1,4 +1,4 @@
-<section class="" style="max-width: 540px;">
+<section class="">
 
     <div class="mb-4">
         <h1 class="h2">
@@ -6,87 +6,97 @@
         </h1>
     </div>
 
-    <table class="table table-borderless table-sm detail">
-        <tbody>
-            <tr>
-                <th>Fecha de Alta</th>
-                <td><?= htmlspecialchars($data['created'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-            </tr>
-            <tr>
-                <th>Sexo</th>
-                <td><?= htmlspecialchars($data['sexo'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-            </tr>
-            <tr>
-                <th>Fecha de Nacimiento</th>
-                <td><?= htmlspecialchars($data['fecha_nacimiento'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-            </tr>
-            <tr>
-                <th>Documento</th>
-                <td><?= htmlspecialchars($data['tipo_documento'] . ' - ' . $data['num_documento'], ENT_NOQUOTES, 'UTF-8'); ?>
-                </td>
-            </tr>
-            <tr>
-                <th>Número de Cuil</th>
-                <td><?= htmlspecialchars($data['num_cuil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-            </tr>
-            <tr>
-                <th>Condición de Ingreso</th>
-                <td><?= htmlspecialchars($data['condicion_ingreso'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-            </tr>
-            <tr>
-                <th>Correo Electrónico</th>
-                <td><?= htmlspecialchars($data['email'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-            </tr>
-            <tr>
-                <th>Teléfono Móvil</th>
-                <td><?= htmlspecialchars($data['telefono_movil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-            </tr>
-            <tr>
-                <th>Teléfono de Línea</th>
-                <td><?= htmlspecialchars($data['telefono_linea'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-            </tr>
-            <tr>
-                <th>Domicilio</th>
-                <td><?= htmlspecialchars($data['domicilio'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-            </tr>
-            <tr>
-                <th>Localidad</th>
-                <td><?= ucwords( htmlspecialchars($data['localidad'], ENT_NOQUOTES, 'UTF-8') ); ?></td>
-            </tr>
-            <tr>
-                <th>Código Postal</th>
-                <td><?= htmlspecialchars($data['cp'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-            </tr>
-            <tr>
-                <th>Provincia</th>
-                <td><?= ucwords( htmlspecialchars($data['provincia'], ENT_NOQUOTES, 'UTF-8') ); ?></td>
-            </tr>
-            <tr>
-                <th colspan="2">&nbsp;</th>
-            </tr>
-            <tr>
-                <td>
-                    <a href="/" class="" title="Volver a la lista"><i class="material-icons">fast_rewind</i> Volver</a>
-                </td>
-                <td>
-                    <!-- Enviamos el aid por GET -->
-                    <a href="/add-edit.php?aid=<?= $data['id_asociado']; ?>" title="Editar registro"><i
-                            class="material-icons">edit</i></a>
-                    <a href="/asociado_eliminar.php?aid=<?= $data['id_asociado']; ?>" title="Eliminar registro"
-                        id="delete-link"><i class="material-icons">delete</i></a>
-                    <!-- Enviamos el aid a eliminar por POST  -->
-                    <form action="/asociado_eliminar.php" method="POST" style="display: inline-block;"
-                        title="Eliminar registro">
-                        <input type="hidden" name="token" value="<?= Token::csrf(); ?>">
-                        <input type="hidden" name="aid" value="<?= $data['id_asociado']; ?>">
-                        <button type="submit" class="icon-style"
-                            onclick="return confirm('¿Desea eliminar el registro?');"><i
-                                class="material-icons">delete</i></button>
-                    </form>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-borderless table-sm detail">
+                <tbody>
+                    <tr>
+                        <th>Fecha de Alta</th>
+                        <td><?= htmlspecialchars($data['created'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    </tr>
+                    <tr>
+                        <th>Sexo</th>
+                        <td><?= htmlspecialchars($data['sexo'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    </tr>
+                    <tr>
+                        <th>Fecha de Nacimiento</th>
+                        <td><?= htmlspecialchars($data['fecha_nacimiento'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    </tr>
+                    <tr>
+                        <th>Documento</th>
+                        <td><?= htmlspecialchars($data['tipo_documento'] . ' - ' . $data['num_documento'], ENT_NOQUOTES, 'UTF-8'); ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Número de Cuil</th>
+                        <td><?= htmlspecialchars($data['num_cuil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    </tr>
+                    <tr>
+                        <th>Condición de Ingreso</th>
+                        <td><?= htmlspecialchars($data['condicion_ingreso'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    </tr>
+                    <tr>
+                        <th>Correo Electrónico</th>
+                        <td><?= htmlspecialchars($data['email'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    </tr>
+                    <tr>
+                        <th>Teléfono Móvil</th>
+                        <td><?= htmlspecialchars($data['telefono_movil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    </tr>
+                    <tr>
+                        <th>Teléfono de Línea</th>
+                        <td><?= htmlspecialchars($data['telefono_linea'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    </tr>
+                    <tr>
+                        <th>Domicilio</th>
+                        <td><?= htmlspecialchars($data['domicilio'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    </tr>
+                    <tr>
+                        <th>Localidad</th>
+                        <td><?= ucwords( htmlspecialchars($data['localidad'], ENT_NOQUOTES, 'UTF-8') ); ?></td>
+                    </tr>
+                    <tr>
+                        <th>Código Postal</th>
+                        <td><?= htmlspecialchars($data['cp'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    </tr>
+                    <tr>
+                        <th>Provincia</th>
+                        <td><?= ucwords( htmlspecialchars($data['provincia'], ENT_NOQUOTES, 'UTF-8') ); ?></td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">&nbsp;</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="/" class="" title="Volver a la lista"><i class="material-icons">fast_rewind</i> Volver</a>
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <!-- Enviamos el aid por GET -->
+                                <a href="/add-edit.php?aid=<?= $data['id_asociado']; ?>" title="Editar registro"><i
+                                        class="material-icons">edit</i></a>
+                                <a href="/asociado_eliminar.php?aid=<?= $data['id_asociado']; ?>" title="Eliminar registro"
+                                    id="delete-link"><i class="material-icons">delete</i></a>
+                                <!-- Enviamos el aid a eliminar por POST  -->
+                                <form action="/asociado_eliminar.php" method="POST" style="display: inline-block;"
+                                    title="Eliminar registro">
+                                    <input type="hidden" name="token" value="<?= Token::csrf(); ?>">
+                                    <input type="hidden" name="aid" value="<?= $data['id_asociado']; ?>">
+                                    <button type="submit" class="icon-style"
+                                        onclick="return confirm('Este registro será eliminado. ¿Estás seguro?');"><i
+                                            class="material-icons">delete</i></button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <a href=""><img src="https://cdn.pixabay.com/photo/2019/10/01/13/58/coffee-4518354_960_720.png" alt="" height="auto" width="100%"></a>
+        </div>
+    </div>
+
 </section>
 
 <style>
