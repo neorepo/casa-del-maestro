@@ -42,12 +42,13 @@ class Db
         trigger_error('Clone is not allowed.', E_USER_ERROR);
     }
 
+    // https://www.php.net/manual/es/language.oop5.magic.php
     public function __wakeup()
     {
         trigger_error('Deserializing is not allowed.', E_USER_ERROR);
     }
 
-    // close db connection
+    // close db connection. The __destruct magic method must be public.
     public function __destruct()
     {
         $this->db = null;
