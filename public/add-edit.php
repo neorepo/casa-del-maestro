@@ -155,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $data['condicion_ingreso'] = escape( $_POST["condicion_ingreso"] );
 
-            if( !in_array( $data['condicion_ingreso'], ['Activo', 'Adherente', 'Jubilado'] ) ) {
+            if( !in_array( $data['condicion_ingreso'], ['ACTIVO', 'ADHERENTE', 'JUBILADO'] ) ) {
                 $errors['condicion_ingreso'] = "Seleccione una opción de la lista.";
             }
         } else {
@@ -322,7 +322,6 @@ function save($data) {
 function actualizarAsociado($data) {
     $last_modified = date('Y-m-d H:i:s');
     $data['fecha_nacimiento'] = dateToDb($data['fecha_nacimiento']);
-
     try {
         $db = Db::getInstance();
         // begin the transaction

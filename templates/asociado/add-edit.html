@@ -50,7 +50,7 @@
                 <option value="DNI">DNI (Documento Nacional de Identidad)</option>
                 <option value="LC">LC (Libreta Cívica)</option>
                 <option value="LE">LE (Libreta de Enrolamiento)</option>
-                <!-- <option value="PASAPORTE">PASAPORTE</option> -->
+                <!-- <option value="PAS">PAS (Pasaporte)</option> -->
             </select>
             <div class="invalid-feedback"><?= $errors['tipo_documento'] ?? '';  ?></div>
         </div>
@@ -82,9 +82,9 @@
             <select name="condicion_ingreso" id="condicion-ingreso"
                 class="custom-select custom-select-lg <?= isset($errors['condicion_ingreso']) ? 'is-invalid' : ''; ?>">
                 <option value="0">- Seleccionar -</option>
-                <option value="Activo">Activo</option>
-                <option value="Adherente">Adherente</option>
-                <option value="Jubilado">Jubilado</option>
+                <option value="ACTIVO">ACTIVO</option>
+                <option value="ADHERENTE">ADHERENTE</option>
+                <option value="JUBILADO">JUBILADO</option>
             </select>
             <div class="invalid-feedback"><?= $errors['condicion_ingreso'] ?? '';  ?></div>
         </div>
