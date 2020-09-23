@@ -174,8 +174,8 @@ function isPositiveInt($n) {
  * Válida un string con caracteres numéricos enteros
  */
 function get_int($n) {
-    if ($n == null) {
-        return false;
+    if ($n === null) {
+        return 0;
     }
     // Si es un caracter numérico entero
     return preg_match('/^[+-]?\d+$/', $n);
