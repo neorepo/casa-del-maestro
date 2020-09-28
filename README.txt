@@ -74,8 +74,8 @@ consultar a la base de datos si le enviamos un valor por ejemplo:
 SELECT * FROM asociado WHERE id_asociado = '/*/*mmm';
 
 Devolverá vacío, pero no generará un error. Con lo cual hasta este momento no veo la necesidad de validar si
-por ejemplo el id_asociado contiene un número entero positivo, a menos que solo me conecte a la base de datos
-si y solo si existe un número entero positivo.
+el id_asociado contiene un número entero positivo.
+A menos que solo quiera conectarme a la base de datos si y solo si existe un número entero positivo.
 El conectarse a la base de datos es una operación costosa, así que solo accederemos a ella, sí y solo sí el/los ids son
 números enteros positivos, o los campos de consulta son valores válidos.
 
@@ -114,10 +114,6 @@ session_set_cookie_params([
 ]);
 
 
-<a href="/delete.php?id_asociado=<?= $data['id_asociado']; ?>"
-                        onclick="return confirm('¿Desea eliminar el registro?');" title="Eliminar registro"
-                        class="mx-2"><i class="material-icons" style="color: #dc143b;">delete</i></a>
-
 Sintaxis heredoc
 // $form = <<<HTML
 // <form action="" method="post" enctype="multipart/form-data">
@@ -126,51 +122,6 @@ Sintaxis heredoc
 //   <input type="submit" value="Upload Image" name="submit">
 // </form>
 // HTML;
-
-    /**
-     * func_get_args ( void ) : array, Obtiene un array de la lista de argumentos de una función.
-     * array_slice — Extraer una parte de un array
-     */
-    public static function query(/* $sql [, ... ] */)
-    {
-        // SQL statement
-        $sql = func_get_arg(0);
-
-        // parameters, if any
-        $parameters = array_slice(func_get_args(), 1);
-
-        try {
-            $conn = self::getInstance();
-            // begin the transaction
-            $conn->beginTransaction();
-            $stmt = $conn->prepare($sql);
-            if ($stmt === false) {
-                // trigger (big, orange) error
-                trigger_error($conn->errorInfo()[2], E_USER_ERROR);
-                exit;
-            }
-            $result = $stmt->execute($parameters);
-            if ($result === false) return false;
-            if ($stmt->columnCount() > 0) {
-                // return result set's rows
-                return $stmt->fetchAll(PDO::FETCH_ASSOC);
-            }
-            // if query was DELETE, INSERT, or UPDATE
-            else {
-                // return number of rows affected
-                return ($stmt->rowCount() == 1); // true o false
-            }
-            // commit the transaction
-            $conn->commit();
-        } catch (PDOException $e) {
-            // roll back the transaction if something failed
-            $conn->rollback();
-            print 'Error: ' . $e->getMessage();
-        }
-
-        $conn = null;
-    }
-}
 
 // https://www.php.net/manual/es/language.constants.predefined.php
 echo __DIR__; es equivalente a dirname(__FILE__);

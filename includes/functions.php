@@ -185,8 +185,8 @@ function get_int($n) {
  * Válida un string con caracteres numéricos decimales
  */
 function get_float($n) {
-    if ($n == null) {
-        return false;
+    if ($n === null) {
+        return 0;
     }
     // Si es un caracter numérico decimal
     return preg_match('/^[+-]?\d*(?:\.\d*)?$/', $n);
@@ -300,7 +300,7 @@ function get_age($dateOfBirth) {
     $dateOfBirth = date_create( str_replace('/', '-', $dateOfBirth) );
     
     if($dateOfBirth > $today) {
-        return -1;
+        return $diff->format('%y') * -1;
     }
     
     $diff = date_diff( $dateOfBirth, $today );
