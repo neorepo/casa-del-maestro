@@ -1,6 +1,7 @@
 'use strict';
 
-let provincia, localidad;
+const provincia = document.querySelector("#id-provincia");
+const localidad = document.querySelector("#id-localidad");
 
 $(document).ready(function () {
     initDataTable();
@@ -40,35 +41,120 @@ function initDataTable() {
     });
 }
 
-function preventFormSubmit() {
-    // Evitar enviar el formulario presionando la tecla ENTER en un input field
-    if (document.querySelector('form')) {
-        // También se puede utilizar el evento onkeydown
-        document.querySelector('form').onkeypress = (e) => {
-            if (e.target.tagName !== "TEXTAREA") {
-                if (e.key === "Enter") {
-                    // Evitamos que se ejecuté el evento
-                    e.preventDefault();
-                    // Retornamos false
-                    return false;
-                }
-            }
-        }
-    }
-}
 
 function initOnchangeProvincia() {
     // Si existe el id de provincia y el id de localidad 
-    if (document.querySelector("#id-provincia")
-        && document.querySelector("#id-localidad")) {
-        provincia = document.querySelector("#id-provincia");
-        localidad = document.querySelector("#id-localidad");
-        provincia.onchange = () => {
-            // Validamos el id de provincia
-            if (isValidProvinceId(provincia.value)) {
-                data_request(parseInt(provincia.value));
-            } else {
-                reset();
+    if (!provincia && !localidad) return;
+
+    provincia.onchange = function () {
+        if (this.value === '5') {
+            reset();
+            let newOption = document.createElement("option");
+            newOption.value = 5001;
+            newOption.text = "CIUDAD AUTONOMA DE BUENOS AIRES";
+            try {
+                localidad.add(newOption);
+            } catch (e) {
+                localidad.appendChild(newOption);
+            }
+            return;
+        }
+        // Validamos el id de provincia
+        if (!validId(this.value, 1, 24)) {
+            reset();
+            return;
+        }
+
+        let data = "id_provincia=" + encodeURIComponent(this.value);
+        sendHttpRequest('POST', 'server_processing.php', data, loadLocalities);
+    }
+}
+
+function reset() {
+    localidad.options.length = 0;
+    localidad.options[0] = new Option("- Seleccionar -");
+    localidad.options[0].value = 0;
+}
+
+function loadLocalities(response) {
+    let newOption;
+    const $fragment = document.createDocumentFragment();
+    let data = JSON.parse(response);
+    if (data.success) {
+        reset();
+        data.localidades.forEach(item => {
+            newOption = document.createElement("option");
+            newOption.value = item.id_localidad;
+            newOption.text = `${item.nombre} (${item.cp})`;
+            // add the new option 
+            try {
+                // this will fail in DOM browsers but is needed for IE
+                $fragment.add(newOption);
+            } catch (e) {
+                $fragment.appendChild(newOption);
+            }
+        });
+        localidad.appendChild($fragment);
+    }
+}
+
+// https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest
+function sendHttpRequest(method, url, data, callback) {
+    const xhr = getXhr();
+    xhr.onreadystatechange = processRequest;
+    function getXhr() {
+        if (window.XMLHttpRequest) {
+            return new XMLHttpRequest();
+        } else {
+            return new ActiveXObject("Microsoft.XMLHTTP");
+        }
+    }
+    function processRequest() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            if (xhr.status == 200) {
+                if (callback) callback(xhr.responseText);
+            }
+        }
+    }
+    xhr.open(method, url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime());
+    if (data && !(data instanceof FormData)) xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.send(data);
+}
+
+// Validamos que contenga un identificador válido
+function validId(id, min, max) {
+    if (get_int(id)) {
+        id = parseInt(id);
+        if (id >= min && id <= max) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function get_int(n) {
+    if (n != null) {
+        // Si es un caracter numérico entero
+        if (/^[+-]?\d+$/.test(n)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function preventFormSubmit() {
+    // Evitar enviar el formulario presionando la tecla ENTER en un input field
+    if (!document.querySelector('form')) {
+        return;
+    }
+    // También se puede utilizar el evento onkeydown
+    document.querySelector('form').onkeypress = (e) => {
+        if (e.target.tagName !== "TEXTAREA") {
+            if (e.key === "Enter") {
+                // Evitamos que se ejecuté el evento
+                e.preventDefault();
+                // Retornamos false
+                return false;
             }
         }
     }
@@ -108,87 +194,4 @@ function initErrorFields() {
     if (document.querySelector('.is-invalid')) {
         document.querySelector('.is-invalid').focus();
     }
-}
-
-function data_request(id_provincia) {
-    let data = "id_provincia=" + encodeURIComponent(id_provincia);
-    let url = 'server_processing.php';
-    sendHttpRequest(
-        'POST',
-        url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime(),
-        data,
-        loadLocalities
-    );
-}
-
-function reset() {
-    localidad.options.length = 0;
-    localidad.options[0] = new Option("- Seleccionar -");
-    localidad.options[0].value = 0;
-}
-
-function loadLocalities(response) {
-    let newOption;
-    let data = JSON.parse(response);
-    if (data.success) {
-        reset();
-        data.localidades.forEach(item => {
-            newOption = document.createElement("option");
-            newOption.value = item.id_localidad;
-            newOption.text = `${item.nombre} (${item.cp})`;
-            // add the new option 
-            try {
-                // this will fail in DOM browsers but is needed for IE
-                localidad.add(newOption);
-            } catch (e) {
-                localidad.appendChild(newOption);
-            }
-        });
-    }
-}
-
-function sendHttpRequest(method, url, data, callback) {
-
-    const xhr = getXhr();
-    xhr.onreadystatechange = processRequest;
-
-    function getXhr() {
-        if (window.XMLHttpRequest) {
-            return new XMLHttpRequest();
-        } else {
-            return new ActiveXObject("Microsoft.XMLHTTP");
-        }
-    }
-
-    function processRequest() {
-        if (xhr.readyState == XMLHttpRequest.DONE) {
-            if (xhr.status == 200) {
-                if (callback) callback(xhr.responseText);
-            }
-        }
-    }
-
-    xhr.open(method, url);
-    xhr.withCredentials = true;
-    if (data && !(data instanceof FormData)) xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.send(data);
-}
-
-function isValidProvinceId(id) {
-    if (get_int(id)) {
-        if (id > 0 && id < 25) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function get_int(n) {
-    if (n != null) {
-        // Si es un caracter numérico entero
-        if (/^[+-]?\d+$/.test(n)) {
-            return true;
-        }
-    }
-    return false;
 }

@@ -283,6 +283,10 @@ function validate_date($date) {
     $pattern = '/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/';
     if (!preg_match($pattern, $date, $matches)) return false;
 
+    if( !($matches[3] >= 1905 && $matches[3] <= date('Y') ) ) {
+        return false;
+    }
+
     //checkdate ( int $month , int $day , int $year ) : bool checkdate(12, 31, 2000)
     if (!checkdate($matches[2], $matches[1], $matches[3])) return false;
     // return $matches[3] . '-' . $matches[2] . '-' . $matches[1];
@@ -298,13 +302,22 @@ function validate_date($date) {
 function get_age($dateOfBirth) {
     $today = date_create( date("Y-m-d") );
     $dateOfBirth = date_create( str_replace('/', '-', $dateOfBirth) );
-    
-    if($dateOfBirth > $today) {
-        return $diff->format('%y') * -1;
-    }
-    
     $diff = date_diff( $dateOfBirth, $today );
+    if($dateOfBirth > $today) return $diff->format('%y') * -1;
     return $diff->format('%y');
+}
+
+/**
+ * L
+ */
+function leapYear($year) {
+    $isLeapYear = false;
+    // divisible by 4
+    $isLeapYear = ($year % 4 == 0);
+    // divisible by 4 and not 100
+    $isLeapYear = $isLeapYear && ($year % 100 != 0);
+    // divisible by 4 and not 100 unless divisible by 400
+    return $isLeapYear || ($year % 400 == 0);
 }
 
 /**
