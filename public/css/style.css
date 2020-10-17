@@ -18,8 +18,17 @@ label {
     margin-bottom: .25rem;
 }
 
-.asociado .form-group {
-    margin-bottom: 30px;
+.invalid-feedback {
+    display: block;
+    visibility: hidden;
+    height: 19.2px;
+}
+
+.is-invalid~.invalid-feedback,
+.is-invalid~.invalid-tooltip,
+.was-validated :invalid~.invalid-feedback,
+.was-validated :invalid~.invalid-tooltip {
+    visibility: visible;
 }
 
 .form-control:focus, .custom-select:focus {

@@ -6,7 +6,7 @@ require_once '../config/Config.php';
  * La clase Db provee conexión a base de datos
  * Esta clase esta revisada y terminada
  */
-class Db
+final class Db
 {
 
     private $db;

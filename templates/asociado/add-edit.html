@@ -197,7 +197,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         // document.querySelector('#sexo').value = "<?= $data['sexo']; ?>";
         document.querySelector('#tipo-documento').value = "<?= $data['tipo_documento']; ?>";
-        document.querySelector('#condicion-ingreso').value = "<?= $data['condicion_ingreso']; ?>";
+        document.querySelector('#condicion-ingreso').value = "<?= $data['condicion_ingreso']; ?>".toUpperCase();
         document.querySelector('#id-provincia').value = "<?= $data['id_provincia']; ?>";
         document.querySelector('#id-localidad').value = "<?= $data['id_localidad']; ?>";
 
