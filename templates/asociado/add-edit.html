@@ -124,7 +124,7 @@
             <input type="text" name="domicilio" id="domicilio"
                 class="form-control form-control-lg <?= isset($errors['domicilio']) ? 'is-invalid' : ''; ?>"
                 value="<?= $data['domicilio']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
-                autocapitalize="off">
+                autocapitalize="off" required>
             <div class="invalid-feedback"><?= $errors['domicilio'] ?? ''; ?></div>
         </div>
 

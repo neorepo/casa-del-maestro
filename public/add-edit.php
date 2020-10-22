@@ -26,7 +26,8 @@ $messages = [
     'valid_document' => 'El formato o el número de documento ingresado no es válido.',
     'valid_cuil' => 'El formato o el número de cuil ingresado no es válido.',
     'valid_mobile_phone' => 'El formato o el número de teléfono móvil ingresado no es válido.',
-    'valid_phone' => 'El formato o el número de teléfono de línea ingresado no es válido.'
+    'valid_phone' => 'El formato o el número de teléfono de línea ingresado no es válido.',
+    'unique' => 'Este :f ya se encuentra registrado.'
 ];
 
 if ($action) {
@@ -150,8 +151,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 // Unique
                 if (count($rows) == 1) {
-                    $errors['num_documento'] = 'Este número de documento ya se encuentra registrado.';
+                    $errors['num_documento'] = str_replace(':f', 'número de documento', $messages['unique'] );
                 }
+
             } else {
                 $errors['num_documento'] = $messages['valid_document'];
             }
@@ -171,10 +173,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 } else {
                     $rows = existeNumDeCuilAsociado( $data['num_cuil'] );
                 }
+
                 // Unique
                 if (count($rows) == 1) {
-                    $errors['num_cuil'] = 'Este número de cuil ya se encuentra registrado.';
+                    $errors['num_cuil'] = str_replace(':f', 'número de cuil', $messages['unique'] );
                 }
+
             } else {
                 $errors['num_cuil'] = $messages['valid_cuil'];
             }
@@ -211,8 +215,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 // Unique
                 if (count($rows) == 1) {
-                    $errors['email'] = 'Este correo electrónico ya se encuentra registrado.';
+                    $errors['email'] = str_replace(':f', 'correo electrónico', $messages['unique'] );
                 }
+
             } else {
                 $errors['email'] = $messages['valid_email'];
             }
@@ -237,8 +242,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 // Unique
                 if (count($rows) == 1) {
-                    $errors['telefono_movil'] = 'Este telefono móvil ya se encuentra registrado.';
+
+                    $errors['telefono_movil'] = str_replace(':f', 'teléfono móvil', $messages['unique'] );
                 }
+
             } else {
                 $errors['telefono_movil'] = $messages['valid_mobile_phone'];
             }
