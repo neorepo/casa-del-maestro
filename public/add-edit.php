@@ -8,8 +8,26 @@ $action = array_key_exists('aid', $_GET);
 $data = [];
 $errors = [];
 $localidades = [];
+
 $minlength = 3;
 $maxlength = 40;
+
+$messages = [
+    'required' => 'Este campo es requerido.',
+    'onlyLetters' => 'Solo se permiten letras (a-zA-Z), y espacios en blanco.',
+    'minLength' => 'Aumenta la longitud a ' . $minlength . ' caracteres como mínimo.',
+    'maxLength' => 'Reduce la longitud a ' . $maxlength . ' caracteres o menos.',
+    'valid_date' => 'El formato o la fecha ingresada no es válida.',
+    'valid_email' => 'El correo electrónico no es válido.',
+    'valid_document_type' => 'El tipo de documento seleccionado no es válido.',
+    'valid_entry_condition' => 'La condición de ingreso seleccionada no es válida.',
+    'valid_sex' => 'El sexo seleccionado no es válido.',
+    'valid_legal_age' => 'Debes tener 18 años o más para poder asociarte. Asegúrate de usar tu fecha de nacimiento real.', /* Age of majority (also known as the "age of maturity") */
+    'valid_document' => 'El formato o el número de documento ingresado no es válido.',
+    'valid_cuil' => 'El formato o el número de cuil ingresado no es válido.',
+    'valid_mobile_phone' => 'El formato o el número de teléfono móvil ingresado no es válido.',
+    'valid_phone' => 'El formato o el número de teléfono de línea ingresado no es válido.'
+];
 
 if ($action) {
     // Recuperamos los datos del asociado de la base de datos
@@ -47,14 +65,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data['apellido'] = escape( $_POST['apellido'] );
 
             if ( !onlyletters( $data['apellido'] ) ) {
-                $errors['apellido'] = 'Solo se permiten letras (a-zA-Z), y espacios en blanco.';
+
+                $errors['apellido'] = $messages['onlyLetters'];
+
             } elseif ( !minlength( $data['apellido'], $minlength) ) {
-                $errors['apellido'] = 'Aumenta la longitud a ' . $minlength . ' caracteres como mínimo.';
+
+                $errors['apellido'] = $messages['minLength'];
+
             } elseif ( !maxlength($data['apellido'], $maxlength) ) {
-                $errors['apellido'] = 'Reduce la longitud a ' . $maxlength . ' caracteres o menos.';
+
+                $errors['apellido'] = $messages['maxLength'];
             }
         } else {
-            $errors['apellido'] = 'Por favor, ingrese su apellido.';
+            $errors['apellido'] = $messages['required'];
         }
 
         // Validación del nombre
@@ -63,14 +86,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data['nombre'] = escape( $_POST['nombre'] );
 
             if ( !onlyletters( $data['nombre'] ) ) {
-                $errors['nombre'] = 'Solo se permiten letras (a-zA-Z), y espacios en blanco.';
+
+                $errors['nombre'] = $messages['onlyLetters'];
+
             } elseif ( !minlength( $data['nombre'], $minlength) ) {
-                $errors['nombre'] = 'Aumenta la longitud a ' . $minlength . ' caracteres como mínimo.';
+
+                $errors['nombre'] = $messages['minLength'];
+
             } elseif ( !maxlength($data['nombre'], $maxlength) ) {
-                $errors['nombre'] = 'Reduce la longitud a ' . $maxlength . ' caracteres o menos.';
+
+                $errors['nombre'] = $messages['maxLength'];
+
             }
         } else {
-            $errors['nombre'] = 'Por favor, ingrese su nombre.';
+            $errors['nombre'] = $messages['required'];
         }
 
         // Validación de la fecha de nacimiento
@@ -79,17 +108,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data['fecha_nacimiento'] = escape( $_POST["fecha_nacimiento"] );
             
             if ( !validate_date( $data['fecha_nacimiento'] ) ) {
-                $errors['fecha_nacimiento'] = 'El formato o la fecha ingresada no es válida.';
+                $errors['fecha_nacimiento'] = $messages['valid_date'];
             } else {
 
-                $edad = (int) get_age( $data['fecha_nacimiento'] );
+                $edad = calculateAge( $data['fecha_nacimiento'] );
                 
-                if ( !($edad >= 18) ) {
-                    $errors['fecha_nacimiento'] = "Asegúrate de usar tu fecha de nacimiento real.";
+                if ( !validLegalAge($edad) ) {
+                    $errors['fecha_nacimiento'] = $messages['valid_legal_age'];
                 }
             }
         } else {
-            $errors['fecha_nacimiento'] = "Ingrese la fecha de nacimiento.";
+            $errors['fecha_nacimiento'] = $messages['required'];
         }
 
         // Validación de tipo de documento
@@ -98,10 +127,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data['tipo_documento'] = escape( $_POST["tipo_documento"] );
 
             if( !in_array( $data['tipo_documento'], ['DNI', 'LC', 'LE'] ) ) {
-                $errors['tipo_documento'] = "Seleccione una opción de la lista.";
+
+                $errors['tipo_documento'] = $messages['valid_document_type'];
+
             }
         } else {
-            $errors['tipo_documento'] = "Seleccione una opción.";
+            $errors['tipo_documento'] = $messages['required'];
         }
 
         // Validación de número de documento
@@ -117,14 +148,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $rows = existeNumDeDocumentoAsociado( $data['num_documento'] );
                 }
 
+                // Unique
                 if (count($rows) == 1) {
                     $errors['num_documento'] = 'Este número de documento ya se encuentra registrado.';
                 }
             } else {
-                $errors['num_documento'] = 'El formato o el número de documento ingresado no es válido.';
+                $errors['num_documento'] = $messages['valid_document'];
             }
         } else {
-            $errors['num_documento'] = "Ingrese el número de documento.";
+            $errors['num_documento'] = $messages['required'];
         }
 
         // Validación del número de cuil
@@ -139,15 +171,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 } else {
                     $rows = existeNumDeCuilAsociado( $data['num_cuil'] );
                 }
-
+                // Unique
                 if (count($rows) == 1) {
                     $errors['num_cuil'] = 'Este número de cuil ya se encuentra registrado.';
                 }
             } else {
-                $errors['num_cuil'] = "El formato o el número de cuil ingresado no es válido.";
+                $errors['num_cuil'] = $messages['valid_cuil'];
             }
         } else {
-            $errors['num_cuil'] = "Ingrese el número de cuil.";
+            $errors['num_cuil'] = $messages['required'];
         }
 
         // Validación de la condición de ingreso
@@ -156,10 +188,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data['condicion_ingreso'] = escape( $_POST["condicion_ingreso"] );
 
             if( !in_array( $data['condicion_ingreso'], ['ACTIVO', 'ADHERENTE', 'JUBILADO'] ) ) {
-                $errors['condicion_ingreso'] = "Seleccione una opción de la lista.";
+
+                $errors['condicion_ingreso'] = $messages['valid_entry_condition'];
+
             }
         } else {
-            $errors['condicion_ingreso'] = "Seleccione una opción.";
+            $errors['condicion_ingreso'] = $messages['required'];
         }
 
         // Validación del email
@@ -175,11 +209,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $rows = existeEmailAsociado( $data['email'] );
                 }
 
+                // Unique
                 if (count($rows) == 1) {
                     $errors['email'] = 'Este correo electrónico ya se encuentra registrado.';
                 }
             } else {
-                $errors['email'] = 'El correo electrónico no es válido.';
+                $errors['email'] = $messages['valid_email'];
             }
         }
         // No es un campo requerido
@@ -200,14 +235,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $rows = existeTelefonoMovilAsociado( $data['telefono_movil'] );
                 }
 
+                // Unique
                 if (count($rows) == 1) {
                     $errors['telefono_movil'] = 'Este telefono móvil ya se encuentra registrado.';
                 }
             } else {
-                $errors['telefono_movil'] = "El formato o el número de teléfono ingresado no es válido.";
+                $errors['telefono_movil'] = $messages['valid_mobile_phone'];
             }
         } else {
-            $errors['telefono_movil'] = "Ingrese el número móvil.";
+            $errors['telefono_movil'] = $messages['required'];
         }
 
         // Validación del teléfono de línea
@@ -216,7 +252,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data['telefono_linea'] = escape( $_POST["telefono_linea"] );
 
             if ( !validar_tel( $data['telefono_linea'] ) ) {
-                $errors['telefono_linea'] = "El formato o el número de teléfono ingresado no es válido.";
+                $errors['telefono_linea'] = $messages['valid_phone'];
+                
             }
         }
 
@@ -224,7 +261,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!empty($_POST['domicilio'])) {
             $data['domicilio'] = escape( $_POST["domicilio"] );
         } else {
-            $errors['domicilio'] = "Ingrese el domicilio.";
+            $errors['domicilio'] = $messages['required'];
         }
 
         // Validación del id de la provincia
@@ -239,7 +276,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors['id_provincia'] = "Seleccione una provincia de la lista.";
             }
         } else {
-            $errors['id_provincia'] = "Seleccione una provincia.";
+            $errors['id_provincia'] = $messages['required'];
         }
 
         // Validación del id de la localidad, aquí también se verifica que la localidad pertenezca a la provincia selecionada
@@ -259,7 +296,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors['id_localidad'] = 'Seleccione una localidad de la lista.';
             }
         } else {
-            $errors['id_localidad'] = "Seleccione una localidad.";
+            $errors['id_localidad'] = $messages['required'];
         }
 
         // Validación del sexo
@@ -268,11 +305,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data['sexo'] = escape( $_POST["sexo"] );
 
             if( !in_array( $data['sexo'], ['F', 'M'] ) ) {
-                $errors['sexo'] = "Seleccione una opción de la lista.";
+
+                $errors['sexo'] = $messages['valid_sex'];
+
             }
     
         } else {
-            $errors['sexo'] = "Seleccione una opción.";
+            $errors['sexo'] = $messages['required'];
         }
 
         /**
@@ -327,13 +366,15 @@ function actualizarAsociado($data) {
         // begin the transaction
         $db->beginTransaction();
 
+        // Consulta 1
         $sql = 'UPDATE asociado set apellido = ?, nombre = ?, sexo = ?, fecha_nacimiento = ?, tipo_documento = ?, num_documento = ?, num_cuil = ?,
         condicion_ingreso = ?, email = ?, domicilio = ?, id_localidad = ?, last_modified = ? WHERE id_asociado = ? ; ';
     
         Db::query($sql, capitalize($data['apellido']), capitalize($data['nombre']), $data['sexo'], $data['fecha_nacimiento'], $data['tipo_documento'], 
         $data['num_documento'], $data['num_cuil'], $data['condicion_ingreso'], $data['email'], $data['domicilio'], $data['id_localidad'], 
         $last_modified, $data['id_asociado']);
-    
+
+        // Consulta 2
         $sql = 'UPDATE telefono set telefono_movil = ?, telefono_linea = ?, last_modified = ? WHERE id_asociado = ? ; ';
     
         Db::query($sql, $data['telefono_movil'], $data['telefono_linea'], $last_modified, $data['id_asociado']);
@@ -357,6 +398,7 @@ function insertarAsociado($data) {
         // begin the transaction
         $db->beginTransaction();
 
+        // Consulta 1
         $sql = 'INSERT INTO asociado (apellido, nombre, sexo, fecha_nacimiento, tipo_documento, num_documento, num_cuil, condicion_ingreso, 
         email, domicilio, id_localidad, created, last_modified) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     
@@ -366,7 +408,8 @@ function insertarAsociado($data) {
         // Seteamos el id del nuevo asociado insertado en la base de datos en la variable de sessión, 
         // Para re dirigir a la página de detalle
         $data['id_asociado'] = $_SESSION['aid'] = Db::getInstance()->lastInsertId();
-    
+
+        // Consulta 2
         $sql = 'INSERT INTO telefono (telefono_movil, telefono_linea, id_asociado, created, last_modified) VALUES(?, ?, ?, ?, ?)';
     
         Db::query($sql, $data['telefono_movil'], $data['telefono_linea'], $data['id_asociado'], $created, $last_modified);

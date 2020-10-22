@@ -14,7 +14,8 @@
     </div>
 
     <form action="/add-edit.php" method="post" class="asociado">
-        <input type="hidden" name="token" value="<?= Token::csrf(); ?>">
+        <input type="hidden" name="token" value="<?= Token::csrf(); ?>" readonly spellcheck="false" autocomplete="off"
+            autocorrect="off" autocapitalize="off">
         <div class="form-group">
             <label for="apellido">Apellidos *</label>
             <input type="text" name="apellido" id="apellido"

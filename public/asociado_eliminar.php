@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ( !empty($_POST['aid'] ) && isPositiveInt($_POST['aid'] ) ) {
 
             // Podríamos haber llamado al metódo getAsociadoPorId pero esta consulta es más eficaz
-            $rows = Db::query('SELECT id_asociado FROM asociado WHERE deleted = 0 AND id_asociado = ?; ', (int) $_POST['aid']);
+            $rows = Db::query('SELECT id_asociado FROM asociado WHERE deleted = 0 AND id_asociado = ? LIMIT 1; ', (int) $_POST['aid']);
             
             // Si existe el asociado
             if( count($rows) == 1 ) {

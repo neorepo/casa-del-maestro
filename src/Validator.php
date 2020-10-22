@@ -3,7 +3,9 @@
 class Validator {
 
     private static $data;
+    
     private static $errors = [];
+
     private static $errorMessages = [
         'required' => 'Completa este campo.',
         'onlyletters' => 'Solo se permiten letras (a-z) y espacios en blanco.',

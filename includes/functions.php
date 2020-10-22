@@ -253,8 +253,8 @@ function formatDateTime($datetime) {
 /**
  * Escapa caracteres no permitidos
  */
-function escape($data) {
-    return htmlspecialchars( stripslashes( trim($data) ) );
+function escape($value) {
+    return htmlspecialchars( stripslashes( trim($value) ) );
 }
 
 /**
@@ -299,19 +299,24 @@ function validate_date($date) {
  * 
  * Obtener la edad, recibe un string en el formato 23/04/1994
  */
-function get_age($dateOfBirth) {
-    $today = date_create( date("Y-m-d") );
-    $dateOfBirth = date_create( str_replace('/', '-', $dateOfBirth) );
-    $diff = date_diff( $dateOfBirth, $today );
-    if($dateOfBirth > $today) return $diff->format('%y') * -1;
+function calculateAge($birth_date) {
+    $current_date = date_create( date("Y-m-d") );
+    $birth_date = date_create( str_replace('/', '-', $birth_date) );
+    $diff = date_diff( $birth_date, $current_date );
+    // La fecha de nacimiento debe ser anterior a la fecha actual.
+    if($birth_date > $current_date) {
+        return $diff->format('%y') * -1;
+    }
     return $diff->format('%y');
 }
 
+function validLegalAge($age) {
+    return ( (int) $age >= 18 );
+}
 /**
  * L
  */
 function leapYear($year) {
-    $isLeapYear = false;
     // divisible by 4
     $isLeapYear = ($year % 4 == 0);
     // divisible by 4 and not 100
@@ -498,4 +503,9 @@ function maxlength($value, $maxlength) {
 function valid_email($email) {
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
     return preg_match('/^[\w.-]+@[\w.-]+\.[A-Za-z]{2,6}$/', $email);
+}
+
+function isEmpty($value) {
+    return ( strlen( $value ) == 0);
+    // return empty( trim( $value ) );
 }
