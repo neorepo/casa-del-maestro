@@ -130,3 +130,23 @@ neo.code.edu@gmail.com
 
 Para generación del FAVICON
 https://favicon.io/
+
+El codigo ASCII
+https://elcodigoascii.com.ar/codigos-ascii-extendidos/signo-ordinal-femenino-genero-codigo-ascii-166.html
+codigo ascii 166 = ª ( Ordinal femenino, indicador de genero femenino ) => (ª alt + 166 ) undécima
+( entidad HTML = &ordf; )
+codigo ascii 167 = º ( Ordinal masculino, indicador de genero masculino ) => (º alt + 167 ) undécimo
+codigo ascii 248 = ° ( Signo de grado, anillo ) => (° alt + 248 )
+
+vocales con diéresis
+ä alt + 132
+ë alt + 137
+ï alt + 139
+ö alt + 148
+ü alt + 129
+
+Ä alt + 142
+Ë alt + 211
+Ï alt + 216
+Ö alt + 153
+Ü alt + 154
