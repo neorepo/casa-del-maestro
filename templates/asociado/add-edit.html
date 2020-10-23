@@ -5,15 +5,15 @@
             <h1 class="h2"><?= isset( $_SESSION['aid'] ) ? 'Editar asociado' : 'Agregar asociado'; ?></h1>
         </div>
 
-        <div class="col-auto">
+        <!-- <div class="col-auto">
             <?php if( isset($_SESSION['aid']) ): ?>
             <a href="/asociado_detalle.php?aid=<?= $_SESSION['aid']; ?>" title="Volver a detalle de asociado">
                 <i class="material-icons">fast_rewind</i>Volver</a>
             <?php endif; ?>
-        </div>
+        </div> -->
     </div>
 
-    <form action="/add-edit.php" method="post" class="asociado">
+    <form action="#" method="post" class="asociado">
         <input type="hidden" name="token" value="<?= Token::csrf(); ?>" readonly spellcheck="false" autocomplete="off"
             autocorrect="off" autocapitalize="off">
 
@@ -190,34 +190,26 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a id="back-link" href="/" class="btn btn-secondary">Cancelar</a>
-
+        <button type="submit" class="btn btn-primary"><?php echo $action ? 'Editar' : 'Agregar'; ?></button>
+        <?php if( isset($_SESSION['aid']) ): ?>
+        <a href="/asociado_detalle.php?aid=<?= $_SESSION['aid']; ?>" class="btn btn-secondary">Cancelar</a>
+        <?php else: ?>
+        <a href="/" class="btn btn-secondary">Cancelar</a>
+        <?php endif ?>
     </form>
 </section>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // document.querySelector('#sexo').value = "<?= $data['sexo']; ?>";
-        document.querySelector('#tipo-documento').value = "<?= $data['tipo_documento']; ?>";
-        document.querySelector('#condicion-ingreso').value = "<?= $data['condicion_ingreso']; ?>";
-        document.querySelector('#id-provincia').value = "<?= $data['id_provincia']; ?>";
-        document.querySelector('#id-localidad').value = "<?= $data['id_localidad']; ?>";
+    // document.querySelector('#sexo').value = "<?= $data['sexo']; ?>";
+    document.querySelector('#tipo-documento').value = "<?= $data['tipo_documento']; ?>";
+    document.querySelector('#condicion-ingreso').value = "<?= $data['condicion_ingreso']; ?>";
+    document.querySelector('#id-provincia').value = "<?= $data['id_provincia']; ?>";
+    document.querySelector('#id-localidad').value = "<?= $data['id_localidad']; ?>";
 
-        let generos = document.querySelectorAll('input[name = "sexo"]');
-        // console.log(generos);
-        generos.forEach(element => {
-            if (element.value == "<?= $data['sexo']; ?>") {
-                element.checked = true;
-            }
-        });
-    });
-
-    (function () {
-        if (document.referrer &&
-            document.location.host &&
-            document.referrer.match(new RegExp("^https?://" + document.location.host))) {
-
-            document.getElementById("back-link").setAttribute("href", document.referrer);
+    let generos = document.querySelectorAll('input[name = "sexo"]');
+    // console.log(generos);
+    generos.forEach(element => {
+        if (element.value == "<?= $data['sexo']; ?>") {
+            element.checked = true;
         }
-    })();
+    });
 </script>
