@@ -3,8 +3,6 @@
 // configuration
 require '../includes/bootstrap.php';
 
-$action = array_key_exists('aid', $_GET);
-
 $data = [];
 $errors = [];
 $localidades = [];
@@ -30,14 +28,18 @@ $messages = [
     'unique' => 'Este :f ya se encuentra registrado.'
 ];
 
+$action = array_key_exists('aid', $_GET);
+
 if ($action) {
     // Recuperamos los datos del asociado de la base de datos
     $data = getAsociadoPorId();
-    // Asignamos el id del asociado a la variable de sesión para saber que registro editar
+    // Asignamos el id del asociado a la variable de sesión para saber que registro editar, también podemos utilizar el array $_GET
     $_SESSION['aid'] = $data['id_asociado'];
+    // Formateamos la fecha de nacimiento: ejem: 2000-03-06 a 06/03/2000
     $data['fecha_nacimiento'] = dateToPage( $data['fecha_nacimiento'] );
+    // Recuperamos las localidades por el id de la provincia
     $localidades = getLocalidadesPorIdProvincia( (int) $data['id_provincia'] );
-    
+
 } else {
     /**
      * El campo EMAIL es un campo unique en la base de datos, y no es un campo obligatorio

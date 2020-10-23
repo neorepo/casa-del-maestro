@@ -7,35 +7,43 @@ require_once("constants.php");
  * FUNCIONES PARA MANTENER LA INTEGRIDAD DE LOS CAMPOS UNIQUE EN LA BASE DE DATOS
  */
 function existeNumDeDocumentoAsociado($num_documento, $id_asociado = null) {
-    $q = 'SELECT num_documento FROM asociado WHERE num_documento = ? LIMIT 1;';
     if ($id_asociado != null) {
         $q = 'SELECT num_documento FROM asociado WHERE num_documento = ? AND id_asociado != ? LIMIT 1;';
+        return Db::query($q, $num_documento, $id_asociado);
+    } else {
+        $q = 'SELECT num_documento FROM asociado WHERE num_documento = ? LIMIT 1;';
+        return Db::query($q, $num_documento);
     }
-    return Db::query($q, $num_documento, $id_asociado);
 }
 
 function existeNumDeCuilAsociado($num_cuil, $id_asociado = null) {
-    $q = 'SELECT num_cuil FROM asociado WHERE num_cuil = ? LIMIT 1;';
     if ($id_asociado != null) {
         $q = 'SELECT num_cuil FROM asociado WHERE num_cuil = ? AND id_asociado != ? LIMIT 1;';
+        return Db::query($q, $num_cuil, $id_asociado);
+    } else {
+        $q = 'SELECT num_cuil FROM asociado WHERE num_cuil = ? LIMIT 1;';
+        return Db::query($q, $num_cuil);
     }
-    return Db::query($q, $num_cuil, $id_asociado);
 }
 
 function existeEmailAsociado($email, $id_asociado = null) {
-    $q = 'SELECT email FROM asociado WHERE email = ? LIMIT 1;';
     if ($id_asociado != null) {
         $q = 'SELECT email FROM asociado WHERE email = ? AND id_asociado != ? LIMIT 1;';
+        return Db::query($q, $email, $id_asociado);
+    } else {
+        $q = 'SELECT email FROM asociado WHERE email = ? LIMIT 1;';
+        return Db::query($q, $email);
     }
-    return Db::query($q, $email, $id_asociado);
 }
 
 function existeTelefonoMovilAsociado($telefono_movil, $id_asociado = null) {
-    $q = 'SELECT telefono_movil FROM telefono WHERE telefono_movil = ? LIMIT 1;';
     if ($id_asociado != null) {
         $q = 'SELECT telefono_movil FROM telefono WHERE telefono_movil = ? AND id_asociado != ? LIMIT 1;';
+        return Db::query($q, $telefono_movil, $id_asociado);
+    } else {
+        $q = 'SELECT telefono_movil FROM telefono WHERE telefono_movil = ? LIMIT 1;';
+        return Db::query($q, $telefono_movil);
     }
-    return Db::query($q, $telefono_movil, $id_asociado);
 }
 
 function existeLocalidadDeProvincia($id_localidad, $id_provincia) {
