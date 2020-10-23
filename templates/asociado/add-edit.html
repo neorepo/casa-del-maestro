@@ -16,6 +16,7 @@
     <form action="/add-edit.php" method="post" class="asociado">
         <input type="hidden" name="token" value="<?= Token::csrf(); ?>" readonly spellcheck="false" autocomplete="off"
             autocorrect="off" autocapitalize="off">
+
         <div class="form-group">
             <label for="apellido">Apellidos *</label>
             <input type="text" name="apellido" id="apellido"
@@ -47,7 +48,7 @@
             <label for="tipo-documento">Tipo de documento *</label>
             <select name="tipo_documento" id="tipo-documento"
                 class="custom-select custom-select-lg <?= isset($errors['tipo_documento']) ? 'is-invalid' : ''; ?>">
-                <option value="0">- Seleccionar -</option>
+                <option value="">- Seleccionar -</option>
                 <option value="DNI">DNI (Documento Nacional de Identidad)</option>
                 <option value="LC">LC (Libreta Cívica)</option>
                 <option value="LE">LE (Libreta de Enrolamiento)</option>
@@ -82,7 +83,7 @@
             <label for="condicion-ingreso">Condición de ingreso *</label>
             <select name="condicion_ingreso" id="condicion-ingreso"
                 class="custom-select custom-select-lg <?= isset($errors['condicion_ingreso']) ? 'is-invalid' : ''; ?>">
-                <option value="0">- Seleccionar -</option>
+                <option value="">- Seleccionar -</option>
                 <option value="ACTIVO">ACTIVO</option>
                 <option value="ADHERENTE">ADHERENTE</option>
                 <option value="JUBILADO">JUBILADO</option>
@@ -124,7 +125,7 @@
             <input type="text" name="domicilio" id="domicilio"
                 class="form-control form-control-lg <?= isset($errors['domicilio']) ? 'is-invalid' : ''; ?>"
                 value="<?= $data['domicilio']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
-                autocapitalize="off" required>
+                autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['domicilio'] ?? ''; ?></div>
         </div>
 
@@ -198,7 +199,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         // document.querySelector('#sexo').value = "<?= $data['sexo']; ?>";
         document.querySelector('#tipo-documento').value = "<?= $data['tipo_documento']; ?>";
-        document.querySelector('#condicion-ingreso').value = "<?= $data['condicion_ingreso']; ?>".toUpperCase();
+        document.querySelector('#condicion-ingreso').value = "<?= $data['condicion_ingreso']; ?>";
         document.querySelector('#id-provincia').value = "<?= $data['id_provincia']; ?>";
         document.querySelector('#id-localidad').value = "<?= $data['id_localidad']; ?>";
 

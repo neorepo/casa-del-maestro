@@ -37,6 +37,7 @@ if ($action) {
     $_SESSION['aid'] = $data['id_asociado'];
     $data['fecha_nacimiento'] = dateToPage( $data['fecha_nacimiento'] );
     $localidades = getLocalidadesPorIdProvincia( (int) $data['id_provincia'] );
+    
 } else {
     /**
      * El campo EMAIL es un campo unique en la base de datos, y no es un campo obligatorio
@@ -45,9 +46,9 @@ if ($action) {
      * registros con un mismo valor vacío, lo mismo sucede con el campo telefono_linea aunque
      * aquí no habría ningún problema ya que no es un campo unique.
      */
-    $data = ['id_asociado' => '','apellido' => '','nombre' => '','fecha_nacimiento' => '','tipo_documento' => '0',
-    'num_documento' => '','num_cuil' => '','condicion_ingreso' => '0','email' => null,'telefono_movil' => '',
-    'telefono_linea' => null,'domicilio' => '','id_provincia' => '0','id_localidad' => '0','sexo' => ''
+    $data = ['id_asociado' => null,'apellido' => null,'nombre' => null,'fecha_nacimiento' => null,'tipo_documento' => null,
+    'num_documento' => null,'num_cuil' => null,'condicion_ingreso' => null,'email' => null,'telefono_movil' => null,
+    'telefono_linea' => null,'domicilio' => null,'id_provincia' => '0','id_localidad' => '0','sexo' => null
     ];
 }
 
@@ -57,8 +58,6 @@ if ($action) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (!empty($_POST['token']) && Token::validate( $_POST['token'] )) {
-
-        unset($_SESSION['_token']);
 
         // Validación del apellido
         if (!empty($_POST['apellido'])) {
@@ -332,10 +331,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $id_asociado = $_SESSION['aid'];
                 //Despues de procesar todo eliminamos el id almacenado en el array session
                 unset($_SESSION['aid']);
+                unset($_SESSION['_token']);
                 Flash::addFlash('Los datos fueron guardados correctamente.', 'primary');
                 redirect('/asociado_detalle.php?aid=' . $id_asociado);
             } else {
-                unset($_SESSION['aid']);
                 Flash::addFlash('Lo sentimos, no pudimos guardar el registro.', 'danger');
                 redirect('/');
             }
@@ -391,7 +390,7 @@ function actualizarAsociado($data) {
     } catch (PDOException $e) {
         // roll back the transaction if something failed
         $db->rollback();
-        //trigger_error('Error:' . $e->getMessage(), E_USER_ERROR);
+        trigger_error('Error:' . $e->getMessage(), E_USER_ERROR);
         return false;
     }
     return true;

@@ -22843,7 +22843,7 @@ CREATE TABLE "usuario" (
 	"num_documento"	TEXT NOT NULL UNIQUE,
   "email"	  TEXT NOT NULL UNIQUE,
   "password"	  TEXT NOT NULL,
-  "rol"	  TEXT NOT NULL DEFAULT "usuario" CHECK("rol" IN("admin", "usuario")),
+  "rol"	  TEXT NOT NULL DEFAULT "usuario" CHECK("rol" IN("ADMIN", "USUARIO")),
 	"created" DATETIME NOT NULL,
 	"last_modified" DATETIME NOT NULL,
   "deleted" INTEGER NOT NULL DEFAULT 0 CHECK("deleted" IN(0, 1))

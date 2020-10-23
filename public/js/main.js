@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initErrorFields();
     initShowPasswords();
     initFlashes();
-    preventFormSubmit();
+    // preventFormSubmit();
 });
 
 $(function () {
