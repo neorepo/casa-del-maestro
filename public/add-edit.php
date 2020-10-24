@@ -62,265 +62,209 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ( !empty( $_POST['token'] ) && Token::validate( $_POST['token'] ) ) {
 
-        // Validación del apellido
-        if (!empty($_POST['apellido'])) {
-
+        // Apellido
+        if (array_key_exists('apellido', $_POST)) {
             $data['apellido'] = escape( $_POST['apellido'] );
-
-            if ( !onlyletters( $data['apellido'] ) ) {
-
-                $errors['apellido'] = $messages['onlyLetters'];
-
-            } elseif ( !minlength( $data['apellido'], $minlength) ) {
-
-                $errors['apellido'] = $messages['minLength'];
-
-            } elseif ( !maxlength($data['apellido'], $maxlength) ) {
-
-                $errors['apellido'] = $messages['maxLength'];
-            }
-        } else {
+        }
+        if ( !$data['apellido'] ) {
             $errors['apellido'] = $messages['required'];
+        } else if ( !onlyletters( $data['apellido'] ) ) {
+            $errors['apellido'] = $messages['onlyLetters'];
+        } else if ( !minlength( $data['apellido'], $minlength) ) {
+            $errors['apellido'] = $messages['minLength'];
+        } else if ( !maxlength($data['apellido'], $maxlength) ) {
+            $errors['apellido'] = $messages['maxLength'];
         }
 
-        // Validación del nombre
-        if (!empty($_POST['nombre'])) {
-
+        // Nombre
+        if (array_key_exists('nombre', $_POST)) {
             $data['nombre'] = escape( $_POST['nombre'] );
-
-            if ( !onlyletters( $data['nombre'] ) ) {
-
-                $errors['nombre'] = $messages['onlyLetters'];
-
-            } elseif ( !minlength( $data['nombre'], $minlength) ) {
-
-                $errors['nombre'] = $messages['minLength'];
-
-            } elseif ( !maxlength($data['nombre'], $maxlength) ) {
-
-                $errors['nombre'] = $messages['maxLength'];
-
-            }
-        } else {
+        }
+        if ( !$data['nombre'] ) {
             $errors['nombre'] = $messages['required'];
+        } else if ( !onlyletters( $data['nombre'] ) ) {
+            $errors['nombre'] = $messages['onlyLetters'];
+        } else if ( !minlength( $data['nombre'], $minlength) ) {
+            $errors['nombre'] = $messages['minLength'];
+        } else if ( !maxlength($data['nombre'], $maxlength) ) {
+            $errors['nombre'] = $messages['maxLength'];
         }
 
-        // Validación de la fecha de nacimiento
-        if (!empty($_POST['fecha_nacimiento'])) {
-
-            $data['fecha_nacimiento'] = escape( $_POST["fecha_nacimiento"] );
-            
-            if ( !validate_date( $data['fecha_nacimiento'] ) ) {
-                $errors['fecha_nacimiento'] = $messages['valid_date'];
-            } else {
-
-                $edad = calculateAge( $data['fecha_nacimiento'] );
-                
-                if ( !validLegalAge($edad) ) {
-                    $errors['fecha_nacimiento'] = $messages['valid_legal_age'];
-                }
-            }
-        } else {
+        // Fecha de nacimiento
+        if (array_key_exists('fecha_nacimiento', $_POST)) {
+            $data['fecha_nacimiento'] = escape( $_POST['fecha_nacimiento'] );
+        }
+        if ( !$data['fecha_nacimiento'] ) {
             $errors['fecha_nacimiento'] = $messages['required'];
+        } else if ( !validate_date( $data['fecha_nacimiento'] ) ) {
+            $errors['fecha_nacimiento'] = $messages['valid_date'];
+        } else if ( !validLegalAge( calculateAge( $data['fecha_nacimiento'] ) ) ) {
+            $errors['fecha_nacimiento'] = $messages['valid_legal_age'];
         }
 
-        // Validación de tipo de documento
-        if (!empty($_POST['tipo_documento'])) {
-
-            $data['tipo_documento'] = escape( $_POST["tipo_documento"] );
-
-            if( !in_array( $data['tipo_documento'], ['DNI', 'LC', 'LE'] ) ) {
-
-                $errors['tipo_documento'] = $messages['valid_document_type'];
-
-            }
-        } else {
+        // Tipo de documento
+        if (array_key_exists('tipo_documento', $_POST)) {
+            $data['tipo_documento'] = escape( $_POST['tipo_documento'] );
+        }
+        if ( !$data['tipo_documento'] ) {
             $errors['tipo_documento'] = $messages['required'];
+        } else if ( !in_array( $data['tipo_documento'], ['DNI', 'LC', 'LE'] ) ) {
+            $errors['tipo_documento'] = $messages['valid_document_type'];
         }
 
-        // Validación de número de documento
-        if (!empty($_POST['num_documento'])) {
-
-            $data['num_documento'] = escape( $_POST["num_documento"] );
-
-            if ( preg_match('/^[\d]{8}$/', $data['num_documento']) ) {
-                
-                if ( isset( $_SESSION['aid'] ) ) {
-                    $rows = existeNumDeDocumentoAsociado( $data['num_documento'], $_SESSION['aid'] );
-                } else {
-                    $rows = existeNumDeDocumentoAsociado( $data['num_documento'] );
-                }
-
-                // Unique
-                if (count($rows) == 1) {
-                    $errors['num_documento'] = str_replace(':f', 'número de documento', $messages['unique'] );
-                }
-
-            } else {
-                $errors['num_documento'] = $messages['valid_document'];
-            }
-        } else {
+        // Número de documento
+        if (array_key_exists('num_documento', $_POST)) {
+            $data['num_documento'] = escape( $_POST['num_documento'] );
+        }
+        if ( !$data['num_documento'] ) {
             $errors['num_documento'] = $messages['required'];
-        }
-
-        // Validación del número de cuil
-        if (!empty($_POST['num_cuil'])) {
-
-            $data['num_cuil'] = escape( $_POST["num_cuil"] );
-
-            if ( validar_cuit( $data['num_cuil'] ) ) {
-
-                if( isset( $_SESSION['aid'] ) ) {
-                    $rows = existeNumDeCuilAsociado( $data['num_cuil'], $_SESSION['aid'] );
-                } else {
-                    $rows = existeNumDeCuilAsociado( $data['num_cuil'] );
-                }
-
-                // Unique
-                if (count($rows) == 1) {
-                    $errors['num_cuil'] = str_replace(':f', 'número de cuil', $messages['unique'] );
-                }
-
+        } else if ( preg_match('/^[\d]{8}$/', $data['num_documento']) ) {
+            
+            if ( isset( $_SESSION['aid'] ) ) {
+                $rows = existeNumDeDocumentoAsociado( $data['num_documento'], $_SESSION['aid'] );
             } else {
-                $errors['num_cuil'] = $messages['valid_cuil'];
+                $rows = existeNumDeDocumentoAsociado( $data['num_documento'] );
+            }
+
+            // Unique
+            if (count($rows) == 1) {
+                $errors['num_documento'] = str_replace(':f', 'número de documento', $messages['unique'] );
             }
         } else {
+            $errors['num_documento'] = $messages['valid_document'];
+        }
+
+        // Número de cuil
+        if (array_key_exists('num_cuil', $_POST)) {
+            $data['num_cuil'] = escape( $_POST['num_cuil'] );
+        }
+        if ( !$data['num_cuil'] ) {
             $errors['num_cuil'] = $messages['required'];
-        }
+        } else if ( validar_cuit( $data['num_cuil'] ) ) {
 
-        // Validación de la condición de ingreso
-        if (!empty($_POST['condicion_ingreso'])) {
-
-            $data['condicion_ingreso'] = escape( $_POST["condicion_ingreso"] );
-
-            if( !in_array( $data['condicion_ingreso'], ['ACTIVO', 'ADHERENTE', 'JUBILADO'] ) ) {
-
-                $errors['condicion_ingreso'] = $messages['valid_entry_condition'];
-
+            if ( isset( $_SESSION['aid'] ) ) {
+                $rows = existeNumDeCuilAsociado( $data['num_cuil'], $_SESSION['aid'] );
+            } else {
+                $rows = existeNumDeCuilAsociado( $data['num_cuil'] );
+            }
+            
+            // Unique
+            if (count($rows) == 1) {
+                $errors['num_cuil'] = str_replace(':f', 'número de cuil', $messages['unique'] );
             }
         } else {
+            $errors['num_cuil'] = $messages['valid_cuil'];
+        }
+
+        // Condición de ingreso
+        if (array_key_exists('condicion_ingreso', $_POST)) {
+            $data['condicion_ingreso'] = escape( $_POST['condicion_ingreso'] );
+        }
+        if ( !$data['condicion_ingreso'] ) {
             $errors['condicion_ingreso'] = $messages['required'];
+        } else if ( !in_array( $data['condicion_ingreso'], ['ACTIVO', 'ADHERENTE', 'JUBILADO'] ) ) {
+            $errors['condicion_ingreso'] = $messages['valid_entry_condition'];
         }
 
-        // Validación del email
-        if (!empty($_POST['email'])) {
-
+        // E-mail, no es un campo requerido
+        if (array_key_exists('email', $_POST)) {
             $data['email'] = escape( $_POST['email'] );
-
-            if ( valid_email( $data['email'] ) ) {
-                
-                if( isset( $_SESSION['aid'] ) ) {
-                    $rows = existeEmailAsociado( $data['email'], $_SESSION['aid'] );
-                } else {
-                    $rows = existeEmailAsociado( $data['email'] );
-                }
-
-                // Unique
-                if (count($rows) == 1) {
-                    $errors['email'] = str_replace(':f', 'correo electrónico', $messages['unique'] );
-                }
-
-            } else {
-                $errors['email'] = $messages['valid_email'];
-            }
         }
-        // No es un campo requerido
-        // else {
-        //     $errors['email'] = $messages['required'];
-        // }
-
-        // Validación del teléfono móvil
-        if (!empty($_POST['telefono_movil'])) {
-
-            $data['telefono_movil'] = escape( $_POST["telefono_movil"] );
-
-            if ( validar_tel( $data['telefono_movil'] ) ) {
-                
-                if( isset( $_SESSION['aid'] ) ) {
-                    $rows = existeTelefonoMovilAsociado( $data['telefono_movil'], $_SESSION['aid'] );
-                } else {
-                    $rows = existeTelefonoMovilAsociado( $data['telefono_movil'] );
-                }
-
-                // Unique
-                if (count($rows) == 1) {
-
-                    $errors['telefono_movil'] = str_replace(':f', 'teléfono móvil', $messages['unique'] );
-                }
-
+        if ( !$data['email'] ) {
+            // $errors['email'] = $messages['required'];
+        } else if ( valid_email( $data['email'] ) ) {
+            
+            if ( isset( $_SESSION['aid'] ) ) {
+                $rows = existeEmailAsociado( $data['email'], $_SESSION['aid'] );
             } else {
-                $errors['telefono_movil'] = $messages['valid_mobile_phone'];
+                $rows = existeEmailAsociado( $data['email'] );
+            }
+            
+            // Unique
+            if (count($rows) == 1) {
+                $errors['email'] = str_replace(':f', 'correo electrónico', $messages['unique'] );
             }
         } else {
+            $errors['email'] = $messages['valid_email'];
+        }
+
+        // Teléfono móvil
+        if (array_key_exists('telefono_movil', $_POST)) {
+            $data['telefono_movil'] = escape( $_POST['telefono_movil'] );
+        }
+        if ( !$data['telefono_movil'] ) {
             $errors['telefono_movil'] = $messages['required'];
-        }
-
-        // Validación del teléfono de línea
-        if (!empty($_POST['telefono_linea'])) {
-
-            $data['telefono_linea'] = escape( $_POST["telefono_linea"] );
-
-            if ( !validar_tel( $data['telefono_linea'] ) ) {
-                $errors['telefono_linea'] = $messages['valid_phone'];
-                
+        } else if ( validar_tel( $data['telefono_movil'] ) ) {
+            if( isset( $_SESSION['aid'] ) ) {
+                $rows = existeTelefonoMovilAsociado( $data['telefono_movil'], $_SESSION['aid'] );
+            } else {
+                $rows = existeTelefonoMovilAsociado( $data['telefono_movil'] );
             }
+            
+            // Unique
+            if (count($rows) == 1) {
+                $errors['telefono_movil'] = str_replace(':f', 'teléfono móvil', $messages['unique'] );
+            }
+        } else {
+            $errors['telefono_movil'] = $messages['valid_mobile_phone'];
         }
 
-        // No esta validado el domicilio
-        if (!empty($_POST['domicilio'])) {
-            $data['domicilio'] = escape( $_POST["domicilio"] );
-        } else {
+        // Teléfono de línea, no es un campo requerido
+        if (array_key_exists('telefono_linea', $_POST)) {
+            $data['telefono_linea'] = escape( $_POST["telefono_linea"] );
+        }
+        if ( !$data['telefono_linea'] ) {
+            // $errors['telefono_linea'] = $messages['required'];
+        } else if ( !validar_tel( $data['telefono_linea'] ) ) {
+            $errors['telefono_linea'] = $messages['valid_phone'];
+        }
+
+        // Domicilio
+        if (array_key_exists('domicilio', $_POST)) {
+            $data['domicilio'] = escape( $_POST['domicilio'] );
+        }
+        if ( !$data['domicilio'] ) {
             $errors['domicilio'] = $messages['required'];
         }
 
-        // Validación del id de la provincia
-        if (!empty($_POST['id_provincia'])) {
-
+        // Provincia
+        if (array_key_exists('id_provincia', $_POST)) {
             $data['id_provincia'] = escape( $_POST["id_provincia"] );
-            
-            if( isValidProvinceId( $data['id_provincia'] ) ) {
-                // Cargamos las localidades despues de que tenemos el id de provincia
-                $localidades = getLocalidadesPorIdProvincia( (int) $data['id_provincia'] );
-            } else {
-                $errors['id_provincia'] = "Seleccione una provincia de la lista.";
-            }
-        } else {
+        }
+        if ( !$data['id_provincia'] ) {
             $errors['id_provincia'] = $messages['required'];
+        } else if( isValidProvinceId( $data['id_provincia'] ) ) {
+            // Cargamos las localidades despues de que tenemos el id de provincia
+            $localidades = getLocalidadesPorIdProvincia( (int) $data['id_provincia'] );
+        } else {
+            $errors['id_provincia'] = "Seleccione una provincia de la lista.";
         }
 
-        // Validación del id de la localidad, aquí también se verifica que la localidad pertenezca a la provincia selecionada
-        if ( !empty($_POST['id_localidad']) ) {
-
+        // Localidad, aquí se verifica que la localidad pertenezca a la provincia selecionada
+        if (array_key_exists('id_localidad', $_POST)) {
             $data['id_localidad'] = escape( $_POST["id_localidad"] );
-
-            if( isPositiveInt( $data['id_localidad'] ) )  {
-
-                // Si el id de la provincia es vacío, devolvera 0 filas
-                $rows = existeLocalidadDeProvincia( (int) $data['id_localidad'], (int) $data['id_provincia'] );
-
-                if (count($rows) == 0) {
-                    $errors['id_localidad'] = 'Seleccione una localidad de la lista.';
-                }
-            } else {
+        }
+        if ( !$data['id_localidad'] ) {
+            $errors['id_localidad'] = $messages['required'];
+        } else if( isPositiveInt( $data['id_localidad'] ) )  {
+            // Si el id de la provincia es vacío, devolvera 0 filas
+            $rows = existeLocalidadDeProvincia( (int) $data['id_localidad'], (int) $data['id_provincia'] );
+            
+            if (count($rows) == 0) {
                 $errors['id_localidad'] = 'Seleccione una localidad de la lista.';
             }
         } else {
-            $errors['id_localidad'] = $messages['required'];
+            $errors['id_localidad'] = 'Seleccione una localidad de la lista.';
         }
-
-        // Validación del sexo
-        if (!empty($_POST['sexo'])) {
-
+        
+        // Sexo
+        if (array_key_exists('sexo', $_POST)) {
             $data['sexo'] = escape( $_POST["sexo"] );
-
-            if( !in_array( $data['sexo'], ['F', 'M'] ) ) {
-
-                $errors['sexo'] = $messages['valid_sex'];
-
-            }
-    
-        } else {
+        }
+        if ( !$data['sexo'] ) {
             $errors['sexo'] = $messages['required'];
+        } else if( !in_array( $data['sexo'], ['F', 'M'] ) ) {
+            $errors['sexo'] = $messages['valid_sex'];
         }
 
         /**
