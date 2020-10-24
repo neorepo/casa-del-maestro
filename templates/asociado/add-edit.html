@@ -133,7 +133,7 @@
             <label for="id-provincia">Provincia *</label>
             <select name="id_provincia" id="id-provincia"
                 class="custom-select custom-select-lg <?= isset($errors['id_provincia']) ? 'is-invalid' : ''; ?>">
-                <option value="0">- Seleccionar -</option>
+                <option value="">- Seleccionar -</option>
                 <option value="1">BUENOS AIRES</option>
                 <option value="2">CATAMARCA</option>
                 <option value="3">CHACO</option>
@@ -166,7 +166,7 @@
             <label for="id-localidad">Localidad *</label>
             <select name="id_localidad" id="id-localidad"
                 class="custom-select custom-select-lg <?= isset($errors['id_localidad']) ? 'is-invalid' : ''; ?>">
-                <option value="0">- Seleccionar -</option>
+                <option value="">- Seleccionar -</option>
                 <?php foreach($localidades as $localidad) : ?>
                 <option value="<?= $localidad['id_localidad'] ?>">
                     <?= $localidad['nombre'] . ' (' . $localidad['cp'] . ')'; ?></option>

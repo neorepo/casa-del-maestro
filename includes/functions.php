@@ -52,10 +52,16 @@ function existeLocalidadDeProvincia($id_localidad, $id_provincia) {
 }
 
 function findById($id_asociado) {
-    $q = 'SELECT a.id_asociado, a.apellido, a.nombre, a.sexo, a.fecha_nacimiento, a.tipo_documento, a.num_documento, a.num_cuil, 
-    a.condicion_ingreso, a.email, a.created, t.telefono_movil, t.telefono_linea, a.domicilio, p.id_provincia, p.nombre AS provincia, l.id_localidad, 
-    l.nombre AS localidad, l.cp FROM asociado a INNER JOIN telefono t ON a.id_asociado = t.id_asociado INNER JOIN localidad l ON a.id_localidad = l.id_localidad 
-    INNER JOIN provincia p ON l.id_provincia = p.id_provincia WHERE a.deleted = 0 AND a.id_asociado = ?; ';
+    $q = 'SELECT
+          a.id_asociado, a.apellido, a.nombre,
+          a.sexo, a.fecha_nacimiento, a.tipo_documento,
+          a.num_documento, a.num_cuil, a.domicilio,
+          a.condicion_ingreso, a.email, a.created, a.last_modified,
+          t.telefono_movil, t.telefono_linea,
+          p.id_provincia, p.nombre AS provincia,
+          l.id_localidad, l.nombre AS localidad, l.cp
+          FROM asociado a INNER JOIN telefono t ON a.id_asociado = t.id_asociado INNER JOIN localidad l ON a.id_localidad = l.id_localidad 
+          INNER JOIN provincia p ON l.id_provincia = p.id_provincia WHERE a.deleted = 0 AND a.id_asociado = ?; ';
 
     return Db::query($q, $id_asociado);
 }
@@ -231,7 +237,7 @@ function get_date($format = '%A, %#d de %B de %Y') {/*'%Y-%m-%d %H:%M:%S'*/
  * Convierte la fecha del formato de base de datos año-mes-día (2000-03-06)
  * al formato día-mes-año (06/03/2000)
  */
-function dateToPage($date) {
+function dateToTemplate($date) {
     $date = explode('-', $date);
     return  $date[2] . '/' . $date[1] . '/' . $date[0]; 
 }
@@ -247,7 +253,7 @@ function dateToDb($date) {
 
 function formatDateTime($datetime) {
     $dt = new DateTime($datetime);
-    return $dt->format('d/m/Y');// $date->format('j/n/Y') => 6/8/2020
+    return $dt->format('j/n/Y H:i');// $date->format('j/n/Y') => 6/8/2020
 }
 
 /**

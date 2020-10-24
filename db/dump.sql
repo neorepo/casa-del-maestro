@@ -30,7 +30,7 @@ CREATE TABLE `asociado` (
   `tipo_documento` enum('DNI','LC','LE','PASAPORTE') NOT NULL,
   `num_documento` char(8) NOT NULL,
   `num_cuil` char(11) NOT NULL,
-  `condicion_ingreso` enum('Activo','Adherente','Jubilado') NOT NULL,
+  `condicion_ingreso` enum('ACTIVO','ADHERENTE','JUBILADO') NOT NULL,
   `email` varchar(50) NULL,
   `domicilio` varchar(100) NOT NULL,
   `id_localidad` int(10) unsigned NOT NULL,

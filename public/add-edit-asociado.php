@@ -36,7 +36,7 @@ if ($action) {
     // Asignamos el id del asociado a la variable de sesión para saber que registro editar, también podemos utilizar el array $_GET
     $_SESSION['aid'] = $data['id_asociado'];
     // Formateamos la fecha de nacimiento: ejm: 2000-03-06 a 06/03/2000
-    $data['fecha_nacimiento'] = dateToPage( $data['fecha_nacimiento'] );
+    $data['fecha_nacimiento'] = dateToTemplate( $data['fecha_nacimiento'] );
     // Recuperamos las localidades por el id de la provincia
     $localidades = getLocalidadesPorIdProvincia( (int) $data['id_provincia'] );
 
@@ -51,7 +51,7 @@ if ($action) {
     $data = [
         'id_asociado' => null,'apellido' => null,'nombre' => null,'fecha_nacimiento' => null,'tipo_documento' => null,
         'num_documento' => null,'num_cuil' => null,'condicion_ingreso' => null,'email' => null,'telefono_movil' => null,
-        'telefono_linea' => null,'domicilio' => null,'id_provincia' => '0','id_localidad' => '0','sexo' => null
+        'telefono_linea' => null,'domicilio' => null,'id_provincia' => null,'id_localidad' => null,'sexo' => null
     ];
 }
 
