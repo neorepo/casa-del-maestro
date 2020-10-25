@@ -8,17 +8,18 @@ if (isset($_SESSION['uid'])) {
 }
 
 $data = [
+    'id_usuario' => null,
     'apellido' => null,
     'nombre' => null,
     'usuario' => null,
     'email' => null,
     'password' => null,
+    'rol' => null,
     'confirm_password' => null
 ];
 
 $errors = [];
-$minlength = 3;
-$maxlength = 40;
+
 $registerError = true;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -144,16 +145,18 @@ function insertarUsuario($data) {
     $admin = ['94269698', '41088522'];
 
     $created = $last_modified = date('Y-m-d H:i:s');
-    $rol = 'usuario';
+    $rol = 'USUARIO';
     
     $data['password'] = hashPassword($data['password']);
 
     if( in_array( $data['usuario'], $admin ) ) {
-        $rol = 'admin';
+        $rol = 'ADMIN';
     }
 
-    $q = 'INSERT INTO usuario (apellido, nombre, num_documento, email, password, rol, created, last_modified) 
-              VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+    $q = 'INSERT INTO usuario (apellido, nombre, num_documento, email, password, rol, created, last_modified) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+
+    // Para mysql
+    // $q = 'INSERT INTO usuario SET apellido = ?,nombre = ?,num_documento = ?,email = ?,password = ?,rol = ?,created = ?,last_modified = ? ;';
 
     // El usuario contiene el número de documento
     return Db::query($q, capitalize($data['apellido']), capitalize($data['nombre']), $data['usuario'], $data['email'], $data['password'], $rol, $created, $last_modified);

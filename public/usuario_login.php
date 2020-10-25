@@ -55,7 +55,7 @@ render('usuario/login.html', ['title' => $title, 'data' => $data, 'errors' => $e
  * Funciones de persistencia
  */
 function authenticateUser($usuario, $password) {
-    $q = 'SELECT * FROM usuario WHERE num_documento = ? OR email = ? ;';
+    $q = 'SELECT * FROM usuario WHERE num_documento = ? OR email = ? LIMIT 1;';
 
     $rows = Db::query($q, $usuario, $usuario);
     

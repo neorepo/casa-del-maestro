@@ -8,40 +8,40 @@ require_once("constants.php");
  */
 function existeNumDeDocumentoAsociado($num_documento, $id_asociado = null) {
     if ($id_asociado != null) {
-        $q = 'SELECT num_documento FROM asociado WHERE num_documento = ? AND id_asociado != ? LIMIT 1;';
+        $q = 'SELECT num_documento FROM asociado WHERE num_documento = ? AND id_asociado != ? LIMIT 1 ;';
         return Db::query($q, $num_documento, $id_asociado);
     } else {
-        $q = 'SELECT num_documento FROM asociado WHERE num_documento = ? LIMIT 1;';
+        $q = 'SELECT num_documento FROM asociado WHERE num_documento = ? LIMIT 1 ;';
         return Db::query($q, $num_documento);
     }
 }
 
 function existeNumDeCuilAsociado($num_cuil, $id_asociado = null) {
     if ($id_asociado != null) {
-        $q = 'SELECT num_cuil FROM asociado WHERE num_cuil = ? AND id_asociado != ? LIMIT 1;';
+        $q = 'SELECT num_cuil FROM asociado WHERE num_cuil = ? AND id_asociado != ? LIMIT 1 ;';
         return Db::query($q, $num_cuil, $id_asociado);
     } else {
-        $q = 'SELECT num_cuil FROM asociado WHERE num_cuil = ? LIMIT 1;';
+        $q = 'SELECT num_cuil FROM asociado WHERE num_cuil = ? LIMIT 1 ;';
         return Db::query($q, $num_cuil);
     }
 }
 
 function existeEmailAsociado($email, $id_asociado = null) {
     if ($id_asociado != null) {
-        $q = 'SELECT email FROM asociado WHERE email = ? AND id_asociado != ? LIMIT 1;';
+        $q = 'SELECT email FROM asociado WHERE email = ? AND id_asociado != ? LIMIT 1 ;';
         return Db::query($q, $email, $id_asociado);
     } else {
-        $q = 'SELECT email FROM asociado WHERE email = ? LIMIT 1;';
+        $q = 'SELECT email FROM asociado WHERE email = ? LIMIT 1 ;';
         return Db::query($q, $email);
     }
 }
 
 function existeTelefonoMovilAsociado($telefono_movil, $id_asociado = null) {
     if ($id_asociado != null) {
-        $q = 'SELECT telefono_movil FROM telefono WHERE telefono_movil = ? AND id_asociado != ? LIMIT 1;';
+        $q = 'SELECT telefono_movil FROM telefono WHERE telefono_movil = ? AND id_asociado != ? LIMIT 1 ;';
         return Db::query($q, $telefono_movil, $id_asociado);
     } else {
-        $q = 'SELECT telefono_movil FROM telefono WHERE telefono_movil = ? LIMIT 1;';
+        $q = 'SELECT telefono_movil FROM telefono WHERE telefono_movil = ? LIMIT 1 ;';
         return Db::query($q, $telefono_movil);
     }
 }
@@ -61,7 +61,7 @@ function findById($id_asociado) {
           p.id_provincia, p.nombre AS provincia,
           l.id_localidad, l.nombre AS localidad, l.cp
           FROM asociado a INNER JOIN telefono t ON a.id_asociado = t.id_asociado INNER JOIN localidad l ON a.id_localidad = l.id_localidad 
-          INNER JOIN provincia p ON l.id_provincia = p.id_provincia WHERE a.deleted = 0 AND a.id_asociado = ?; ';
+          INNER JOIN provincia p ON l.id_provincia = p.id_provincia WHERE a.deleted = 0 AND a.id_asociado = ? LIMIT 1 ; ';
 
     return Db::query($q, $id_asociado);
 }
@@ -125,20 +125,20 @@ function getLocalidadesPorIdProvincia($id_provincia) {
  */
 function existeNumDeDocumentoUsuario($num_documento, $id_usuario = null) {
     if ($id_usuario == null) {
-        $q = 'SELECT num_documento FROM usuario WHERE num_documento = ? ;';
+        $q = 'SELECT num_documento FROM usuario WHERE num_documento = ? LIMIT 1 ;';
         return Db::query($q, $num_documento);
     } else {
-        $q = 'SELECT num_documento FROM usuario WHERE num_documento = ? AND id_usuario != ? ;';
+        $q = 'SELECT num_documento FROM usuario WHERE num_documento = ? AND id_usuario != ? LIMIT 1 ;';
         return Db::query($q, $num_documento, $id_usuario);
     }
 }
 
 function existeEmailUsuario($email, $id_usuario = null) {
     if ($id_usuario == null) {
-        $q = 'SELECT email FROM usuario WHERE email = ? ;';
+        $q = 'SELECT email FROM usuario WHERE email = ? LIMIT 1 ;';
         return Db::query($q, $email);
     } else {
-        $q = 'SELECT email FROM usuario WHERE email = ? AND id_usuario != ? ;';
+        $q = 'SELECT email FROM usuario WHERE email = ? AND id_usuario != ? LIMIT 1 ;';
         return Db::query($q, $email, $id_usuario);
     }
 }
