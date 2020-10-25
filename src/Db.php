@@ -9,14 +9,14 @@ require_once '../config/Config.php';
 final class Db
 {
 
-    private $db;
+    private $connection;
     private static $_instance = null;
 
     private function __construct()
     {
         $config = Config::getConfig('sqlitedb');
         try {
-            $this->db = new PDO($config['dsn'], $config['username'], $config['password'], array(
+            $this->connection = new PDO($config['dsn'], $config['username'], $config['password'], array(
                 PDO::ATTR_PERSISTENT => true,
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_EMULATE_PREPARES => false
@@ -28,12 +28,12 @@ final class Db
     }
 
     /* Devolvemos la conexión
-     * El método getDb no puede ser static porque no será llamado desde fuera de la clase Db.
+     * El método getConnection no puede ser static porque no será llamado desde fuera de la clase Db.
      * todo sera gestionado por el único método static que es getInstance el cual si será llamado desde fuera.
      */
-    private function getDb()
+    private function getConnection()
     {
-        return $this->db;
+        return $this->connection;
     }
 
     // Magic method clone is empty to prevent duplication of connection
@@ -48,10 +48,10 @@ final class Db
         trigger_error('Deserializing is not allowed.', E_USER_ERROR);
     }
 
-    // close db connection. The __destruct magic method must be public.
+    // close connection. The __destruct magic method must be public.
     public function __destruct()
     {
-        $this->db = null;
+        $this->connection = null;
     }
 
     public static function getInstance()
@@ -59,7 +59,7 @@ final class Db
         if (!self::$_instance instanceof self) {
             self::$_instance = new self;
         }
-        return self::$_instance->getDb();
+        return self::$_instance->getConnection();
     }
 
     /**
@@ -88,7 +88,7 @@ final class Db
 
         // Determining the Type of a Statement http://www.kitebird.com/articles/php-pdo.html
         if ($stmt->columnCount() > 0) {
-            // return result set's rows
+            // return result set's rows, if query was SELECT
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         // if query was DELETE, INSERT, or UPDATE

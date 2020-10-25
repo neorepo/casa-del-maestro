@@ -64,6 +64,8 @@ function findById($id_asociado) {
           INNER JOIN provincia p ON l.id_provincia = p.id_provincia WHERE a.deleted = 0 AND a.id_asociado = ? LIMIT 1 ; ';
 
     return Db::query($q, $id_asociado);
+     // Devuelve un objeto de transferencia si lo encuentra,
+     // devuelve nulo (null) en caso de error o si no se encuentra
 }
 
 function getUrlParam($name) {
@@ -102,8 +104,10 @@ function eliminarAsociado($id_asociado) {
      * para base de datos SQLite, siempre que la sentencia sql sea DELETE
      */
     // Db::getInstance()->exec('PRAGMA foreign_keys = ON ;');
-    $q = 'UPDATE asociado SET deleted = 1 WHERE id_asociado = ?; ';
+    $q = 'UPDATE asociado SET deleted = 1 WHERE id_asociado = ? ; ';
     return Db::query($q, $id_asociado);
+
+    // Devuelve verdadero en caso de éxito, falso en caso de error
 }
 
 /**

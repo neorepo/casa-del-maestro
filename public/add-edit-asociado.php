@@ -300,6 +300,7 @@ function actualizarAsociado($data) {
         return false;
     }
     return true;
+    // Devuelve verdadero en caso de éxito, falso en caso de error
 }
 
 function insertarAsociado($data) {
@@ -331,7 +332,7 @@ function insertarAsociado($data) {
         // roll back the transaction if something failed
         $db->rollback();
         //trigger_error('Error:' . $e->getMessage(), E_USER_ERROR);
-        return false;
+        return false; // Deberíamos devolver -1 en caso de error
     }
-    return true;
+    return true; // Deberíamos devolver el último id (int positivo) del asociado insertado
 }
