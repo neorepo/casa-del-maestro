@@ -8,8 +8,8 @@ if (isset($_SESSION['uid'])) {
 }
 
 $data = [
-    'usuario' => '',
-    'password' => ''
+    'usuario' => null,
+    'password' => null
 ];
 
 $errors = [];
@@ -18,8 +18,6 @@ $logonSuccess = true;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (!empty($_POST['token']) && Token::validate( $_POST['token'] )) {
-        // the CSRF token they submitted does not match the one we sent
-        unset($_SESSION['_token']);
 
         if (!empty($_POST['usuario'])) {
             // Escapamos caracteres no permitidos
@@ -34,9 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             $errors['password'] = 'Ingrese su contraseña.';
         }
-    
+
+        // Si no hay errores
         if ( empty( $errors ) ) {
             if ( authenticateUser( $data['usuario'], $data['password']) ) {
+                // the CSRF token they submitted does not match the one we sent
+                unset($_SESSION['_token']);
                 redirect('/');
             } else {
                 $logonSuccess = false;

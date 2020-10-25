@@ -10,11 +10,12 @@
     <?php endif; ?>
 
     <form action="/usuario_login.php" method="POST">
-        <input type="hidden" name="token" value="<?= Token::csrf(); ?>">
+        <input type="hidden" name="token" value="<?= Token::csrf(); ?>" readonly spellcheck="false" autocomplete="off"
+            autocorrect="off" autocapitalize="off">
         <div class="form-group">
             <label for="usuario">Usuario</label>
             <input type="text" name="usuario" id="usuario"
-                class="form-control form-control-lg <?= isset($errors['usuario']) ? 'is-invalid' : ''; ?>"
+                class="form-control <?= isset($errors['usuario']) ? 'is-invalid' : ''; ?>"
                 value="<?= $data['usuario']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['usuario'] ?? ''; ?></div>
@@ -23,7 +24,7 @@
         <div class="form-group">
             <label for="password">Contraseña</label>
             <input type="password" name="password" id="password"
-                class="form-control form-control-lg <?= isset($errors['password']) ? 'is-invalid' : ''; ?>"
+                class="form-control <?= isset($errors['password']) ? 'is-invalid' : ''; ?>"
                 value="<?= $data['password']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['password'] ?? ''; ?></div>

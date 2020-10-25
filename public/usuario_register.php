@@ -8,12 +8,12 @@ if (isset($_SESSION['uid'])) {
 }
 
 $data = [
-    'apellido' => '',
-    'nombre' => '',
-    'usuario' => '',
-    'email' => '',
-    'password' => '',
-    'confirm_password' => ''
+    'apellido' => null,
+    'nombre' => null,
+    'usuario' => null,
+    'email' => null,
+    'password' => null,
+    'confirm_password' => null
 ];
 
 $errors = [];
@@ -24,8 +24,6 @@ $registerError = true;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (!empty($_POST['token']) && Token::validate( $_POST['token'] )) {
-        // the CSRF token they submitted does not match the one we sent
-        unset($_SESSION['_token']);
 
         // Validación del apellido
         if (!empty($_POST['apellido'])) {
@@ -33,16 +31,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data['apellido'] = escape( $_POST['apellido'] );
 
             if ( !onlyletters( $data['apellido'] ) ) {
-                $errors['apellido'] = 'Solo se permiten letras (a-zA-Z), y espacios en blanco.';
+                $errors['apellido'] = $messages['onlyLetters'];
             } elseif ( !minlength( $data['apellido'], $minlength) ) {
-                $errors['apellido'] = 'Aumenta la longitud a ' . $minlength . ' caracteres como mínimo.';
+                $errors['apellido'] = $messages['minLength'];
                 // Aumenta la longitud de este texto a ? caracteres o más (actualmente, el ? tiene ? caracteres)
             } elseif ( !maxlength($data['apellido'], $maxlength) ) {
-                $errors['apellido'] = 'Reduce la longitud a ' . $maxlength . ' caracteres o menos.';
+                $errors['apellido'] = $messages['maxLength'];
                 // Reduce la longitud de este texto a 3 caracteres o menos (actualmente, el ? tiene ? caracteres)
             }
         } else {
-            $errors['apellido'] = 'Por favor, ingrese su apellido.';
+            $errors['apellido'] = $messages['required'];
         }
 
         // Validación del nombre
@@ -51,14 +49,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data['nombre'] = escape( $_POST['nombre'] );
 
             if ( !onlyletters( $data['nombre'] ) ) {
-                $errors['nombre'] = 'Solo se permiten letras (a-zA-Z), y espacios en blanco.';
+                $errors['nombre'] = $messages['onlyLetters'];
             } elseif ( !minlength( $data['nombre'], $minlength) ) {
-                $errors['nombre'] = 'Aumenta la longitud a ' . $minlength . ' caracteres como mínimo.';
+                $errors['nombre'] = $messages['minLength'];
             } elseif ( !maxlength($data['nombre'], $maxlength) ) {
-                $errors['nombre'] = 'Reduce la longitud a ' . $maxlength . ' caracteres o menos.';
+                $errors['nombre'] = $messages['maxLength'];
             }
         } else {
-            $errors['nombre'] = 'Por favor, ingrese su nombre.';
+            $errors['nombre'] = $messages['required'];
         }
 
         // Validación del número de documento
@@ -70,13 +68,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $rows = existeNumDeDocumentoUsuario( $data['usuario'] );
                 
                 if (count($rows) == 1) {
-                    $errors['usuario'] = 'Este número de documento ya se encuentra registrado.';
+                    $errors['usuario'] = str_replace(':f', 'número de documento', $messages['unique'] );;
                 }
             } else {
-                $errors['usuario'] = 'El formato o el número de documento ingresado no es válido.';
+                $errors['usuario'] = $messages['valid_document'];
             }
         } else {
-            $errors['usuario'] = "Ingrese el número de documento.";
+            $errors['usuario'] = $messages['required'];
         }
 
         // Validación del correo electrónico
@@ -86,14 +84,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ( valid_email( $data['email'] ) ) {
                 $rows = existeEmailUsuario( $data['email'] );
+
                 if (count($rows) == 1) {
-                    $errors['email'] = 'Este correo electrónico ya se encuentra registrado.';
+                    $errors['email'] = str_replace(':f', 'correo electrónico', $messages['unique'] );;
                 }
+                
             } else {
-                $errors['email'] = 'El correo electrónico no es válido.';
+                $errors['email'] = $messages['valid_email'];
             }
         } else {
-            $errors['email'] = 'Por favor, ingrese su correo electrónico.';
+            $errors['email'] = $messages['required'];
         }
 
         // Validación de las contraseñas
@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $errors['confirm_password'] = 'Confirme su contraseña.';
             }
         } else {
-            $errors['password'] = 'Ingrese una contraseña.';
+            $errors['password'] = $messages['required'];
         }
 
         /**
@@ -122,6 +122,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if( empty( $errors ) ) {
             
             if ( insertarUsuario( $data ) ) {
+
+                // the CSRF token they submitted does not match the one we sent
+                unset($_SESSION['_token']);
                 Flash::addFlash('Ahora puedes acceder al sistema.');
                 redirect('/');
             } else {

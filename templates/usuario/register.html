@@ -10,18 +10,19 @@
     <?php endif; ?>
 
     <form action="/usuario_register.php" method="POST">
-        <input type="hidden" name="token" value="<?= Token::csrf(); ?>">
+        <input type="hidden" name="token" value="<?= Token::csrf(); ?>" readonly spellcheck="false" autocomplete="off"
+            autocorrect="off" autocapitalize="off">
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="apellido">Apellidos <span class="required">*</span></label>
-                <input type="text" class="form-control form-control-lg <?= isset($errors['apellido']) ? 'is-invalid' : ''; ?>"
+                <input type="text" class="form-control <?= isset($errors['apellido']) ? 'is-invalid' : ''; ?>"
                     name="apellido" id="apellido" value="<?= $data['apellido']; ?>" spellcheck="false"
                     autocomplete="off" autocorrect="off" autocapitalize="off" maxlength="40">
                 <div class="invalid-feedback"><?= $errors['apellido'] ?? ''; ?></div>
             </div>
             <div class="form-group col-md-6">
                 <label for="nombre">Nombres <span class="required">*</span></label>
-                <input type="text" class="form-control form-control-lg <?= isset($errors['nombre']) ? 'is-invalid' : ''; ?>"
+                <input type="text" class="form-control <?= isset($errors['nombre']) ? 'is-invalid' : ''; ?>"
                     name="nombre" id="nombre" value="<?= $data['nombre']; ?>" spellcheck="false" autocomplete="off"
                     autocorrect="off" autocapitalize="off" maxlength="40">
                 <div class="invalid-feedback"><?= $errors['nombre'] ?? ''; ?></div>
@@ -30,8 +31,8 @@
 
         <div class="form-group">
             <label for="usuario">Número de documento (ocho dígitos) <span class="required">*</span></label>
-            <input type="text" class="form-control form-control-lg <?= isset($errors['usuario']) ? 'is-invalid' : ''; ?>"
-                name="usuario" id="usuario" value="<?= $data['usuario']; ?>" data-toggle="tooltip" data-placement="left"
+            <input type="text" class="form-control <?= isset($errors['usuario']) ? 'is-invalid' : ''; ?>" name="usuario"
+                id="usuario" value="<?= $data['usuario']; ?>" data-toggle="tooltip" data-placement="left"
                 title="Completar con ceros a la izquierda si es necesario" spellcheck="false" autocomplete="off"
                 autocorrect="off" autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['usuario'] ?? ''; ?></div>
@@ -39,18 +40,18 @@
 
         <div class="form-group">
             <label for="email">Correo electrónico <span class="required">*</span></label>
-            <input type="email" class="form-control form-control-lg <?= isset($errors['email']) ? 'is-invalid' : ''; ?>"
-                name="email" id="email" value="<?= $data['email']; ?>" spellcheck="false" autocomplete="off"
-                autocorrect="off" autocapitalize="off">
+            <input type="email" class="form-control <?= isset($errors['email']) ? 'is-invalid' : ''; ?>" name="email"
+                id="email" value="<?= $data['email']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
+                autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['email'] ?? ''; ?></div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="password">Contraseña <span class="required">*</span></label>
-                <input type="password"
-                    class="form-control form-control-lg <?= isset($errors['password']) ? 'is-invalid' : ''; ?>" name="password"
-                    id="password" value="<?= $data['password']; ?>" data-toggle="tooltip" data-placement="left"
+                <input type="password" class="form-control <?= isset($errors['password']) ? 'is-invalid' : ''; ?>"
+                    name="password" id="password" value="<?= $data['password']; ?>" data-toggle="tooltip"
+                    data-placement="left"
                     title="Utiliza ocho caracteres como mínimo con una combinación de letras, números y símbolos"
                     spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
                 <div class="invalid-feedback"><?= $errors['password'] ?? ''; ?></div>
@@ -58,7 +59,7 @@
             <div class="form-group col-md-6">
                 <label for="confirm-password">Confirmación <span class="required">*</span></label>
                 <input type="password"
-                    class="form-control form-control-lg <?= isset($errors['confirm_password']) ? 'is-invalid' : ''; ?>"
+                    class="form-control <?= isset($errors['confirm_password']) ? 'is-invalid' : ''; ?>"
                     name="confirm_password" id="confirm-password" value="<?= $data['confirm_password']; ?>"
                     spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
                 <div class="invalid-feedback"><?= $errors['confirm_password'] ?? ''; ?></div>
@@ -67,8 +68,7 @@
 
         <!-- CHECKBOX Mostrar contraseña -->
         <div class="form-group">
-            <input type="checkbox" id="show-password"
-                style="position: relative; top: 2px;height: 16px;width: 16px;">
+            <input type="checkbox" id="show-password" style="position: relative; top: 2px;height: 16px;width: 16px;">
             <label for="show-password" style="font-weight: normal;">Mostrar contraseña</label>
         </div>
 
