@@ -5,6 +5,8 @@ require '../includes/bootstrap.php';
 
 $data = [];
 $errors = [];
+
+// Las localidades estarán disponibles solo cuando exista el id de la provincia
 $localidades = [];
 
 $minlength = 3;
@@ -62,10 +64,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ( !empty( $_POST['token'] ) && Token::validate( $_POST['token'] ) ) {
 
-        // Apellido
-        if (array_key_exists('apellido', $_POST)) {
-            $data['apellido'] = escape( $_POST['apellido'] );
+        foreach ($data as $key => $value) {
+
+            if ( array_key_exists($key, $_POST) ) {
+
+                $data[$key] = escape( $_POST[$key] );
+            }
         }
+
+        // Apellido
         if ( !$data['apellido'] ) {
             $errors['apellido'] = $messages['required'];
         } else if ( !onlyletters( $data['apellido'] ) ) {
@@ -77,9 +84,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Nombre
-        if (array_key_exists('nombre', $_POST)) {
-            $data['nombre'] = escape( $_POST['nombre'] );
-        }
         if ( !$data['nombre'] ) {
             $errors['nombre'] = $messages['required'];
         } else if ( !onlyletters( $data['nombre'] ) ) {
@@ -91,9 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Fecha de nacimiento
-        if (array_key_exists('fecha_nacimiento', $_POST)) {
-            $data['fecha_nacimiento'] = escape( $_POST['fecha_nacimiento'] );
-        }
         if ( !$data['fecha_nacimiento'] ) {
             $errors['fecha_nacimiento'] = $messages['required'];
         } else if ( !validate_date( $data['fecha_nacimiento'] ) ) {
@@ -103,9 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Tipo de documento
-        if (array_key_exists('tipo_documento', $_POST)) {
-            $data['tipo_documento'] = escape( $_POST['tipo_documento'] );
-        }
         if ( !$data['tipo_documento'] ) {
             $errors['tipo_documento'] = $messages['required'];
         } else if ( !in_array( $data['tipo_documento'], ['DNI', 'LC', 'LE'] ) ) {
@@ -113,9 +111,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Número de documento
-        if (array_key_exists('num_documento', $_POST)) {
-            $data['num_documento'] = escape( $_POST['num_documento'] );
-        }
         if ( !$data['num_documento'] ) {
             $errors['num_documento'] = $messages['required'];
         } else if ( preg_match('/^[\d]{8}$/', $data['num_documento']) ) {
@@ -135,9 +130,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Número de cuil
-        if (array_key_exists('num_cuil', $_POST)) {
-            $data['num_cuil'] = escape( $_POST['num_cuil'] );
-        }
         if ( !$data['num_cuil'] ) {
             $errors['num_cuil'] = $messages['required'];
         } else if ( validar_cuit( $data['num_cuil'] ) ) {
@@ -157,9 +149,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Condición de ingreso
-        if (array_key_exists('condicion_ingreso', $_POST)) {
-            $data['condicion_ingreso'] = escape( $_POST['condicion_ingreso'] );
-        }
         if ( !$data['condicion_ingreso'] ) {
             $errors['condicion_ingreso'] = $messages['required'];
         } else if ( !in_array( $data['condicion_ingreso'], ['ACTIVO', 'ADHERENTE', 'JUBILADO'] ) ) {
@@ -167,9 +156,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // E-mail, no es un campo requerido
-        if (array_key_exists('email', $_POST)) {
-            $data['email'] = escape( $_POST['email'] );
-        }
         if ( !$data['email'] ) {
             // $errors['email'] = $messages['required'];
         } else if ( valid_email( $data['email'] ) ) {
@@ -189,9 +175,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Teléfono móvil
-        if (array_key_exists('telefono_movil', $_POST)) {
-            $data['telefono_movil'] = escape( $_POST['telefono_movil'] );
-        }
         if ( !$data['telefono_movil'] ) {
             $errors['telefono_movil'] = $messages['required'];
         } else if ( validar_tel( $data['telefono_movil'] ) ) {
@@ -210,9 +193,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Teléfono de línea, no es un campo requerido
-        if (array_key_exists('telefono_linea', $_POST)) {
-            $data['telefono_linea'] = escape( $_POST["telefono_linea"] );
-        }
         if ( !$data['telefono_linea'] ) {
             // $errors['telefono_linea'] = $messages['required'];
         } else if ( !validar_tel( $data['telefono_linea'] ) ) {
@@ -220,30 +200,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Domicilio
-        if (array_key_exists('domicilio', $_POST)) {
-            $data['domicilio'] = escape( $_POST['domicilio'] );
-        }
         if ( !$data['domicilio'] ) {
             $errors['domicilio'] = $messages['required'];
         }
 
         // Provincia
-        if (array_key_exists('id_provincia', $_POST)) {
-            $data['id_provincia'] = escape( $_POST["id_provincia"] );
-        }
         if ( !$data['id_provincia'] ) {
             $errors['id_provincia'] = $messages['required'];
         } else if( isValidProvinceId( $data['id_provincia'] ) ) {
+
             // Cargamos las localidades despues de que tenemos el id de provincia
             $localidades = getLocalidadesPorIdProvincia( (int) $data['id_provincia'] );
+            
         } else {
             $errors['id_provincia'] = "Seleccione una provincia de la lista.";
         }
 
         // Localidad, aquí se verifica que la localidad pertenezca a la provincia selecionada
-        if (array_key_exists('id_localidad', $_POST)) {
-            $data['id_localidad'] = escape( $_POST["id_localidad"] );
-        }
         if ( !$data['id_localidad'] ) {
             $errors['id_localidad'] = $messages['required'];
         } else if( isPositiveInt( $data['id_localidad'] ) )  {
@@ -258,9 +231,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         // Sexo
-        if (array_key_exists('sexo', $_POST)) {
-            $data['sexo'] = escape( $_POST["sexo"] );
-        }
         if ( !$data['sexo'] ) {
             $errors['sexo'] = $messages['required'];
         } else if( !in_array( $data['sexo'], ['F', 'M'] ) ) {
@@ -297,7 +267,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-$title = 'Actualizar registro';
+$title = $action ? 'Editar asociado' : 'Agregar asociado';
 
 $values = [
     'title' => $title,
