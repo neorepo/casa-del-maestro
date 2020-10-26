@@ -130,7 +130,7 @@ table.detail td {
 }
 
 /* form-control-lg */
-.form-control, .custom-select {
+form .form-control, form .custom-select {
     height: calc(1.5em + 1rem + 2px);
     padding: .5rem 1rem;
     font-size: 1.25rem;
