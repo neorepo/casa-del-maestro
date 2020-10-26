@@ -23,13 +23,9 @@ if ($action) {
     $localidades = getLocalidadesPorIdProvincia( (int) $data['id_provincia'] );
 
 } else {
-    /**
-     * El campo EMAIL, es un campo unique en la base de datos, y no es un campo obligatorio
-     * en el formulario de registro, de manera que nunca puede estar vacío (''). Sí así fuese,
-     * generaría un error cuando se intente insertar registros, puesto que no puede haber dos
-     * registros con un mismo valor vacío, lo mismo sucede con el campo telefono_linea aunque
-     * aquí no habría ningún problema ya que no es un campo unique.
-     */
+    if ( isset($_SESSION['aid']) ) {
+        unset( $_SESSION['aid'] );
+    }
     $data = [
         'id_asociado' => null,'apellido' => null,'nombre' => null,'fecha_nacimiento' => null,'tipo_documento' => null,
         'num_documento' => null,'num_cuil' => null,'condicion_ingreso' => null,'email' => null,'telefono_movil' => null,
@@ -249,18 +245,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
          * Si no existen errores en el array
          */
         if( empty($errors) ) {
-    
-            // Insertar o actualizar datos
-            if ( save( $data ) ) {
-                /**
-                 * Recuperamos el último id insertado seteado en el metódo insertarAsociado(), si la acción fue insertar o
-                 * o recuperamos el id que estamos editando si la acción fue de actualización.
-                 */
-                $id_asociado = isset( $_SESSION['lastInsertId'] ) ? $_SESSION['lastInsertId'] : $_SESSION['aid'];
+
+            $returnValue = save( $data );
+            // Si el valor de retorno es true 
+            if ( $returnValue ) {
+                $lastInsertId = null;
+                // Si el valor de retorno no es un valor vooleano, entonces tenemos el último id insertado
+                if( !is_bool($returnValue) ) {
+                    // Recuperamos el último id insertado
+                    $lastInsertId = $returnValue;
+                }
+
+                $id_asociado = $lastInsertId ?? $_SESSION['aid'];
                 // Despues de procesar, eliminamos las variables almacenadas en el array session.
                 unset( $_SESSION['aid'] );
-                unset( $_SESSION['lastInsertId'] );
                 unset( $_SESSION['_token'] );
+
                 // Seteamos el mensaje flash para la vista
                 Flash::addFlash('Los datos fueron guardados correctamente.', 'primary');
                 // Re dirigimos al usuario a la vista de detalle.
@@ -345,8 +345,8 @@ function insertarAsociado($data) {
         Db::query($sql, capitalize($data['apellido']), capitalize($data['nombre']), $data['sexo'], $data['fecha_nacimiento'], $data['tipo_documento'],
         $data['num_documento'], $data['num_cuil'], $data['condicion_ingreso'], $data['email'], $data['domicilio'], $data['id_localidad'], $created, $last_modified);
 
-        // Seteamos el id del nuevo asociado insertado en la base de datos en la variable de sessión, para re dirigir a la página de detalle
-        $data['id_asociado'] = $_SESSION['lastInsertId'] = Db::getInstance()->lastInsertId();
+        // Seteamos el id del nuevo asociado insertado en la base de datos, para re dirigir a la página de detalle
+        $data['id_asociado'] = Db::getInstance()->lastInsertId();
 
         // Consulta 2
         $sql = 'INSERT INTO telefono (telefono_movil, telefono_linea, id_asociado, created, last_modified) VALUES(?, ?, ?, ?, ?)';
@@ -359,7 +359,7 @@ function insertarAsociado($data) {
         // roll back the transaction if something failed
         $db->rollback();
         trigger_error('Error:' . $e->getMessage(), E_USER_ERROR);
-        return false; // Deberíamos devolver -1 en caso de error si estuviermos en JAVA
+        return false; // Deberíamos devolver -1 en caso de error si estuvieramos en JAVA
     }
-    return true; // Deberíamos devolver el último id (int positivo) del asociado insertado
+    return $data['id_asociado']; // Devolvemos el último id insertado ( lastInsertId() devuelve un tipo string ).
 }
