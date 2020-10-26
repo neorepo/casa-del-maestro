@@ -6,7 +6,8 @@ require '../includes/bootstrap.php';
 $data = [];
 $errors = [];
 
-// Las localidades estarán disponibles solo cuando exista el id de la provincia
+// Las localidades estarán disponibles solo cuando exista el id de la provincia.
+// Son 22793 localidades, solo listaremos las que pertenezcan a la provincia seleccionada
 $localidades = [];
 
 $action = array_key_exists('aid', $_GET);
@@ -43,15 +44,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ( !empty( $_POST['token'] ) && Token::validate( $_POST['token'] ) ) {
 
+        // for security reasons, do not map the whole $_POST
+        $data = [
+            'apellido' => $_POST['apellido'],
+            'nombre' => $_POST['nombre'],
+            'fecha_nacimiento' => $_POST['fecha_nacimiento'],
+            'tipo_documento' => $_POST['tipo_documento'],
+            'num_documento' => $_POST['num_documento'],
+            'num_cuil' => $_POST['num_cuil'],
+            'condicion_ingreso' => $_POST['condicion_ingreso'],
+            'email' => $_POST['email'],
+            'telefono_movil' => $_POST['telefono_movil'],
+            'telefono_linea' => $_POST['telefono_linea'],
+            'domicilio' => $_POST['domicilio'],
+            'id_provincia' => $_POST['id_provincia'],
+            'id_localidad' => $_POST['id_localidad'],
+            'sexo' => $_POST['sexo'] ?? null // Si el campo sexo no es seleccionado 
+        ];
+
+        // Map $data no $_POST
         foreach ($data as $key => $value) {
-
             if ( array_key_exists( $key, $_POST ) ) {
-
                 $data[$key] = escape( $_POST[$key] );
             }
         }
 
-        // El array de mensajes se encuentra en la carpeta includes/bootstrap
+        // VALIDACIONES
+        // El array de mensajes de error se encuentra en la carpeta includes/bootstrap
 
         // Apellido
         if ( !$data['apellido'] ) {
@@ -139,6 +158,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // E-mail, no es un campo requerido
         if ( !$data['email'] ) {
             // $errors['email'] = $messages['required'];
+
+            // Si no tengo el email, no puedo insertar un string vácio por que el campo es unique. Leer README.txt
+            $data['email'] = null;
+            
         } else if ( valid_email( $data['email'] ) ) {
             
             if ( isset( $_SESSION['aid'] ) ) {
@@ -176,6 +199,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Teléfono de línea, no es un campo requerido
         if ( !$data['telefono_linea'] ) {
             // $errors['telefono_linea'] = $messages['required'];
+
+            // Si no tengo el telefono de línea, puedo insertar un string vácio por que el campo no es unique
+            // pero, para mantener todo bien, se insertará un valor null
+            $data['telefono_linea'] = null;
+
         } else if ( !validar_tel( $data['telefono_linea'] ) ) {
             $errors['telefono_linea'] = $messages['valid_phone'];
         }
@@ -219,7 +247,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         /**
-         * Si no existen errores
+         * Si no existen errores en el array
          */
         if( empty($errors) ) {
     
@@ -331,7 +359,7 @@ function insertarAsociado($data) {
     } catch (PDOException $e) {
         // roll back the transaction if something failed
         $db->rollback();
-        //trigger_error('Error:' . $e->getMessage(), E_USER_ERROR);
+        trigger_error('Error:' . $e->getMessage(), E_USER_ERROR);
         return false; // Deberíamos devolver -1 en caso de error
     }
     return true; // Deberíamos devolver el último id (int positivo) del asociado insertado
