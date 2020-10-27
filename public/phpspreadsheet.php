@@ -20,30 +20,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (!$format) {
     $errors['format'] = 'Seleccione un formato para exportar.';
   }
-  else if (!in_array($format, ['pdf', 'xls', 'xlsx'])) {
+  else if ( !in_array( $format, ['pdf', 'xls', 'xlsx'] ) ) {
     $errors['format'] = 'El formato seleccionado no es válido.';
   }
 
-  if (empty($errors)) {
-
-    $filename = '';
+  // Si no hay errores
+  if ( empty( $errors ) ) {
+    
+    $filename = 'asociados-' . date('d-m-Y');
     $class = null;
     $content_type = 'Content-Type: application/';
-    $date = date('d-m-Y');
 
     switch ($format) {
       case 'pdf':
-        $filename .= 'asociados-' . $date . '.pdf';
+        $filename .= '.pdf';
         $class = 'Pdf';
         $content_type .= 'pdf';
       break;
       case 'xls':
-        $filename .= 'asociados-' . $date . '.xls';
+        $filename .= '.xls';
         $class = 'Xls';
         $content_type .= 'vnd.ms-excel';
       break;
       case 'xlsx':
-        $filename .= 'asociados-' . $date . '.xlsx';
+        $filename .= '.xlsx';
         $class = 'Xlsx';
         $content_type .= 'vnd.openxmlformats-officedocument.spreadsheetml.sheet';
       break;
@@ -51,22 +51,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $usuarioLogueado = $_SESSION['nombre'];
 
-    $sql = 'SELECT a.apellido, a.nombre, a.sexo, a.fecha_nacimiento, a.tipo_documento, a.num_documento, a.num_cuil,
+    $sql = 'SELECT a.apellido, a.nombre, a.sexo, strftime("%d/%m/%Y",a.fecha_nacimiento) AS fecha_nacimiento, a.tipo_documento, a.num_documento, a.num_cuil,
     a.condicion_ingreso, a.email, t.telefono_movil, t.telefono_linea, a.domicilio, l.nombre AS localidad, l.cp, p.nombre AS provincia
     FROM asociado a INNER JOIN telefono t ON a.id_asociado = t.id_asociado INNER JOIN localidad l ON a.id_localidad = l.id_localidad
     INNER JOIN provincia p ON l.id_provincia = p.id_provincia WHERE a.deleted = 0 ORDER BY a.apellido, a.nombre;';
 
     $rows = Db::query( $sql );
 
+    $numberOfrows = count( $rows );
+
     // Si tenemos registros exportamos, de lo contrario devolvemos al index
-    if (count($rows)) {
-      // $columnNames = array_keys( $rows[0] );
+    if ( $numberOfrows > 0 ) {
+
       $spreadsheet = new Spreadsheet();
 
       // Set document properties
       $spreadsheet->getProperties()->setCreator('Casa del Maestro y Previsión Social')
         ->setLastModifiedBy($usuarioLogueado)->setTitle('Lista de sociados')
-        ->setSubject('Lista de asociados a la Casa del Maestro')
+        ->setSubject('')
         ->setDescription('')
         ->setKeywords('')
         ->setCategory('');
@@ -93,9 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       // $spreadsheet->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
 
       // Set column widths
-    //   $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-    //   $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-    //   $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+      // $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
 
       // $row = 2;
       // foreach($rows as $country) {
@@ -104,24 +104,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       //     $spreadsheet->getActiveSheet()->setCellValue('C' . $row, $country['provincia']);
       //     $row += 1;
       // }
-      $m = count( $rows );
+
       $j = 0;
-      for ($i = 2;$i <= $m + 1;++$i) {
+      for ($i = 2;$i <= $numberOfrows + 1;++$i) {
         $spreadsheet->getActiveSheet()
-          ->setCellValue('A' . $i, $rows[$j]['apellido'])
-          ->setCellValue('B' . $i, $rows[$j]['nombre'])
-          ->setCellValue('C' . $i, $rows[$j]['sexo'])
-          ->setCellValue('D' . $i, $rows[$j]['fecha_nacimiento'])
-          ->setCellValue('E' . $i, $rows[$j]['tipo_documento'])
-          ->setCellValue('F' . $i, $rows[$j]['num_documento'])
-          ->setCellValue('G' . $i, $rows[$j]['num_cuil'])
-          ->setCellValue('H' . $i, $rows[$j]['condicion_ingreso'])
-          ->setCellValue('I' . $i, $rows[$j]['email'])
-          ->setCellValue('J' . $i, $rows[$j]['telefono_movil'])
-          ->setCellValue('K' . $i, $rows[$j]['telefono_linea'])
-          ->setCellValue('L' . $i, $rows[$j]['domicilio'])
-          ->setCellValue('M' . $i, $rows[$j]['localidad'])
-          ->setCellValue('N' . $i, $rows[$j]['cp'])
+          ->setCellValue('A' . $i, $rows[$j]['apellido'])->setCellValue('B' . $i, $rows[$j]['nombre'])
+          ->setCellValue('C' . $i, $rows[$j]['sexo'])->setCellValue('D' . $i, $rows[$j]['fecha_nacimiento'])
+          ->setCellValue('E' . $i, $rows[$j]['tipo_documento'])->setCellValue('F' . $i, $rows[$j]['num_documento'])
+          ->setCellValue('G' . $i, $rows[$j]['num_cuil'])->setCellValue('H' . $i, $rows[$j]['condicion_ingreso'])
+          ->setCellValue('I' . $i, $rows[$j]['email'])->setCellValue('J' . $i, $rows[$j]['telefono_movil'])
+          ->setCellValue('K' . $i, $rows[$j]['telefono_linea'])->setCellValue('L' . $i, $rows[$j]['domicilio'])
+          ->setCellValue('M' . $i, $rows[$j]['localidad'])->setCellValue('N' . $i, $rows[$j]['cp'])
           ->setCellValue('O' . $i, $rows[$j]['provincia']);
         $j++;
       }
@@ -133,9 +126,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       // Set active sheet index to the first sheet, so Excel opens this as the first sheet
       $spreadsheet->setActiveSheetIndex(0);
 
-      if ($format == 'pdf') {
-        IOFactory::registerWriter($class, \PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf::class);
-      }
+      // if ($format == 'pdf') {
+      //   IOFactory::registerWriter($class, \PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf::class);
+      // }
 
       header($content_type);
       header('Content-Disposition: attachment;filename="' . $filename . '"');
@@ -152,17 +145,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $writer->save('php://output');
 
       exit;
-    }
-    else {
-      Flash::addFlash('No hay registros disponibles para exportar!', 'info');
+    } else {
+      Flash::addFlash('No hay registros disponibles para exportar!', 'warning');
       redirect('/');
     }
   }
-  else {
-    Flash::addFlash($errors['format'], 'danger');
-    redirect('/');
-  }
+  Flash::addFlash($errors['format'], 'danger');
 }
-else {
-  redirect('/');
-}
+redirect('/');

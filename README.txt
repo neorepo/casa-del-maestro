@@ -152,3 +152,6 @@ vocales con diéresis
 Ü alt + 154
 
 https://github.com/PHPOffice/PhpSpreadsheet/blob/master/samples/templates/sampleSpreadsheet.php
+
+Buscador de prestador telefónico
+https://numeracion.enacom.gob.ar/
