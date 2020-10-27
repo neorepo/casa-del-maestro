@@ -5,11 +5,11 @@
             <?= htmlspecialchars( $data['apellido'] . " " . $data['nombre'] ); ?>
         </h1>
     </div>
-
     <div class="row">
-        <div class="col-md-6">
-
-            <table class="">
+        <div class="col-md-7">
+            
+            
+            <table class="table table-sm table-borderless">
                 <tbody>
                     <tr>
                         <th>Fecha de Alta</th>
@@ -79,8 +79,8 @@
                         <td>
                             <div class="actions">
                                 <!-- Enviamos el aid por GET -->
-                                <a href="/asociado_agregar_editar.php?aid=<?= $data['id_asociado']; ?>" title="Editar registro"><i
-                                        class="material-icons">edit</i></a>
+                                <a href="/asociado_agregar_editar.php?aid=<?= $data['id_asociado']; ?>"
+                                    title="Editar registro"><i class="material-icons">edit</i></a>
                                 <!-- <a href="/asociado_eliminar.php?aid=<?= $data['id_asociado']; ?>"
                                     title="Eliminar registro" id="delete-link"><i class="material-icons">delete</i></a> -->
                                 <!-- Enviamos el aid a eliminar por POST  -->
@@ -99,11 +99,10 @@
             </table>
 
         </div>
-        <div class="col-md-6">
-            <a href=""><img src="https://cdn.pixabay.com/photo/2019/10/01/13/58/coffee-4518354_960_720.png" alt=""
-                    height="auto" width="100%"></a>
+        <div class="col-md-5">
+            <a href=""><img src="/img/cdm-logo.jpg" alt="" height="" width="100%"></a>
         </div>
-        
+
     </div>
 
 </section>
