@@ -1,17 +1,26 @@
 <section>
-    <div class="row align-items-center mb-4">
+    <div class="row align-items-center mb-3">
         <div class="col">
-            <h1 class="h2">Asociados <a href="/add-edit-asociado.php" title="Agregar asociado"><i
+            <h1 class="h2">Asociados <a href="/asociado_agregar_editar.php" title="Agregar asociado"><i
                         class="material-icons align-middle">add_circle</i></a>
             </h1>
             <!-- <a href="/add-edit.php" class="btn btn-primary btn-sm" title="Agregar asociado">Agregar</a> -->
         </div>
         <div class="col-auto">
-            <a href="" class="btn btn-light btn-sm" title="Exportar en pdf"><i
+            <form method="post" action="/phpspreadsheet.php">
+                <fieldset>
+                    <span>Exportar como: &nbsp;</span>
+                    <!-- <input type="radio" name="format" id="pdf" value="pdf"> <label for="pdf">pdf</label>&nbsp; -->
+                    <input type="radio" name="format" id="xls" value="xls" checked> <label for="xls" class="font-weight-normal">xls</label>&nbsp;
+                    <input type="radio" name="format" id="xlsx" value="xlsx"> <label for="xlsx" class="font-weight-normal">xlsx</label>&nbsp;
+                    <button type="submit" class="btn btn-sm btn-primary mb-1">Exportar</button>
+                </fieldset>
+            </form>
+            <!-- <a href="" class="btn btn-light btn-sm" title="Exportar en pdf"><i
                     class="material-icons pdf">picture_as_pdf</i></a>
             <a href="/exportar_excel.php" class="btn btn-light btn-sm" title="Exportar en excel">
                 <img src="/img/microsoft-excel-2019-48.svg" alt="Icono de excel exportar"
-                    style="height: 22px;vertical-align: bottom;"></a>
+                    style="height: 22px;vertical-align: bottom;"></a> -->
         </div>
     </div>
     <div class="table-responsive">

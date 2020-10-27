@@ -150,3 +150,5 @@ vocales con diéresis
 Ï alt + 216
 Ö alt + 153
 Ü alt + 154
+
+https://github.com/PHPOffice/PhpSpreadsheet/blob/master/samples/templates/sampleSpreadsheet.php

@@ -285,7 +285,7 @@ $values = [
     'action' => $action
 ];
 
-render('asociado/add-edit.html', $values);
+render('asociado/agregar-editar.html', $values);
 
 function save($data) {
 

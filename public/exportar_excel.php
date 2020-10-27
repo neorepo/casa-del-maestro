@@ -1,4 +1,13 @@
 <?php
+
+// https://github.com/PHPOffice/PhpSpreadsheet antes PHPExcel
+
+/**
+ * Ejemplos
+ * https://github.com/PHPOffice/PhpSpreadsheet/blob/master/samples/templates/sampleSpreadsheet.php
+ * https://github.com/PHPOffice/PhpSpreadsheet/blob/master/samples/templates/largeSpreadsheet.php
+ */
+
 require '../includes/bootstrap.php';
 $filename = 'Reporte_asociados_' . date('d-m-Y') . '.xls';
 
@@ -14,14 +23,21 @@ if( count($rows) ) {
     header('Content-disposition: attachment;filename="' . $filename . '"');
     header('Cache-Control: max-age=0');
     
-    $headers = ['apellido' => 'APELLIDO','nombre' => 'NOMBRE','sexo' => 'SEXO','fecha_nacimiento' => 'FEC. NAC.',
-    'tipo_documento' => 'TIPO DOC.','num_documento' => 'DOC.','num_cuil' => 'CUIL','condicion_ingreso' => 'CONDICION',
-    'email' => 'E-MAIL','telefono_movil' => 'TEL. MOVIL','telefono_linea' => 'TEL. LINEA','domicilio' => 'DOMICILIO',
-    'localidad' => 'LOCALIDAD','cp' => 'CP','provincia' => 'PROVINCIA'];
+    // $headers = ['apellido' => 'APELLIDO','nombre' => 'NOMBRE','sexo' => 'SEXO','fecha_nacimiento' => 'FEC. NAC.',
+    // 'tipo_documento' => 'TIPO DOC.','num_documento' => 'DOC.','num_cuil' => 'CUIL','condicion_ingreso' => 'CONDICION',
+    // 'email' => 'E-MAIL','telefono_movil' => 'TEL. MOVIL','telefono_linea' => 'TEL. LINEA','domicilio' => 'DOMICILIO',
+    // 'localidad' => 'LOCALIDAD','cp' => 'CP','provincia' => 'PROVINCIA'];
     
-    array_unshift($rows, $headers);
+    // array_unshift($rows, $headers);
+
+    $isPrintHeader = false;
     
     foreach ($rows as $key => $row) {
+        if (!$isPrintHeader) {
+            print implode("\t", array_keys( $row) ) . "\n";
+            $isPrintHeader = true;
+        }
+        // print implode("\t", array_values($row)) . "\n";
         print utf8_decode($row['apellido']). "\t";
         print utf8_decode($row['nombre']). "\t";
         print $row['sexo']. "\t";

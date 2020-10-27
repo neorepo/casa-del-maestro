@@ -174,7 +174,7 @@ function initShowPasswords() {
 function initFlashes() {
     if (document.querySelector('.alert')) {
         document.querySelectorAll('.alert').forEach(el => {
-            setTimeout(function () { /*el.style.display = 'none';*/ el.remove(); }, 6000);
+            setTimeout(function () { /*el.style.display = 'none';*/ el.remove(); }, 7000);
         });
     }
 }

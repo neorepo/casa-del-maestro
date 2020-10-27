@@ -50,7 +50,7 @@
                 <ul class="navbar-nav ml-auto">
                     <?php if( isset($_SESSION['uid']) ): ?>
                     <li class="nav-item active">
-                        <a class="nav-link"><span>Bienvenido <?= $_SESSION['nombre']?>!</span></a>
+                        <a class="nav-link"><span>Bienvenido <?= $_SESSION['nombre'] ?>!</span></a>
                     </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="/usuario_logout.php">Salir</a>
@@ -74,4 +74,4 @@
     <div class="alert alert-<?= $flash['class']; ?> text-center" role="alert"><?= htmlspecialchars( $flash['message'] ); ?></div>
     <?php endforeach; ?>
     <?php endif; ?>
-    <main class="container py-5">
+    <main class="container my-5">
