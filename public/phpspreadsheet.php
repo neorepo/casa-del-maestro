@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       $spreadsheet = new Spreadsheet();
 
-      // Set document properties
+      // Seteamos las propiedades del documento
       $spreadsheet->getProperties()->setCreator('Casa del Maestro y Previsión Social')
         ->setLastModifiedBy($usuarioLogueado)->setTitle('Lista de sociados')
         ->setSubject('')
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ->setKeywords('')
         ->setCategory('');
 
-      // Add some data
+      // Encabezados 
       $spreadsheet->setActiveSheetIndex(0);
       $spreadsheet->getActiveSheet()->setCellValue('A1', 'APELLIDO');
       $spreadsheet->getActiveSheet()->setCellValue('B1', 'NOMBRE');
@@ -105,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       //     $row += 1;
       // }
 
+      // Agregamos datos a las celdas
       $j = 0;
       for ($i = 2;$i <= $numberOfrows + 1;++$i) {
         $spreadsheet->getActiveSheet()
@@ -119,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $j++;
       }
 
-      // Rename worksheet
+      // Renombramos la hoja de cálculo
       $spreadsheet->getActiveSheet()->setTitle('Padrón de asociados');
       $spreadsheet->getActiveSheet()->setShowGridLines(false);
 
