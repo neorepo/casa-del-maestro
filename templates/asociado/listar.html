@@ -7,10 +7,10 @@
             <!-- <a href="/add-edit.php" class="btn btn-primary btn-sm" title="Agregar asociado">Agregar</a> -->
         </div>
         <div class="col-auto">
-            <form method="post" action="/phpspreadsheet.php">
+            <form method="post" action="/reports.php">
                 <fieldset>
                     <span class="">Exportar como: &nbsp;</span>
-                    <!-- <input type="radio" name="format" id="pdf" value="pdf"> <label for="pdf">pdf</label>&nbsp; -->
+                    <input type="radio" name="format" id="pdf" value="pdf"> <label for="pdf" class="font-weight-normal">pdf</label>&nbsp;
                     <input type="radio" name="format" id="xls" value="xls" checked> <label for="xls" class="font-weight-normal">xls</label>&nbsp;
                     <input type="radio" name="format" id="xlsx" value="xlsx"> <label for="xlsx" class="font-weight-normal">xlsx</label>&nbsp;
                     <input type="submit" value="Exportar" class="btn btn-success btn-sm mb-1">
