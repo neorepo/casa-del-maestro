@@ -8,7 +8,6 @@ class ComposerStaticInit8984364761369d0ef97bfb1ea65d412f
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         'abede361264e2ae69ec1eee813a101af' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/abs.php',
         '21a5860fbef5be28db5ddfbc3cca67c4' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acos.php',
         '1546e3f9d127f2a9bb2d1b6c31c26ef1' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acosh.php',
@@ -70,10 +69,6 @@ class ComposerStaticInit8984364761369d0ef97bfb1ea65d412f
     );
 
     public static $prefixLengthsPsr4 = array (
-        's' => 
-        array (
-            'setasign\\Fpdi\\' => 14,
-        ),
         'Z' => 
         array (
             'ZipStream\\' => 10,
@@ -85,7 +80,6 @@ class ComposerStaticInit8984364761369d0ef97bfb1ea65d412f
         'P' => 
         array (
             'Psr\\SimpleCache\\' => 16,
-            'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
@@ -93,12 +87,7 @@ class ComposerStaticInit8984364761369d0ef97bfb1ea65d412f
         'M' => 
         array (
             'MyCLabs\\Enum\\' => 13,
-            'Mpdf\\' => 5,
             'Matrix\\' => 7,
-        ),
-        'D' => 
-        array (
-            'DeepCopy\\' => 9,
         ),
         'C' => 
         array (
@@ -107,10 +96,6 @@ class ComposerStaticInit8984364761369d0ef97bfb1ea65d412f
     );
 
     public static $prefixDirsPsr4 = array (
-        'setasign\\Fpdi\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/setasign/fpdi/src',
-        ),
         'ZipStream\\' => 
         array (
             0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
@@ -122,10 +107,6 @@ class ComposerStaticInit8984364761369d0ef97bfb1ea65d412f
         'Psr\\SimpleCache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
-        ),
-        'Psr\\Log\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
         'Psr\\Http\\Message\\' => 
         array (
@@ -144,17 +125,9 @@ class ComposerStaticInit8984364761369d0ef97bfb1ea65d412f
         array (
             0 => __DIR__ . '/..' . '/myclabs/php-enum/src',
         ),
-        'Mpdf\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
-        ),
         'Matrix\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
-        ),
-        'DeepCopy\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
         ),
         'Complex\\' => 
         array (
