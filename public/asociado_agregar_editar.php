@@ -18,7 +18,7 @@ if ($action) {
     // Asignamos el id del asociado a la variable de sesión para saber que registro editar, también podemos utilizar el array $_GET
     $_SESSION['aid'] = $data['id_asociado'];
     // Formateamos la fecha de nacimiento: ejm: 2000-03-06 a 06/03/2000
-    $data['fecha_nacimiento'] = dateToTemplate( $data['fecha_nacimiento'] );
+    // $data['fecha_nacimiento'] = dateToTemplate( $data['fecha_nacimiento'] );
     // Recuperamos las localidades por el id de la provincia
     $localidades = getLocalidadesPorIdProvincia( (int) $data['id_provincia'] );
 
@@ -250,7 +250,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Si el valor de retorno es true 
             if ( $returnValue ) {
                 $lastInsertId = null;
-                // Si el valor de retorno no es un valor vooleano, entonces tenemos el último id insertado
+                // Si el valor de retorno no es un valor booleano, entonces tenemos el último id insertado
                 if( !is_bool($returnValue) ) {
                     // Recuperamos el último id insertado
                     $lastInsertId = $returnValue;

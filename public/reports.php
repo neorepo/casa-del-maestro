@@ -5,7 +5,6 @@ require '../includes/bootstrap.php';
 require '../reports/vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -21,23 +20,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (!$format) {
     $errors['format'] = 'Seleccione un formato para exportar.';
   }
-  else if ( !in_array( $format, ['pdf', 'xls', 'xlsx'] ) ) {
+  else if ( !in_array( $format, ['xls', 'xlsx'] ) ) {
     $errors['format'] = 'El formato seleccionado no es válido.';
   }
 
   // Si no hay errores
   if ( empty( $errors ) ) {
     
-    $filename = 'asociados-' . date('d-m-Y');
+    $filename = 'lista_de_asociados-' . date('d-m-Y');
     $class = null;
     $content_type = 'Content-Type: application/';
 
-    switch ($format) {
-      case 'pdf':
-        $filename .= '.pdf';
-        $class = 'Pdf';
-        $content_type .= 'pdf';
-      break;
+    switch ( $format ) {
       case 'xls':
         $filename .= '.xls';
         $class = 'Xls';
@@ -127,11 +121,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       // Set active sheet index to the first sheet, so Excel opens this as the first sheet
       $spreadsheet->setActiveSheetIndex(0);
-
-      if ($format == 'pdf') {
-        $spreadsheet->getActiveSheet()->getPageSetup()->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
-        IOFactory::registerWriter($class, \PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf::class);
-      }
 
       header($content_type);
       header('Content-Disposition: attachment;filename="' . $filename . '"');

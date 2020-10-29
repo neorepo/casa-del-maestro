@@ -6,13 +6,12 @@
         </h1>
     </div>
     <div class="row">
-        <div class="col-md-7">
-            
-            
+        <div class="col-md-6">
+
             <table class="table table-sm table-borderless">
                 <tbody>
                     <tr>
-                        <th>Fecha de Alta</th>
+                        <th>Fecha de registro</th>
                         <td><?= htmlspecialchars($data['created'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     </tr>
                     <tr>
@@ -20,7 +19,7 @@
                         <td><?= htmlspecialchars($data['sexo'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     </tr>
                     <tr>
-                        <th>Fecha de Nacimiento</th>
+                        <th>Fecha de nacimiento</th>
                         <td><?= htmlspecialchars($data['fecha_nacimiento'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     </tr>
                     <tr>
@@ -29,23 +28,23 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Número de Cuil</th>
+                        <th>Número de cuil</th>
                         <td><?= htmlspecialchars($data['num_cuil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     </tr>
                     <tr>
-                        <th>Condición de Ingreso</th>
+                        <th>Tipo de asociado</th>
                         <td><?= htmlspecialchars($data['condicion_ingreso'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     </tr>
                     <tr>
-                        <th>Correo Electrónico</th>
+                        <th>Correo electrónico</th>
                         <td><?= htmlspecialchars($data['email'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     </tr>
                     <tr>
-                        <th>Teléfono Móvil</th>
+                        <th>Teléfono móvil</th>
                         <td><?= htmlspecialchars($data['telefono_movil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     </tr>
                     <tr>
-                        <th>Teléfono de Línea</th>
+                        <th>Teléfono de línea</th>
                         <td><?= htmlspecialchars($data['telefono_linea'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     </tr>
                     <tr>
@@ -57,33 +56,26 @@
                         <td><?= ucwords( htmlspecialchars($data['localidad'], ENT_NOQUOTES, 'UTF-8') ); ?></td>
                     </tr>
                     <tr>
-                        <th>Código Postal</th>
+                        <th>Código postal</th>
                         <td><?= htmlspecialchars($data['cp'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     </tr>
                     <tr>
                         <th>Provincia</th>
                         <td><?= ucwords( htmlspecialchars($data['provincia'], ENT_NOQUOTES, 'UTF-8') ); ?></td>
                     </tr>
-                    <!-- <tr>
-                        <th>Última Modificación</th>
-                        <td><?= htmlspecialchars($data['last_modified'], ENT_NOQUOTES, 'UTF-8') ; ?></td>
-                    </tr> -->
                     <tr>
                         <th colspan="2">&nbsp;</th>
                     </tr>
                     <tr>
                         <td>
-                            <a href="/" class="" title="Volver a la lista"><i class="material-icons">fast_rewind</i>
-                                Volver</a>
+                            <a href="/" class="" title="Volver a la lista"><i class="material-icons">fast_rewind</i> a la lista</a>
                         </td>
                         <td>
                             <div class="actions">
-                                <!-- Enviamos el aid por GET -->
+                                <!-- Acción editar: método de envío GET -->
                                 <a href="/asociado_agregar_editar.php?aid=<?= $data['id_asociado']; ?>"
                                     title="Editar registro"><i class="material-icons">edit</i></a>
-                                <!-- <a href="/asociado_eliminar.php?aid=<?= $data['id_asociado']; ?>"
-                                    title="Eliminar registro" id="delete-link"><i class="material-icons">delete</i></a> -->
-                                <!-- Enviamos el aid a eliminar por POST  -->
+                                <!-- Acción eliminar: método de envío POST -->
                                 <form action="/asociado_eliminar.php" method="POST" style="display: inline-block;"
                                     title="Eliminar registro">
                                     <input type="hidden" name="token" value="<?= Token::csrf(); ?>">
@@ -92,6 +84,14 @@
                                         onclick="return confirm('Este registro será eliminado. ¿Estás seguro?');"><i
                                             class="material-icons">delete</i></button>
                                 </form>
+                                <!-- <form action="/pdf_report.php" method="POST" style="display: inline-block;"
+                                    title="Exportar registro en pdf" target="_blank">
+                                    <input type="hidden" name="token" value="<?= Token::csrf(); ?>">
+                                    <input type="hidden" name="aid" value="<?= $data['id_asociado']; ?>">
+                                    <button type="submit" class="icon-style"><i class="material-icons pdf">picture_as_pdf</i></button>
+                                </form> -->
+                                <a href="/pdf_report.php?aid=<?= $data['id_asociado']; ?>"
+                                    title="Exportar registro en pdf" target="_blank"><i class="material-icons">picture_as_pdf</i></a>
                             </div>
                         </td>
                     </tr>
@@ -99,8 +99,10 @@
             </table>
 
         </div>
-        <div class="col-md-5">
-            <a href=""><img src="/img/cdm-logo.jpg" alt="" height="" width="100%"></a>
+        <div class="col-md-6">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo itaque assumenda facere incidunt nobis,
+                explicabo distinctio dolorem nesciunt dignissimos, reprehenderit, inventore perferendis placeat aut
+                officia? Tenetur numquam ratione rem modi.</p>
         </div>
 
     </div>

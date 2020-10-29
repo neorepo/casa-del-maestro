@@ -9,11 +9,11 @@
         <div class="col-auto">
             <form method="post" action="/reports.php">
                 <fieldset>
-                    <span class="">Exportar como: &nbsp;</span>
-                    <input type="radio" name="format" id="pdf" value="pdf"> <label for="pdf" class="font-weight-normal">pdf</label>&nbsp;
-                    <input type="radio" name="format" id="xls" value="xls" checked> <label for="xls" class="font-weight-normal">xls</label>&nbsp;
-                    <input type="radio" name="format" id="xlsx" value="xlsx"> <label for="xlsx" class="font-weight-normal">xlsx</label>&nbsp;
-                    <input type="submit" value="Exportar" class="btn btn-success btn-sm mb-1">
+                    <span class="mr-2">Formato:</span>
+                    <!-- <input type="radio" name="format" id="pdf" value="pdf"> <label for="pdf" class="font-weight-normal">pdf</label> -->
+                    <input type="radio" name="format" id="xls" value="xls" checked> <label for="xls" class="font-weight-normal mr-2">xls</label>
+                    <input type="radio" name="format" id="xlsx" value="xlsx"> <label for="xlsx" class="font-weight-normal">xlsx</label>
+                    <button type="submit" class="btn btn-success btn-sm mb-1 ml-2">Exportar</button>
                 </fieldset>
             </form>
             <!-- <a href="" class="btn btn-light btn-sm" title="Exportar en pdf"><i

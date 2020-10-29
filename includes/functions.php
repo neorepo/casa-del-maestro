@@ -54,9 +54,9 @@ function existeLocalidadDeProvincia($id_localidad, $id_provincia) {
 function findById($id_asociado) {
     $q = 'SELECT
           a.id_asociado, a.apellido, a.nombre,
-          a.sexo, a.fecha_nacimiento, a.tipo_documento,
+          a.sexo, strftime("%d/%m/%Y",a.fecha_nacimiento) AS fecha_nacimiento, a.tipo_documento,
           a.num_documento, a.num_cuil, a.domicilio,
-          a.condicion_ingreso, a.email, a.created, a.last_modified,
+          a.condicion_ingreso, a.email, strftime("%d/%m/%Y %H:%M",a.created) AS created, a.last_modified,
           t.telefono_movil, t.telefono_linea,
           p.id_provincia, p.nombre AS provincia,
           l.id_localidad, l.nombre AS localidad, l.cp
