@@ -124,7 +124,6 @@
         transform: translate(-50%, -50%);
         background: #fff;
         font-size: 14px;
-        /* box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.4); */
     }
 
     .backdrop {
@@ -134,7 +133,7 @@
         height: 100%;
         top: 0;
         left: 0;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(25, 25, 25, .5);
         z-index: 1001;
     }
 </style>
@@ -183,11 +182,6 @@
         }
         deleteLink.onclick = () => {
             backdrop.style.display = 'block';
-            backdrop.onclick = (e) => {
-                if (e.target === backdrop) {
-                    closeDeleteDialog();
-                }
-            }
             return false;
         }
     }
