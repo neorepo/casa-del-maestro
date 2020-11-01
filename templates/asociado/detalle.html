@@ -68,14 +68,13 @@
                     </tr>
                     <tr>
                         <td>
-                            <a href="/" class="" title="Volver a la lista"><i class="material-icons">fast_rewind</i> a
-                                la lista</a>
+                            <a href="/" class="" title="Volver a la lista"><i class="material-icons back">fast_rewind</i>a la lista</a>
                         </td>
                         <td>
                             <div class="actions">
                                 <!-- Acción editar: método de envío GET -->
                                 <a href="/asociado_agregar_editar.php?aid=<?= $data['id_asociado']; ?>"
-                                    title="Editar registro"><i class="material-icons">edit</i></a>
+                                    title="Editar registro"><i class="material-icons edit">edit</i></a>
                                 <!-- Acción eliminar: método de envío POST -->
                                 <form action="/asociado_eliminar.php" method="POST" style="display: inline-block;"
                                     title="Eliminar registro">
@@ -83,7 +82,7 @@
                                     <input type="hidden" name="aid" value="<?= $data['id_asociado']; ?>">
                                     <button type="submit" class="icon-style"
                                         onclick="return confirm('Este registro será eliminado. ¿Estás seguro?');"><i
-                                            class="material-icons">delete</i></button>
+                                            class="material-icons delete">delete</i></button>
                                 </form>
                                 <!-- <form action="/pdf_report.php" method="POST" style="display: inline-block;"
                                     title="Exportar registro en pdf" target="_blank">
@@ -91,9 +90,9 @@
                                     <input type="hidden" name="aid" value="<?= $data['id_asociado']; ?>">
                                     <button type="submit" class="icon-style"><i class="material-icons pdf">picture_as_pdf</i></button>
                                 </form> -->
-                                <a href="/pdf_report.php?aid=<?= $data['id_asociado']; ?>"
+                                <a href="/generar_pdf.php?aid=<?= $data['id_asociado']; ?>"
                                     title="Exportar registro en pdf" target="_blank"><i
-                                        class="material-icons">picture_as_pdf</i></a>
+                                        class="material-icons pdf">picture_as_pdf</i></a>
                             </div>
                         </td>
                     </tr>
@@ -110,6 +109,8 @@
     </div>
 
 </section>
+
+<!-- Todo lo que viene a continuación genera la ventana modal para eliminar-->
 <style>
     #delete-dialog {
         z-index: 1002;
@@ -138,7 +139,9 @@
     }
 </style>
 
-<a href="https://github.com/" id="delete-link" title="Delete it."><i class="material-icons multi">delete</i></a>
+<!-- <a href="/asociado_eliminar.php?aid=<?= $data['id_asociado']; ?>" id="delete-link" title="Delete it.">
+    <i class="material-icons multi">delete</i>
+</a> -->
 
 <div class="backdrop">
 
@@ -175,7 +178,8 @@
         }
         document.querySelector('#ok-btn').onclick = () => {
             closeDeleteDialog();
-            location.href = deleteLink.href;
+            // href = asociado_eliminar.php?aid=3;
+            location.href = deleteLink.href; // Solicitud equivalente a GET en PHP
         }
         document.querySelector('#cancel-btn').onclick = () => {
             closeDeleteDialog();

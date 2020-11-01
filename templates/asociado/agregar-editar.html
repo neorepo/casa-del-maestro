@@ -13,6 +13,11 @@
         </div> -->
     </div>
 
+    <?php if( isset($numberOferrors) ): ?>
+    <p style="color:#dc3545;background-color: pink;padding: 8px;border-radius: 4px;"><span class="material-icons"
+            style="color: #dc3545;">report_problem</span>Hay campos en el formulario que requieren su atención.</p>
+    <?php endif; ?>
+
     <form action="#" method="post" class="asociado">
         <input type="hidden" name="token" value="<?= Token::csrf(); ?>" readonly spellcheck="false" autocomplete="off"
             autocorrect="off" autocapitalize="off">
@@ -60,8 +65,8 @@
         <div class="form-group">
             <label for="num-documento">Número de documento (ocho dígitos) *</label>
             <input type="text" name="num_documento" id="num-documento"
-                class="form-control <?= isset($errors['num_documento']) ? 'is-invalid' : ''; ?>"
-                data-toggle="tooltip" data-placement="left" title="Completar con ceros a la izquierda si es necesario"
+                class="form-control <?= isset($errors['num_documento']) ? 'is-invalid' : ''; ?>" data-toggle="tooltip"
+                data-placement="left" title="Completar con ceros a la izquierda si es necesario"
                 value="<?= $data['num_documento']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['num_documento'] ?? '';  ?></div>
@@ -72,8 +77,8 @@
             <a class="float-right" href="http://www0.unsl.edu.ar/~jolguin/cuit.php" target="_blank">Cálculo de
                 CUIT/CUIL</a>
             <input type="text" name="num_cuil" id="num-cuil"
-                class="form-control <?= isset($errors['num_cuil']) ? 'is-invalid' : ''; ?>"
-                data-toggle="tooltip" data-placement="left" title="Sin guiones, puntos, espacios u otros símbolos"
+                class="form-control <?= isset($errors['num_cuil']) ? 'is-invalid' : ''; ?>" data-toggle="tooltip"
+                data-placement="left" title="Sin guiones, puntos, espacios u otros símbolos"
                 value="<?= $data['num_cuil']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['num_cuil'] ?? '';  ?></div>
@@ -94,9 +99,8 @@
         <div class="form-group">
             <label for="email">Correo electrónico</label>
             <input type="email" name="email" id="email"
-                class="form-control <?= isset($errors['email']) ? 'is-invalid' : ''; ?>"
-                value="<?= $data['email']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
-                autocapitalize="off">
+                class="form-control <?= isset($errors['email']) ? 'is-invalid' : ''; ?>" value="<?= $data['email']; ?>"
+                spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['email'] ?? ''; ?></div>
         </div>
 

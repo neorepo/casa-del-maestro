@@ -48,15 +48,22 @@ button.icon-style:focus {
     font-size: 22px;
     color: #0E1B55;
     vertical-align: bottom;
+    /* Arriba y abajo 0; derecha e izquierda 4 */
+    margin: 0 4px;
 }
 .material-icons.delete {
     color: #dc143b;
 }
 .material-icons.edit {
     color: #ffa500;
+    margin: 0;
 }
 .material-icons.pdf {
     color: #f40f02;
+    margin: 0;
+}
+.material-icons.back {
+    margin: 0;
 }
 
 /* BACK TO TOP */

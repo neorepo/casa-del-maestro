@@ -13,21 +13,27 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8',
 $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING,
     // array(0,64,255), array(220,20,60) // Texto del header/color línea divisoria
 );
-$pdf->setFooterData(
-	// array(220,20,60), array(0,64,128) // Color número de página/color línea divisoria
-); 
+/*$pdf->setFooterData(
+	array(220,20,60), array(0,64,128) // Color número de página/color línea divisoria
+);*/
 
 // set header and footer fonts
+                         // Helvetica              font-size: 10
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+                         // Helvetica              font-size: 8
 $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
 // set default monospaced font
+                               // courier
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 // set margins
+                    //15                27           15
 $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+                      // 5
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+                      // 10
+//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER); // Esta línea genera la línea divisoria del footer con el núm. de pág.
 
 // set auto page breaks
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -49,7 +55,7 @@ $pdf->SetFont('helvetica', 'B', 12);
 // add a page
 $pdf->AddPage();
 
-$pdf->Write(16, 'Información de Asociado', '', 0, 'L', true, 0, false, false, 0);
+$pdf->Write(16, 'Datos del Asociado', '', 0, 'L', true, 0, false, false, 0);
 
 $pdf->SetFont('helvetica', '', 10);
 
@@ -128,5 +134,31 @@ EOD;
 
 $pdf->writeHTML($tbl, true, false, false, false, '');
 
+// -----------------------------------------------------------------------------
+$currentDate = date('j/n/Y H:i:s');
+$pdf->Ln();
+
+// $html = <<<EOD
+// <p style="">$currentDate</p>
+// EOD;
+
+// Print text using writeHTMLCell()
+$pdf->writeHTMLCell(0, 33, '', '', $currentDate, 0, 1, 0, true, 'R', true);
+
+// $pdf->writeHTML($html, true, false, false, false, 'R');
+
 //Close and output PDF document
 $pdf->Output('informacion-de-asociado.pdf', 'I');
+
+
+// function writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=false, $reseth=true, $align='', $autopadding=true)
+
+// function writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
+
+// function Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=false, $link='', $stretch=0, $ignore_min_height=false, $calign='T', $valign='M')
+
+// function MultiCell($w, $h, $txt, $border=0, $align='J', $fill=false, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0, $valign='T', $fitcell=false)
+
+// function Text($x, $y, $txt, $fstroke=false, $fclip=false, $ffill=true, $border=0, $ln=0, $align='', $fill=false, $link='', $stretch=0, $ignore_min_height=false, $calign='T', $valign='M', $rtloff=false)
+
+// function Write($h, $txt, $link='', $fill=false, $align='', $ln=false, $stretch=0, $firstline=false, $firstblock=false, $maxh=0, $wadj=0, $margin='')

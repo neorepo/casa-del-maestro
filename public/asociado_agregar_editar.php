@@ -5,6 +5,7 @@ require '../includes/bootstrap.php';
 
 $data = [];
 $errors = [];
+$numberOferrors = null;
 
 // Las localidades estarán disponibles solo cuando exista el id de la provincia.
 // Son 22793 localidades, solo listaremos las que pertenezcan a la provincia seleccionada
@@ -241,10 +242,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors['sexo'] = $messages['valid_sex'];
         }
 
+        // Número de errores
+        $numberOferrors = count( $errors );
+
         /**
          * Si no existen errores en el array
          */
-        if( empty($errors) ) {
+        if( /*empty($errors)*/ $numberOferrors === 0 ) {
 
             $returnValue = save( $data );
             // Si el valor de retorno es true 
@@ -281,6 +285,7 @@ $values = [
     'title' => $title,
     'data' => $data,
     'errors' => $errors,
+    'numberOferrors' => $numberOferrors,
     'localidades' => $localidades,
     'action' => $action
 ];
