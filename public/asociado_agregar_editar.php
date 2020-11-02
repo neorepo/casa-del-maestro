@@ -271,7 +271,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 redirect('/asociado_detalle.php?aid=' . $id_asociado);
 
             } else {
-
                 Flash::addFlash('Lo sentimos, no pudimos guardar el registro.', 'danger');
                 redirect('/');
             }

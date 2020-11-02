@@ -46,7 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $usuarioLogueado = $_SESSION['nombre'];
 
-    $sql = 'SELECT a.apellido, a.nombre, a.sexo, strftime("%d/%m/%Y",a.fecha_nacimiento) AS fecha_nacimiento, a.tipo_documento, a.num_documento, a.num_cuil,
+    // strftime("%d/%m/%Y",a.fecha_nacimiento) AS fecha_nacimiento
+    $sql = 'SELECT a.apellido, a.nombre, a.sexo, a.fecha_nacimiento, a.tipo_documento, a.num_documento, a.num_cuil,
     a.condicion_ingreso, a.email, t.telefono_movil, t.telefono_linea, a.domicilio, l.nombre AS localidad, l.cp, p.nombre AS provincia
     FROM asociado a INNER JOIN telefono t ON a.id_asociado = t.id_asociado INNER JOIN localidad l ON a.id_localidad = l.id_localidad
     INNER JOIN provincia p ON l.id_provincia = p.id_provincia WHERE a.deleted = 0 ORDER BY a.apellido, a.nombre;';
@@ -62,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       // Seteamos las propiedades del documento
       $spreadsheet->getProperties()->setCreator('Casa del Maestro y Previsión Social')
-        ->setLastModifiedBy($usuarioLogueado)->setTitle('Lista de sociados')
+        ->setLastModifiedBy($usuarioLogueado)->setTitle('Lista de Asociados')
         ->setSubject('')
         ->setDescription('')
         ->setKeywords('')

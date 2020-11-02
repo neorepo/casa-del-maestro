@@ -155,3 +155,235 @@ https://github.com/PHPOffice/PhpSpreadsheet/blob/master/samples/templates/sample
 
 Buscador de prestador telefónico
 https://numeracion.enacom.gob.ar/
+
+
+
+<?php
+// https://www.youtube.com/watch?v=lUNwKeRygyI
+require_once 'TCPDF/tcpdf.php';
+
+// create new PDF document
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+$pdf->setPrintHeader(false);
+$pdf->setPrintFooter(false);
+
+// El ancho total de la página es de 190
+$pdf->AddPage();
+
+$data = file_get_contents('MOCK_DATA.json');
+$rows = json_decode($data, true);
+
+// Columns title
+$headers = array_keys( $rows[0] );
+$w = [10, 40, 40, 70, 30];
+
+// Antes de imprimir los encabezados seteamos la fuente a negrita
+$pdf->SetFont('', 'B');
+
+// Imprimir los encabezados
+$n = count( $headers );
+for ($i= 0; $i < $n; $i++) { 
+    $pdf->Cell($w[$i], 7, $headers[$i], 1, 0, 'L', 0);
+}
+// Despues de imprimir los encabezados, damos un salto de línea
+$pdf->Ln();
+
+// Devolvemos el estilo de fuente por defecto
+$pdf->SetFont('');
+
+// border LR => left and right
+foreach($rows as $row) {
+    $pdf->Cell($w[0], 6, $row['id'], 'LR', 0, 'L', 0);
+    $pdf->Cell($w[1], 6, $row['first_name'], 'LR', 0, 'L', 0);
+    $pdf->Cell($w[2], 6, $row['last_name'], 'LR', 0, 'L', 0);
+    $pdf->Cell($w[3], 6, $row['email'], 'LR', 0, 'L', 0);
+    $pdf->Cell($w[4], 6, $row['gender'], 'LR', 0, 'L', 0);
+    $pdf->Ln(); // Salto de línea
+}
+$pdf->Cell(array_sum($w), 0, '', 'T'); // border T => Top
+
+$pdf->Ln();
+
+$pdf->SetRightMargin(8.5);
+
+$pdf->Cell(0, 0, date('j/n/Y H:i:s'), 0, 0, 'R');
+
+// Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=false, $link='', $stretch=0, $ignore_min_height=false, $calign='T', $valign='M')
+
+$pdf->Output('test.pdf', 'I');
+
+
+<?php
+
+require_once 'db/Db.php';
+require_once 'config/Config.php';
+
+require_once('TCPDF/tcpdf.php');
+
+// extend TCPF with custom functions
+class MYPDF extends TCPDF {
+
+	// Load table data from file
+	public function LoadData() {
+        $sql = 'SELECT 
+          l.nombre AS localidad,
+          l.codigo_postal,
+          p.nombre AS provincia
+        FROM
+          localidad AS l 
+        INNER JOIN provincia AS p 
+          ON l.id_provincia = p.id_provincia LIMIT 36;';
+
+        return Db::query( $sql );
+    }
+
+	// Colored table
+	public function ColoredTable($header,$data) {
+		// Colors, line width and bold font
+		$this->SetFillColor(17, 61, 118); // crimson color 220, 20, 60
+		$this->SetTextColor(255);
+		$this->SetDrawColor(221, 221, 221); // color línea de borde
+		$this->SetLineWidth(.2); // ancho de borde default 0.3
+		$this->SetFont('', 'B'); // BI => bold italic
+		// Header
+		$ancho_celda = array(85, 35, 60); // 180
+		$num_headers = count($header);
+		for($i = 0; $i < $num_headers; ++$i) {
+			$this->Cell($ancho_celda[$i], 7, $header[$i], 1, 0, 'L', 1);
+		}
+		$this->Ln();
+		// Color and font restoration
+		$this->SetFillColor(241, 241, 241);
+		$this->SetTextColor(0);
+		$this->SetFont('');
+		// Data
+        $fill = 0;
+        // Cell(ancho, alto, texto, borde, , alineación, indica si el fondo es pintado o no)
+		foreach($data as $row) {
+			$this->Cell($ancho_celda[0], 6, $row['localidad'], 'LR', 0, 'L', $fill);
+			$this->Cell($ancho_celda[1], 6, $row['codigo_postal'], 'LR', 0, 'L', $fill);
+			$this->Cell($ancho_celda[2], 6, $row['provincia'], 'LR', 0, 'L', $fill);
+            $this->Ln(); // Salto de línea
+            $fill=!$fill; // Para generar el striped de las filas
+        }
+        $this->Cell(array_sum($ancho_celda), 0, '', 'T');
+        // $this->Ln();
+        // $this->Cell(array_sum($ancho_celda), 6, date('j/n/Y H:i:s'), '', 0, 'R');
+	}
+}
+
+// create new PDF document
+$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+// set document information
+$pdf->SetCreator(PDF_CREATOR);
+$pdf->SetAuthor('Nicola Asuni');
+$pdf->SetTitle('TCPDF Example 011');
+$pdf->SetSubject('TCPDF Tutorial');
+$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+// set default header data
+// size logo image 354 * 118
+$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+// $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+// $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+	require_once(dirname(__FILE__).'/lang/eng.php');
+	$pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+$pdf->SetFont('helvetica', '', 12); // 12pts = 16px
+
+// add a page
+$pdf->AddPage();
+
+// column titles
+$header = array('LOCALIDAD', 'CÓD. POSTAL', 'PROVINCIA');
+
+// data loading
+$data = $pdf->LoadData();
+
+// column titles
+// $header = array_keys( $data[0] );
+
+// print colored table
+$pdf->ColoredTable($header, $data);
+
+$pdf->Ln();
+
+$pdf->SetRightMargin(13.5);
+
+$pdf->Cell(0, 0, date('j/n/Y H:i:s'), 0, 0, 'R');
+
+// ---------------------------------------------------------
+
+// close and output PDF document
+$pdf->Output('test.pdf', 'I');
+
+//============================================================+
+// END OF FILE
+//============================================================+
+
+
+// Dao Pattern
+https://www.oracle.com/java/technologies/dataaccessobject.html
+
+public int insertCustomer(...) {
+    // Implement insert customer here.
+    // Return newly created customer number
+    // or a -1 on error
+  }
+  
+  public boolean deleteCustomer(...) {
+    // Implement delete customer here
+    // Return true on success, false on failure
+  }
+
+  public Customer findCustomer(...) {
+    // Implement find a customer here using supplied
+    // argument values as search criteria
+    // Return a Transfer Object if found,
+    // return null on error or if not found
+  }
+
+  public boolean updateCustomer(...) {
+    // implement update record here using data
+    // from the customerData Transfer Object
+    // Return true on success, false on failure or
+    // error
+  }
+
+  public RowSet selectCustomersRS(...) {
+    // implement search customers here using the
+    // supplied criteria.
+    // Return a RowSet. 
+  }
+
+  public Collection selectCustomersTO(...) {
+    // implement search customers here using the
+    // supplied criteria.
+    // Alternatively, implement to return a Collection 
+    // of Transfer Objects.
+  }

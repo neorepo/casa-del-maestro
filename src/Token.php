@@ -23,7 +23,7 @@ class Token {
     }
 
     public static function validate($token) {
-        if (!isset($token) || $token !== $_SESSION['_token']) {
+        if ( !isset($token) || $token !== $_SESSION['_token'] ) {
             return false;
         }
         return true;

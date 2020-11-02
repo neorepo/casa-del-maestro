@@ -1,105 +1,105 @@
 <section class="">
 
-    <div class="mb-4">
+    <div class="mb-3">
         <h1 class="h2">
             <?= htmlspecialchars( $data['apellido'] . " " . $data['nombre'] ); ?>
         </h1>
     </div>
+    <!-- <a href="/generar_pdf.php?aid=<?= $data['id_asociado']; ?>" title="Exportar registro en pdf" target="_blank">
+        <i class="material-icons pdf">picture_as_pdf</i>
+    </a> -->
     <div class="row">
-        <div class="col-md-6">
 
+        <div class="col-md-6">
             <table class="table table-sm table-borderless">
-                <tbody>
-                    <tr>
-                        <th>Fecha de registro</th>
-                        <td><?= htmlspecialchars($data['created'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-                    </tr>
-                    <tr>
-                        <th>Sexo</th>
-                        <td><?= htmlspecialchars($data['sexo'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-                    </tr>
-                    <tr>
-                        <th>Fecha de nacimiento</th>
-                        <td><?= htmlspecialchars($data['fecha_nacimiento'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-                    </tr>
-                    <tr>
-                        <th>Documento</th>
-                        <td><?= htmlspecialchars($data['tipo_documento'] . ' - ' . $data['num_documento'], ENT_NOQUOTES, 'UTF-8'); ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Número de cuil</th>
-                        <td><?= htmlspecialchars($data['num_cuil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-                    </tr>
-                    <tr>
-                        <th>Tipo de asociado</th>
-                        <td><?= htmlspecialchars($data['condicion_ingreso'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-                    </tr>
-                    <tr>
-                        <th>Correo electrónico</th>
-                        <td><?= htmlspecialchars($data['email'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-                    </tr>
-                    <tr>
-                        <th>Teléfono móvil</th>
-                        <td><?= htmlspecialchars($data['telefono_movil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-                    </tr>
-                    <tr>
-                        <th>Teléfono de línea</th>
-                        <td><?= htmlspecialchars($data['telefono_linea'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-                    </tr>
-                    <tr>
-                        <th>Domicilio</th>
-                        <td><?= htmlspecialchars($data['domicilio'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-                    </tr>
-                    <tr>
-                        <th>Localidad</th>
-                        <td><?= ucwords( htmlspecialchars($data['localidad'], ENT_NOQUOTES, 'UTF-8') ); ?></td>
-                    </tr>
-                    <tr>
-                        <th>Código postal</th>
-                        <td><?= htmlspecialchars($data['cp'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-                    </tr>
-                    <tr>
-                        <th>Provincia</th>
-                        <td><?= ucwords( htmlspecialchars($data['provincia'], ENT_NOQUOTES, 'UTF-8') ); ?></td>
-                    </tr>
-                    <tr>
-                        <th colspan="2">&nbsp;</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="/" class="" title="Volver a la lista"><i class="material-icons back">fast_rewind</i>a la lista</a>
-                        </td>
-                        <td>
-                            <div class="actions">
-                                <!-- Acción editar: método de envío GET -->
-                                <a href="/asociado_agregar_editar.php?aid=<?= $data['id_asociado']; ?>"
-                                    title="Editar registro"><i class="material-icons edit">edit</i></a>
-                                <!-- Acción eliminar: método de envío POST -->
-                                <form action="/asociado_eliminar.php" method="POST" style="display: inline-block;"
-                                    title="Eliminar registro">
-                                    <input type="hidden" name="token" value="<?= Token::csrf(); ?>">
-                                    <input type="hidden" name="aid" value="<?= $data['id_asociado']; ?>">
-                                    <button type="submit" class="icon-style"
-                                        onclick="return confirm('Este registro será eliminado. ¿Estás seguro?');"><i
-                                            class="material-icons delete">delete</i></button>
-                                </form>
-                                <!-- <form action="/pdf_report.php" method="POST" style="display: inline-block;"
+                <tr>
+                    <th>Fecha de registro</th>
+                    <td><?= htmlspecialchars($data['created'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                </tr>
+                <tr>
+                    <th>Sexo</th>
+                    <td><?= htmlspecialchars($data['sexo'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                </tr>
+                <tr>
+                    <th>Fecha de nacimiento</th>
+                    <td><?= htmlspecialchars($data['fecha_nacimiento'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                </tr>
+                <tr>
+                    <th>Documento</th>
+                    <td><?= htmlspecialchars($data['tipo_documento'] . ' - ' . $data['num_documento'], ENT_NOQUOTES, 'UTF-8'); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Número de cuil</th>
+                    <td><?= htmlspecialchars($data['num_cuil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                </tr>
+                <tr>
+                    <th>Tipo de asociado</th>
+                    <td><?= htmlspecialchars($data['condicion_ingreso'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                </tr>
+                <tr>
+                    <th>Correo electrónico</th>
+                    <td><?= htmlspecialchars($data['email'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                </tr>
+                <tr>
+                    <th>Teléfono móvil</th>
+                    <td><?= htmlspecialchars($data['telefono_movil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                </tr>
+                <tr>
+                    <th>Teléfono de línea</th>
+                    <td><?= htmlspecialchars($data['telefono_linea'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                </tr>
+                <tr>
+                    <th>Domicilio</th>
+                    <td><?= htmlspecialchars($data['domicilio'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                </tr>
+                <tr>
+                    <th>Localidad</th>
+                    <td><?= ucwords( htmlspecialchars($data['localidad'], ENT_NOQUOTES, 'UTF-8') ); ?></td>
+                </tr>
+                <tr>
+                    <th>Código postal</th>
+                    <td><?= htmlspecialchars($data['cp'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                </tr>
+                <tr>
+                    <th>Provincia</th>
+                    <td><?= ucwords( htmlspecialchars($data['provincia'], ENT_NOQUOTES, 'UTF-8') ); ?></td>
+                </tr>
+                <tr>
+                    <th colspan="2">&nbsp;</th>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="/" class="" title="Volver a la lista">
+                            <i class="material-icons back">fast_rewind</i> a la lista
+                        </a>
+                    </td>
+                    <td>
+                        <div class="actions">
+                            <!-- Acción editar: método de envío GET -->
+                            <a href="/asociado_agregar_editar.php?aid=<?= $data['id_asociado']; ?>"
+                                title="Editar registro"><i class="material-icons edit">edit</i></a>
+                            <!-- Acción eliminar: método de envío POST -->
+                            <form action="/asociado_eliminar.php" method="POST" style="display: inline-block;"
+                                title="Eliminar registro">
+                                <input type="hidden" name="token" value="<?= Token::csrf(); ?>">
+                                <input type="hidden" name="aid" value="<?= $data['id_asociado']; ?>">
+                                <button type="submit" class="icon-style"
+                                    onclick="return confirm('Este registro será eliminado. ¿Estás seguro?');"><i
+                                        class="material-icons delete">delete</i></button>
+                            </form>
+                            <!-- <form action="/pdf_report.php" method="POST" style="display: inline-block;"
                                     title="Exportar registro en pdf" target="_blank">
-                                    <input type="hidden" name="token" value="<?= Token::csrf(); ?>">
-                                    <input type="hidden" name="aid" value="<?= $data['id_asociado']; ?>">
+                                    <input type="hidden" name="token" value="">
+                                    <input type="hidden" name="aid" value="">
                                     <button type="submit" class="icon-style"><i class="material-icons pdf">picture_as_pdf</i></button>
                                 </form> -->
-                                <a href="/generar_pdf.php?aid=<?= $data['id_asociado']; ?>"
-                                    title="Exportar registro en pdf" target="_blank"><i
-                                        class="material-icons pdf">picture_as_pdf</i></a>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
+                        </div>
+                    </td>
+                </tr>
             </table>
-
         </div>
+
         <div class="col-md-6">
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo itaque assumenda facere incidunt nobis,
                 explicabo distinctio dolorem nesciunt dignissimos, reprehenderit, inventore perferendis placeat aut
@@ -164,12 +164,12 @@
         initDeleteDialog();
 
         // Detectar la tecla escape
-        document.onkeydown = function (evt) {
-            evt = evt || window.event;
-            if (evt.keyCode == 27) {
-                closeDeleteDialog();
-            }
-        };
+        // document.onkeydown = function (evt) {
+        //     evt = evt || window.event;
+        //     if (evt.keyCode == 27) {
+        //         closeDeleteDialog();
+        //     }
+        // };
     });
 
     function initDeleteDialog() {
