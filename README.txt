@@ -350,40 +350,43 @@ $pdf->Output('test.pdf', 'I');
 // Dao Pattern
 https://www.oracle.com/java/technologies/dataaccessobject.html
 
-public int insertCustomer(...) {
-    // Implement insert customer here.
-    // Return newly created customer number
-    // or a -1 on error
-  }
+// Interface that all CustomerDAOs must support
+public interface CustomerDAO {
+  public int insertCustomer(...);
+  public boolean deleteCustomer(...);
+  public Customer findCustomer(...);
+  public boolean updateCustomer(...);
+  public RowSet selectCustomersRS(...);
+  public Collection selectCustomersTO(...);
+  ...
+}
+
+public int insertCustomer(Customer customer) {
+  // Implementar insertar cliente aquí.
+  // Devuelve el número de cliente recién creado o un -1 en caso de error
+}
   
-  public boolean deleteCustomer(...) {
-    // Implement delete customer here
-    // Return true on success, false on failure
-  }
+public boolean deleteCustomer(int id) {
+  // Implementar eliminar cliente aquí
+  // Devuelve verdadero en caso de éxito, falso en caso de error
+}
 
-  public Customer findCustomer(...) {
-    // Implement find a customer here using supplied
-    // argument values as search criteria
-    // Return a Transfer Object if found,
-    // return null on error or if not found
-  }
+public Customer findCustomer(int id) {
+  // Implementar buscar un cliente aquí utilizando valores de argumentos proporcionados como criterios de búsqueda
+  // Devuelve un objeto de transferencia si se encuentra, devuelve nulo en caso de error o si no se encuentra
+}
 
-  public boolean updateCustomer(...) {
-    // implement update record here using data
-    // from the customerData Transfer Object
-    // Return true on success, false on failure or
-    // error
-  }
+public boolean updateCustomer(Customer customer) {
+  // implementar el registro de actualización aquí utilizando datos del objeto de transferencia de datos del cliente
+  // Devuelve verdadero en caso de éxito, falso en caso de falla o error
+}
 
-  public RowSet selectCustomersRS(...) {
-    // implement search customers here using the
-    // supplied criteria.
-    // Return a RowSet. 
-  }
+public RowSet selectCustomersRS(...) {
+  // implementar la búsqueda de clientes aquí utilizando los criterios proporcionados.
+  // Devuelve un RowSet (conjunto de filas)
+}
 
-  public Collection selectCustomersTO(...) {
-    // implement search customers here using the
-    // supplied criteria.
-    // Alternatively, implement to return a Collection 
-    // of Transfer Objects.
-  }
+public Collection selectCustomersTO(...) {
+  // implementar la búsqueda de clientes aquí utilizando los criterios proporcionados.
+  // Alternativamente, implemente para devolver una colección de objetos de transferencia.
+}

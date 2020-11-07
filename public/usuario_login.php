@@ -55,6 +55,7 @@ render('usuario/login.html', ['title' => $title, 'data' => $data, 'errors' => $e
  * Funciones de persistencia
  */
 function authenticateUser($usuario, $password) {
+    // Podemos acceder por número de documento o correo electrónico.
     $q = 'SELECT * FROM usuario WHERE num_documento = ? OR email = ? LIMIT 1;';
 
     $rows = Db::query($q, $usuario, $usuario);

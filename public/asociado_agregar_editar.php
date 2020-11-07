@@ -11,9 +11,9 @@ $numberOferrors = null;
 // Son 22793 localidades, solo listaremos las que pertenezcan a la provincia seleccionada
 $localidades = [];
 
-$action = array_key_exists('aid', $_GET);
+$edit = array_key_exists('aid', $_GET);
 
-if ($action) {
+if ($edit) {
     // Recuperamos los datos del asociado de la base de datos
     $data = getAsociadoPorId();
     // Asignamos el id del asociado a la variable de sesión para saber que registro editar, también podemos utilizar el array $_GET
@@ -278,7 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-$title = $action ? 'Editar asociado' : 'Agregar asociado';
+$title = $edit ? 'Editar asociado' : 'Agregar asociado';
 
 $values = [
     'title' => $title,
@@ -286,7 +286,7 @@ $values = [
     'errors' => $errors,
     'numberOferrors' => $numberOferrors,
     'localidades' => $localidades,
-    'action' => $action
+    'edit' => $edit
 ];
 
 render('asociado/agregar-editar.html', $values);

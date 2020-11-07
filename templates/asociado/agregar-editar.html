@@ -14,8 +14,10 @@
     </div>
 
     <?php if( isset($numberOferrors) ): ?>
-    <p style="color:#dc3545;background-color: pink;padding: 8px;border-radius: 4px;"><span class="material-icons"
-            style="color: #dc3545;">report_problem</span>Hay campos en el formulario que requieren su atención.</p>
+    <p style="color:#dc3545;background-color: #f8d7da;padding: 12px;border-radius: 4px;">
+        <span class="material-icons" style="color: #dc3545;">report_problem</span>Hay campos en el formulario que
+        requieren su atención.
+    </p>
     <?php endif; ?>
 
     <form action="#" method="post" class="asociado">
@@ -194,7 +196,7 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary"><?php echo $action ? 'Editar' : 'Agregar'; ?></button>
+        <button type="submit" class="btn btn-primary"><?php echo $edit ? 'Editar' : 'Agregar'; ?></button>
         <?php if( isset($_SESSION['aid']) ): ?>
         <a href="/asociado_detalle.php?aid=<?= $_SESSION['aid']; ?>" class="btn btn-secondary">Cancelar</a>
         <?php else: ?>

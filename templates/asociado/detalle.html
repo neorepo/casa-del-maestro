@@ -5,9 +5,7 @@
             <?= htmlspecialchars( $data['apellido'] . " " . $data['nombre'] ); ?>
         </h1>
     </div>
-    <!-- <a href="/generar_pdf.php?aid=<?= $data['id_asociado']; ?>" title="Exportar registro en pdf" target="_blank">
-        <i class="material-icons pdf">picture_as_pdf</i>
-    </a> -->
+
     <div class="row">
 
         <div class="col-md-6">
@@ -101,9 +99,10 @@
         </div>
 
         <div class="col-md-6">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo itaque assumenda facere incidunt nobis,
-                explicabo distinctio dolorem nesciunt dignissimos, reprehenderit, inventore perferendis placeat aut
-                officia? Tenetur numquam ratione rem modi.</p>
+            <a href="/generar_pdf.php?aid=<?= $data['id_asociado']; ?>" title="Exportar registro en pdf"
+                target="_blank">
+                <i class="material-icons pdf">picture_as_pdf</i>
+            </a>
         </div>
 
     </div>

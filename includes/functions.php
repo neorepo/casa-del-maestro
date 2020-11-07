@@ -99,14 +99,29 @@ function getAsociadoPorId() {
 }
 
 function eliminarAsociado($id_asociado) {
+    $last_modified = date('Y-m-d H:i:s');
     /**
      * Habilitamos la eliminación ON DELETE CASCADE
      * para base de datos SQLite, siempre que la sentencia sql sea DELETE
+     * Db::getInstance()->exec('PRAGMA foreign_keys = ON ;');
      */
-    // Db::getInstance()->exec('PRAGMA foreign_keys = ON ;');
-    $q = 'UPDATE asociado SET deleted = 1 WHERE id_asociado = ? ; ';
-    return Db::query($q, $id_asociado);
+    try {
+        $db = Db::getInstance();
+        // begin the transaction
+        $db->beginTransaction();
 
+        $q = 'UPDATE asociado SET last_modified = ?, deleted = ? WHERE id_asociado = ?;';
+        Db::query($q, $last_modified, true, $id_asociado);
+
+        // commit the transaction
+        $db->commit();
+    } catch (PDOException $e) {
+        // roll back the transaction if something failed
+        $db->rollback();
+        trigger_error('Error:' . $e->getMessage(), E_USER_ERROR);
+        return false; // Deberíamos devolver -1 en caso de error si estuvieramos en JAVA
+    }
+    return true;
     // Devuelve verdadero en caso de éxito, falso en caso de error
 }
 

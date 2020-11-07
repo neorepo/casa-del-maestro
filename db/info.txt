@@ -65,3 +65,6 @@ INSERT INTO test (email) VALUES('');
 CONCLUSIÓN:
 Si un campo es UNIQUE y no es obligatorio, puede ser en MySQL: email VARCHAR(50) NULL UNIQUE o email VARCHAR(50) UNIQUE,
 con lo cual si no tenemos el correo electrónico, deberemos registrar el campo como NULL, para no generar un error de campos duplicados.
+
+Haz tu SQL más seguro
+https://es.khanacademy.org/computing/computer-programming/sql/modifying-databases-with-sql/a/make-your-sql-safer
