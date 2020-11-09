@@ -42,7 +42,7 @@
                     <td><?= $count++; ?></td>
                     <td><?= htmlspecialchars($asociado['apellido'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     <td><?= htmlspecialchars($asociado['nombre'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-                    <td><?= htmlspecialchars($asociado['num_documento'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    <td><?= htmlspecialchars($asociado['tipo_documento'] . ' - ' . $asociado['num_documento'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     <td><?= htmlspecialchars($asociado['num_cuil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     <td><?= htmlspecialchars($asociado['condicion_ingreso'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     <td class="text-center">

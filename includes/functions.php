@@ -129,7 +129,7 @@ function eliminarAsociado($id_asociado) {
  * Listar asociados
  */
 function listarAsociados() {
-    $q = 'SELECT id_asociado, apellido, nombre, num_documento, num_cuil, 
+    $q = 'SELECT id_asociado, apellido, nombre, tipo_documento, num_documento, num_cuil, 
     condicion_ingreso FROM asociado WHERE deleted = 0 ORDER BY apellido, condicion_ingreso; ';
     return Db::query($q);
 }
