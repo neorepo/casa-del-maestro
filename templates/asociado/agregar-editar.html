@@ -1,6 +1,6 @@
 <section class="section">
 
-    <div class="row align-items-center mb-4">
+    <div class="row align-items-center mb-3">
         <div class="col">
             <h1 class="h2"><?= htmlspecialchars($title); ?></h1>
         </div>
@@ -76,7 +76,7 @@
 
         <div class="form-group">
             <label for="num-cuil">Número de cuil *</label>
-            <a class="float-right" href="http://www0.unsl.edu.ar/~jolguin/cuit.php" target="_blank">Cálculo de
+            <a class="form-sublink" href="http://www0.unsl.edu.ar/~jolguin/cuit.php" target="_blank">Cálculo de
                 CUIT/CUIL</a>
             <input type="text" name="num_cuil" id="num-cuil"
                 class="form-control <?= isset($errors['num_cuil']) ? 'is-invalid' : ''; ?>" data-toggle="tooltip"
@@ -196,7 +196,7 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary"><?php echo $edit ? 'Editar' : 'Agregar'; ?></button>
+        <button type="submit" class="btn btn-primary"><?php echo $edit ? 'Guardar' : 'Registrar'; ?></button>
         <?php if( isset($_SESSION['aid']) ): ?>
         <a href="/asociado_detalle.php?aid=<?= $_SESSION['aid']; ?>" class="btn btn-secondary">Cancelar</a>
         <?php else: ?>
@@ -211,7 +211,7 @@
     document.querySelector('#id-provincia').value = "<?= $data['id_provincia']; ?>";
     document.querySelector('#id-localidad').value = "<?= $data['id_localidad']; ?>";
 
-    let generos = document.querySelectorAll('input[name = "sexo"]');
+    let generos = document.querySelectorAll('input[name="sexo"]');
     // console.log(generos);
     generos.forEach(element => {
         if (element.value == "<?= $data['sexo']; ?>") {

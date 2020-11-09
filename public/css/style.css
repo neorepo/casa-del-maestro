@@ -13,28 +13,37 @@
     /* border: 1px solid rgba(0,0,0,.125); */
 }
 
+/* FORMS */
 label {
-    font-weight: 700;
+    font-weight: 500;
     margin-bottom: .25rem;
+    font-size: 14px;
+    color: #2D2D2D;
 }
 
-.invalid-feedback {
-    display: block;
-    visibility: hidden;
-    height: 19.2px;
+.form-sublink {
+    float: right;
+    color: #838E95;
+    font-size: 12px;
+    margin-top: .3rem;
+    text-decoration: none!important;
 }
 
-.is-invalid~.invalid-feedback,
-.is-invalid~.invalid-tooltip,
-.was-validated :invalid~.invalid-feedback,
-.was-validated :invalid~.invalid-tooltip {
-    visibility: visible;
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+form .form-control {
+    padding: 0.5rem 0.75rem;
+    height: 40px;
+    line-height: 1.25;
 }
 
 .form-control:focus, .custom-select:focus {
     border-color: inherit;
 }
 
+/* BUTTON */
 button.icon-style {
     padding: 0;
     background: transparent;
@@ -134,13 +143,6 @@ table.detail th {
 }
 table.detail td {
     padding: .3rem; /*table-sm => .3rem, normal .75rem*/
-}
-
-/* form-control-lg */
-form .form-control, form .custom-select {
-    height: calc(1.5em + 1rem + 2px);
-    padding: .5rem 1rem;
-    font-size: 1.25rem;
 }
 
 .fs-14 {

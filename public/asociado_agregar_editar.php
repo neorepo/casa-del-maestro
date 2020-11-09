@@ -278,7 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-$title = $edit ? 'Editar asociado' : 'Agregar asociado';
+$title = $edit ? 'Editar asociado' : 'Registrar asociado';
 
 $values = [
     'title' => $title,
