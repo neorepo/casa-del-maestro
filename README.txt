@@ -390,3 +390,19 @@ public Collection selectCustomersTO(...) {
   // implementar la búsqueda de clientes aquí utilizando los criterios proporcionados.
   // Alternativamente, implemente para devolver una colección de objetos de transferencia.
 }
+
+
+/********************************************************************
+$months = [1 => 'enero','febrero','marzo','abril','mayo','junio','julio',
+'agosto','septiembre','octubre','noviembre','diciembre'];
+$days = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+
+$dt = new DateTime();
+
+$format = ':w, :j de :n de :Y';
+$date = preg_replace('/:w/', $days[ (int) $dt->format('w') ], $format);
+$date = preg_replace('/:n/', $months[ (int) $dt->format('n') ], $date);
+
+$date = preg_replace('/:j/', $dt->format('j'), $date);
+$date = preg_replace('/:Y/', $dt->format('Y'), $date);
+print( $date );

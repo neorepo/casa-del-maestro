@@ -253,6 +253,27 @@ function get_date($format = '%A, %#d de %B de %Y') {/*'%Y-%m-%d %H:%M:%S'*/
 }
 
 /**
+ * formato: día-mes-año o año-mes-día
+ * Ejemplos:
+ * echo formatDateEs('NOW'); => sábado, 7 de noviembre de 2020
+ * echo formatDateEs('23-04-1994'); => sábado, 23 de abril de 1994
+ * echo formatDateEs('1995-03-06'); => lunes, 6 de marzo de 1995
+ * retorna la fecha en el formato día semana, día de mes, de año
+ */
+function formatDateEs($date) {
+    $months = [1 => 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+    
+    $days = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+    
+    $dt = new DateTime($date);
+
+    $idxDay = $dt->format("w");
+    $idxMonth = $dt->format("n");
+
+    return $days[$idxDay] . ", " . $dt->format("j") . " de " . $months[$idxMonth] . " de " . $dt->format("Y");
+}
+
+/**
  * Convierte la fecha del formato de base de datos año-mes-día (2000-03-06)
  * al formato día-mes-año (06/03/2000)
  */
