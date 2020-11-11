@@ -46,7 +46,7 @@
                     <td><?= htmlspecialchars($asociado['num_cuil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     <td><?= htmlspecialchars($asociado['condicion_ingreso'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     <td class="text-center">
-                        <a href="/asociado_detalle.php?aid=<?= $asociado['id_asociado']; ?>" title="Más"><i
+                        <a href="/asociado_detalle.php?aid=<?= htmlspecialchars($asociado['id_asociado']); ?>" title="Más"><i
                                 class="material-icons">info</i></a>
                     </td>
                 </tr>

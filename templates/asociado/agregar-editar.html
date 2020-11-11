@@ -198,7 +198,7 @@
 
         <button type="submit" class="btn btn-primary"><?php echo $edit ? 'Guardar' : 'Registrar'; ?></button>
         <?php if( isset($_SESSION['aid']) ): ?>
-        <a href="/asociado_detalle.php?aid=<?= $_SESSION['aid']; ?>" class="btn btn-secondary">Cancelar</a>
+        <a href="/asociado_detalle.php?aid=<?= htmlspecialchars($_SESSION['aid']); ?>" class="btn btn-secondary">Cancelar</a>
         <?php else: ?>
         <a href="/" class="btn btn-secondary">Cancelar</a>
         <?php endif ?>
