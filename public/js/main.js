@@ -74,6 +74,9 @@ function reset() {
     localidad.options.length = 0;
     localidad.options[0] = new Option("- Seleccionar -");
     localidad.options[0].value = 0;
+
+    // Ocultamos el select de localidades
+    document.querySelector("#wrapper-localidad").style.display = "none";
 }
 
 function loadLocalities(response) {
@@ -95,6 +98,9 @@ function loadLocalities(response) {
             }
         });
         localidad.appendChild($fragment);
+
+        // Mostramos el select de localidades
+        document.querySelector("#wrapper-localidad").style.display = "block";
     }
 }
 
