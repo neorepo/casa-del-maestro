@@ -393,6 +393,7 @@ public Collection selectCustomersTO(...) {
 
 
 /********************************************************************
+Ejemplo 1
 $months = [1 => 'enero','febrero','marzo','abril','mayo','junio','julio',
 'agosto','septiembre','octubre','noviembre','diciembre'];
 $days = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
@@ -406,3 +407,18 @@ $date = preg_replace('/:n/', $months[ (int) $dt->format('n') ], $date);
 $date = preg_replace('/:j/', $dt->format('j'), $date);
 $date = preg_replace('/:Y/', $dt->format('Y'), $date);
 print( $date );
+
+Ejemplo 2
+function formatDateEs($date) {
+    $months = [
+      1 => 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+    
+    $days = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+    
+    $dt = new DateTime($date);
+
+    $idxDay = $dt->format("w");
+    $idxMonth = $dt->format("n");
+
+    return $days[$idxDay] . ", " . $dt->format("j") . " de " . $months[$idxMonth] . " de " . $dt->format("Y");
+}

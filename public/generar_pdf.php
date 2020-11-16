@@ -4,7 +4,7 @@
 require '../includes/bootstrap.php';
 
 // Include the main TCPDF library (search for installation path).
-require_once('../TCPDF/tcpdf.php');
+require_once('../reports/tcpdf/tcpdf.php');
 
 // create new PDF document
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -55,7 +55,7 @@ $pdf->SetFont('helvetica', 'B', 12);
 // add a page
 $pdf->AddPage();
 
-$pdf->Write(16, 'Datos del Asociado', '', 0, 'L', true, 0, false, false, 0);
+$pdf->Write(16, 'Informacion del Asociado', '', 0, 'L', true, 0, false, false, 0);
 
 $pdf->SetFont('helvetica', '', 10);
 
@@ -66,10 +66,14 @@ $data = getAsociadoPorId();
 $data['sexo'] = ($data['sexo'] == 'F') ? 'Femenino' : 'Masculino';
 
 $tbl = <<<EOD
-<table style="padding-top: 8px;">
+<style>
+table {padding-top: 3px;}
+th{font-weight: bold;}
+</style>
+<table>
     <tbody>
         <tr>
-            <th>Fecha de Alta</th>
+            <th>Fecha de alta</th>
             <td>$data[created]</td>
         </tr>
         <tr>
@@ -85,7 +89,7 @@ $tbl = <<<EOD
             <td>$data[sexo]</td>
         </tr>
         <tr>
-            <th>Fecha de Nacimiento</th>
+            <th>Fecha de nacimiento</th>
             <td>$data[fecha_nacimiento]</td>
         </tr>
         <tr>
@@ -93,23 +97,23 @@ $tbl = <<<EOD
             <td>$data[tipo_documento] - $data[num_documento]</td>
         </tr>
         <tr>
-            <th>Número de Cuil</th>
+            <th>Número de cuil</th>
             <td>$data[num_cuil]</td>
         </tr>
         <tr>
-            <th>Tipo de Asociado</th>
+            <th>Tipo de asociado</th>
             <td>$data[condicion_ingreso]</td>
         </tr>
         <tr>
-            <th>Correo Electrónico</th>
+            <th>Correo electrónico</th>
             <td>$data[email]</td>
         </tr>
         <tr>
-            <th>Teléfono Móvil</th>
+            <th>Teléfono móvil</th>
             <td>$data[telefono_movil]</td>
         </tr>
         <tr>
-            <th>Teléfono de Línea</th>
+            <th>Teléfono de línea</th>
             <td>$data[telefono_linea]</td>
         </tr>
         <tr>
@@ -121,7 +125,7 @@ $tbl = <<<EOD
             <td>$data[localidad]</td>
         </tr>
         <tr>
-            <th>Código Postal</th>
+            <th>Código postal</th>
             <td>$data[cp]</td>
         </tr>
         <tr>
@@ -148,7 +152,7 @@ $pdf->writeHTMLCell(0, 33, '', '', $currentDate, 0, 1, 0, true, 'R', true);
 // $pdf->writeHTML($html, true, false, false, false, 'R');
 
 //Close and output PDF document
-$pdf->Output('informacion-de-asociado.pdf', 'I');
+$pdf->Output('informacion-del-asociado.pdf', 'I');
 
 
 // function writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=false, $reseth=true, $align='', $autopadding=true)
