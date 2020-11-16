@@ -138,11 +138,8 @@ button.icon-style:focus {
     }
 }
 /*END BACK TO TOP*/
-table.detail th {
-    text-align: left;
-}
-table.detail td {
-    padding: .3rem; /*table-sm => .3rem, normal .75rem*/
+.table-sm td, .table-sm th {
+    padding: .2rem;
 }
 
 .fs-14 {

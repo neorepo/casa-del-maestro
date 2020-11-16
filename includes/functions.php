@@ -555,3 +555,10 @@ function isEmpty($value) {
     return ( !strlen( $value ) );
     // return empty( trim( $value ) );
 }
+
+function cuilFormat($cuil) {
+    $arr = str_split($cuil);
+    $arr[1] .= '-';
+    $arr[9] .= '-';
+    return implode($arr);
+}

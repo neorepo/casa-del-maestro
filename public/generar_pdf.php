@@ -55,7 +55,7 @@ $pdf->SetFont('helvetica', 'B', 12);
 // add a page
 $pdf->AddPage();
 
-$pdf->Write(16, 'Informacion del Asociado', '', 0, 'L', true, 0, false, false, 0);
+$pdf->Write(16, 'Información del asociado', '', 0, 'L', true, 0, false, false, 0);
 
 $pdf->SetFont('helvetica', '', 10);
 
@@ -64,10 +64,12 @@ $pdf->SetFont('helvetica', '', 10);
 $data = getAsociadoPorId();
 
 $data['sexo'] = ($data['sexo'] == 'F') ? 'Femenino' : 'Masculino';
+$data['num_cuil'] = cuilFormat($data['num_cuil']);
 
 $tbl = <<<EOD
 <style>
 table {padding-top: 3px;}
+table, th, td {border-bottom: 1px solid #000;padding: 4px}
 th{font-weight: bold;}
 </style>
 <table>
