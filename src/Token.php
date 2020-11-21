@@ -15,7 +15,7 @@ class Token {
             return bin2hex(random_bytes($length));
         }
         if (function_exists('mcrypt_create_iv')) {
-            // return bin2hex(mcrypt_create_iv($length, MCRYPT_DEV_URANDOM));
+            return bin2hex(mcrypt_create_iv($length, MCRYPT_DEV_URANDOM));
         }
         if (function_exists('openssl_random_pseudo_bytes')) {
             return bin2hex(openssl_random_pseudo_bytes($length));
@@ -23,7 +23,10 @@ class Token {
     }
 
     public static function validate($token) {
-        if ( !isset($token) || $token !== $_SESSION['_token'] ) {
+        // if ( !isset($token) || $token !== $_SESSION['_token'] ) {
+        //     return false;
+        // }
+        if ( !isset($token) || !hash_equals($_SESSION['_token'], $token) ) {
             return false;
         }
         return true;

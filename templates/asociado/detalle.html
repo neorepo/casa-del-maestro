@@ -6,10 +6,16 @@ $data['id_asociado'] = htmlspecialchars($data['id_asociado']);
     <div class="mb-3">
         <h1 class="h2">
             <?= htmlspecialchars( $data['apellido'] . " " . $data['nombre'] ); ?>
-            <a class="float-right" href="/generar_pdf.php?aid=<?= $data['id_asociado']; ?>"
-                title="Exportar registro en pdf" target="_blank">
+            <a class="float-right" href="/demopdf.php?aid=<?= $data['id_asociado']; ?>" title="Exportar registro en pdf"
+                target="_blank">
                 <i class="material-icons pdf">picture_as_pdf</i>
             </a>
+            <!-- <form action="/pdf_report.php" method="POST" style="display: inline-block;" title="Exportar registro en pdf"
+                target="_blank">
+                <input type="hidden" name="token" value="">
+                <input type="hidden" name="aid" value="">
+                <button type="submit" class="icon-style"><i class="material-icons pdf">picture_as_pdf</i></button>
+            </form> -->
         </h1>
     </div>
 
@@ -79,24 +85,17 @@ $data['id_asociado'] = htmlspecialchars($data['id_asociado']);
             <td>
                 <div class="actions">
                     <!-- Acción editar: método de envío GET -->
-                    <a href="/asociado_agregar_editar.php?aid=<?= $data['id_asociado']; ?>" title="Editar registro"><i
+                    <a href="/asociado_agregar_editar.php?aid=<?= htmlspecialchars($data['id_asociado']); ?>" title="Editar registro"><i
                             class="material-icons edit">edit</i></a>
                     <!-- Acción eliminar: método de envío POST -->
                     <form action="/asociado_eliminar.php" method="POST" style="display: inline-block;"
                         title="Eliminar registro">
-                        <input type="hidden" name="token" value="<?= Token::csrf(); ?>">
-                        <input type="hidden" name="aid" value="<?= $data['id_asociado']; ?>">
+                        <input type="hidden" name="token" value="<?= htmlspecialchars(Token::csrf()); ?>">
+                        <input type="hidden" name="aid" value="<?= htmlspecialchars($data['id_asociado']); ?>">
                         <button type="submit" class="icon-style"
                             onclick="return confirm('Este registro será eliminado. ¿Estás seguro?');"><i
                                 class="material-icons delete">delete</i></button>
                     </form>
-                    <!-- <form action="/pdf_report.php" method="POST" style="display: inline-block;"
-                                    title="Exportar registro en pdf" target="_blank">
-                                    <input type="hidden" name="token" value="">
-                                    <input type="hidden" name="aid" value="">
-                                    <button type="submit" class="icon-style"><i class="material-icons pdf">picture_as_pdf</i></button>
-                                </form> -->
-
                 </div>
             </td>
         </tr>
@@ -104,7 +103,10 @@ $data['id_asociado'] = htmlspecialchars($data['id_asociado']);
 
 </section>
 
-<!-- Todo lo que viene a continuación genera la ventana modal para eliminar-->
+<!-- Todo lo que viene a continuación genera la ventana modal para eliminar vía método GET -->
+<!-- <a href="/asociado_eliminar.php?aid=<?php ?>" id="delete-link" title="Delete it.">
+    <i class="material-icons multi">delete</i>
+</a> -->
 <style>
     #delete-dialog {
         z-index: 1002;
@@ -132,10 +134,6 @@ $data['id_asociado'] = htmlspecialchars($data['id_asociado']);
         z-index: 1001;
     }
 </style>
-
-<!-- <a href="/asociado_eliminar.php?aid=<?= $data['id_asociado']; ?>" id="delete-link" title="Delete it.">
-    <i class="material-icons multi">delete</i>
-</a> -->
 
 <div class="backdrop">
 

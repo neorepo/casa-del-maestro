@@ -1,5 +1,7 @@
 <?php
 
+//VERSIÓN SIN PHPSPREADSHEET
+
 // https://github.com/PHPOffice/PhpSpreadsheet antes PHPExcel
 
 /**

@@ -21,14 +21,14 @@
     <?php endif; ?>
 
     <form action="#" method="post" class="asociado">
-        <input type="hidden" name="token" value="<?= Token::csrf(); ?>" readonly spellcheck="false" autocomplete="off"
+        <input type="hidden" name="token" value="<?= htmlspecialchars(Token::csrf()); ?>" readonly spellcheck="false" autocomplete="off"
             autocorrect="off" autocapitalize="off">
 
         <div class="form-group">
             <label for="apellido">Apellidos *</label>
             <input type="text" name="apellido" id="apellido"
                 class="form-control <?= isset( $errors['apellido'] ) ? 'is-invalid' : ''; ?>"
-                value="<?= $data['apellido']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
+                value="<?= $asociado['apellido']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off" maxlength="40">
             <div class="invalid-feedback"><?= $errors['apellido'] ?? ''; ?></div>
         </div>
@@ -37,7 +37,7 @@
             <label for="nombre">Nombres *</label>
             <input type="text" name="nombre" id="nombre"
                 class="form-control <?= isset($errors['nombre']) ? 'is-invalid' : ''; ?>"
-                value="<?= $data['nombre']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
+                value="<?= $asociado['nombre']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off" maxlength="40">
             <div class="invalid-feedback"><?= $errors['nombre'] ?? ''; ?></div>
         </div>
@@ -46,7 +46,7 @@
             <label for="fecha-nacimiento">Fecha de nacimiento (dd/mm/aaaa) *</label>
             <input type="text" name="fecha_nacimiento" id="fecha-nacimiento"
                 class="form-control <?= isset($errors['fecha_nacimiento']) ? 'is-invalid' : ''; ?>"
-                value="<?= $data['fecha_nacimiento']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
+                value="<?= $asociado['fecha_nacimiento']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['fecha_nacimiento'] ?? ''; ?></div>
         </div>
@@ -69,7 +69,7 @@
             <input type="text" name="num_documento" id="num-documento"
                 class="form-control <?= isset($errors['num_documento']) ? 'is-invalid' : ''; ?>" data-toggle="tooltip"
                 data-placement="left" title="Completar con ceros a la izquierda si es necesario"
-                value="<?= $data['num_documento']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
+                value="<?= $asociado['num_documento']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['num_documento'] ?? '';  ?></div>
         </div>
@@ -81,7 +81,7 @@
             <input type="text" name="num_cuil" id="num-cuil"
                 class="form-control <?= isset($errors['num_cuil']) ? 'is-invalid' : ''; ?>" data-toggle="tooltip"
                 data-placement="left" title="Sin guiones, puntos, espacios u otros símbolos"
-                value="<?= $data['num_cuil']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
+                value="<?= $asociado['num_cuil']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['num_cuil'] ?? '';  ?></div>
         </div>
@@ -101,7 +101,7 @@
         <div class="form-group">
             <label for="email">Correo electrónico</label>
             <input type="email" name="email" id="email"
-                class="form-control <?= isset($errors['email']) ? 'is-invalid' : ''; ?>" value="<?= $data['email']; ?>"
+                class="form-control <?= isset($errors['email']) ? 'is-invalid' : ''; ?>" value="<?= $asociado['email']; ?>"
                 spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['email'] ?? ''; ?></div>
         </div>
@@ -110,7 +110,7 @@
             <label for="telefono-movil">Teléfono móvil *</label>
             <input type="text" name="telefono_movil" id="telefono-movil"
                 class="form-control <?= isset($errors['telefono_movil']) ? 'is-invalid' : ''; ?>"
-                value="<?= $data['telefono_movil']; ?>" data-toggle="tooltip" data-placement="left"
+                value="<?= $asociado['telefono_movil']; ?>" data-toggle="tooltip" data-placement="left"
                 title="Ingresá tu número de celular con código de área, sin espacios, puntos u otros símbolos."
                 spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['telefono_movil'] ?? ''; ?></div>
@@ -120,7 +120,7 @@
             <label for="telefono-linea">Teléfono de línea</label>
             <input type="text" name="telefono_linea" id="telefono-linea"
                 class="form-control <?= isset($errors['telefono_linea']) ? 'is-invalid' : ''; ?>"
-                value="<?= $data['telefono_linea']; ?>" data-toggle="tooltip" data-placement="left"
+                value="<?= $asociado['telefono_linea']; ?>" data-toggle="tooltip" data-placement="left"
                 title="Ingresá tu número de teléfono con código de área, sin espacios, puntos u otros símbolos."
                 spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['telefono_linea'] ?? ''; ?></div>
@@ -130,7 +130,7 @@
             <label for="domicilio">Domicilio *</label>
             <input type="text" name="domicilio" id="domicilio"
                 class="form-control <?= isset($errors['domicilio']) ? 'is-invalid' : ''; ?>"
-                value="<?= $data['domicilio']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
+                value="<?= $asociado['domicilio']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['domicilio'] ?? ''; ?></div>
         </div>
@@ -205,16 +205,16 @@
     </form>
 </section>
 <script>
-    // document.querySelector('#sexo').value = "<?= $data['sexo']; ?>";
-    document.querySelector('#tipo-documento').value = "<?= $data['tipo_documento']; ?>";
-    document.querySelector('#condicion-ingreso').value = "<?= $data['condicion_ingreso']; ?>";
-    document.querySelector('#id-provincia').value = "<?= $data['id_provincia']; ?>";
-    document.querySelector('#id-localidad').value = "<?= $data['id_localidad']; ?>";
+    // document.querySelector('#sexo').value = "<?= $asociado['sexo']; ?>";
+    document.querySelector('#tipo-documento').value = "<?= $asociado['tipo_documento']; ?>";
+    document.querySelector('#condicion-ingreso').value = "<?= $asociado['condicion_ingreso']; ?>";
+    document.querySelector('#id-provincia').value = "<?= $asociado['id_provincia']; ?>";
+    document.querySelector('#id-localidad').value = "<?= $asociado['id_localidad']; ?>";
 
     let generos = document.querySelectorAll('input[name="sexo"]');
     // console.log(generos);
     generos.forEach(element => {
-        if (element.value == "<?= $data['sexo']; ?>") {
+        if (element.value == "<?= $asociado['sexo']; ?>") {
             element.checked = true;
         }
     });
