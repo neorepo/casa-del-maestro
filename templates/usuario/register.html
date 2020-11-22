@@ -3,7 +3,7 @@
         <h1 class="h2">Nuevo Usuario</h1>
     </div>
 
-    <?php if (!$registerError): ?>
+    <?php if (!$registerSuccess): ?>
     <div class="alert alert-info text-center" role="alert">
         No pudimos registrar el usuario. Por favor, intentelo más tarde.
     </div>
@@ -16,14 +16,14 @@
             <div class="form-group col-md-6">
                 <label for="apellido">Apellidos <span class="required">*</span></label>
                 <input type="text" class="form-control <?= isset($errors['apellido']) ? 'is-invalid' : ''; ?>"
-                    name="apellido" id="apellido" value="<?= $data['apellido']; ?>" spellcheck="false"
+                    name="apellido" id="apellido" value="<?= $usuario['apellido']; ?>" spellcheck="false"
                     autocomplete="off" autocorrect="off" autocapitalize="off" maxlength="40">
                 <div class="invalid-feedback"><?= $errors['apellido'] ?? ''; ?></div>
             </div>
             <div class="form-group col-md-6">
                 <label for="nombre">Nombres <span class="required">*</span></label>
                 <input type="text" class="form-control <?= isset($errors['nombre']) ? 'is-invalid' : ''; ?>"
-                    name="nombre" id="nombre" value="<?= $data['nombre']; ?>" spellcheck="false" autocomplete="off"
+                    name="nombre" id="nombre" value="<?= $usuario['nombre']; ?>" spellcheck="false" autocomplete="off"
                     autocorrect="off" autocapitalize="off" maxlength="40">
                 <div class="invalid-feedback"><?= $errors['nombre'] ?? ''; ?></div>
             </div>
@@ -32,7 +32,7 @@
         <div class="form-group">
             <label for="usuario">Número de documento (ocho dígitos) <span class="required">*</span></label>
             <input type="text" class="form-control <?= isset($errors['usuario']) ? 'is-invalid' : ''; ?>" name="usuario"
-                id="usuario" value="<?= $data['usuario']; ?>" data-toggle="tooltip" data-placement="left"
+                id="usuario" value="<?= $usuario['usuario']; ?>" data-toggle="tooltip" data-placement="left"
                 title="Completar con ceros a la izquierda si es necesario" spellcheck="false" autocomplete="off"
                 autocorrect="off" autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['usuario'] ?? ''; ?></div>
@@ -41,7 +41,7 @@
         <div class="form-group">
             <label for="email">Correo electrónico <span class="required">*</span></label>
             <input type="email" class="form-control <?= isset($errors['email']) ? 'is-invalid' : ''; ?>" name="email"
-                id="email" value="<?= $data['email']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
+                id="email" value="<?= $usuario['email']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['email'] ?? ''; ?></div>
         </div>
@@ -50,7 +50,7 @@
             <div class="form-group col-md-6">
                 <label for="password">Contraseña <span class="required">*</span></label>
                 <input type="password" class="form-control <?= isset($errors['password']) ? 'is-invalid' : ''; ?>"
-                    name="password" id="password" value="<?= $data['password']; ?>" data-toggle="tooltip"
+                    name="password" id="password" value="<?= $usuario['password']; ?>" data-toggle="tooltip"
                     data-placement="left"
                     title="Utiliza ocho caracteres como mínimo con una combinación de letras, números y símbolos"
                     spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
@@ -60,7 +60,7 @@
                 <label for="confirm-password">Confirmación <span class="required">*</span></label>
                 <input type="password"
                     class="form-control <?= isset($errors['confirm_password']) ? 'is-invalid' : ''; ?>"
-                    name="confirm_password" id="confirm-password" value="<?= $data['confirm_password']; ?>"
+                    name="confirm_password" id="confirm-password" value="<?= $usuario['confirm_password']; ?>"
                     spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
                 <div class="invalid-feedback"><?= $errors['confirm_password'] ?? ''; ?></div>
             </div>
