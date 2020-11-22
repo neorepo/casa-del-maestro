@@ -5,7 +5,6 @@ require '../includes/bootstrap.php';
 
 $asociado = [];
 $errors = [];
-$numberOferrors = null;
 
 // Las localidades estarán disponibles solo cuando exista el id de la provincia.
 // Son 22793 localidades, solo listaremos las que pertenezcan a la provincia seleccionada
@@ -13,20 +12,15 @@ $localidades = [];
 
 $edit = array_key_exists('aid', $_GET);
 
+// Si true
 if ($edit) {
     // Recuperamos los datos del asociado de la base de datos
     $asociado = getAsociadoPorId();
-    // Asignamos el id del asociado a la variable de sesión para saber que registro editar, también podemos utilizar el array $_GET
-    $_SESSION['aid'] = $asociado['id_asociado'];
-    // Formateamos la fecha de nacimiento: ejm: 2000-03-06 a 06/03/2000
-    // $asociado['fecha_nacimiento'] = dateToTemplate( $asociado['fecha_nacimiento'] );
+
     // Recuperamos las localidades por el id de la provincia
     $localidades = getLocalidadesPorIdProvincia( (int) $asociado['id_provincia'] );
 
 } else {
-    if ( isset($_SESSION['aid']) ) {
-        unset( $_SESSION['aid'] );
-    }
     $asociado = [
         'id_asociado' => null,'apellido' => null,'nombre' => null,'fecha_nacimiento' => null,'tipo_documento' => null,
         'num_documento' => null,'num_cuil' => null,'condicion_ingreso' => null,'email' => null,'telefono_movil' => null,
@@ -39,9 +33,17 @@ if ($edit) {
  */
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+    if (array_key_exists('cancel', $_POST)) {
+        if ($asociado['id_asociado'] === null) {
+            redirect('/');
+        }
+        // Re dirigimos al usuario a la vista de detalle.
+        redirect('/asociado_detalle.php?aid=' . $asociado['id_asociado']);
+    }
+
     if ( !empty( $_POST['token'] ) && Token::validate( $_POST['token'] ) ) {
 
-        // for security reasons, do not map the whole $_POST
+        // Por razones de seguridad, no mapear el array $_POST
         $data = [
             'apellido' => $_POST['apellido'],
             'nombre' => $_POST['nombre'],
@@ -111,8 +113,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors['num_documento'] = $messages['required'];
         } else if ( preg_match('/^[\d]{8}$/', $asociado['num_documento']) ) {
             
-            if ( isset( $_SESSION['aid'] ) ) {
-                $rows = existeNumDeDocumentoAsociado( $asociado['num_documento'], $_SESSION['aid'] );
+            if ( isset( $asociado['id_asociado'] ) ) {
+                $rows = existeNumDeDocumentoAsociado( $asociado['num_documento'], $asociado['id_asociado'] );
             } else {
                 $rows = existeNumDeDocumentoAsociado( $asociado['num_documento'] );
             }
@@ -130,8 +132,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors['num_cuil'] = $messages['required'];
         } else if ( validar_cuit( $asociado['num_cuil'] ) ) {
 
-            if ( isset( $_SESSION['aid'] ) ) {
-                $rows = existeNumDeCuilAsociado( $asociado['num_cuil'], $_SESSION['aid'] );
+            if ( isset( $asociado['id_asociado'] ) ) {
+                $rows = existeNumDeCuilAsociado( $asociado['num_cuil'], $asociado['id_asociado'] );
             } else {
                 $rows = existeNumDeCuilAsociado( $asociado['num_cuil'] );
             }
@@ -160,8 +162,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
         } else if ( valid_email( $asociado['email'] ) ) {
             
-            if ( isset( $_SESSION['aid'] ) ) {
-                $rows = existeEmailAsociado( $asociado['email'], $_SESSION['aid'] );
+            if ( isset( $asociado['id_asociado'] ) ) {
+                $rows = existeEmailAsociado( $asociado['email'], $asociado['id_asociado'] );
             } else {
                 $rows = existeEmailAsociado( $asociado['email'] );
             }
@@ -178,8 +180,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ( !$asociado['telefono_movil'] ) {
             $errors['telefono_movil'] = $messages['required'];
         } else if ( validar_tel( $asociado['telefono_movil'] ) ) {
-            if( isset( $_SESSION['aid'] ) ) {
-                $rows = existeTelefonoMovilAsociado( $asociado['telefono_movil'], $_SESSION['aid'] );
+            if( isset( $asociado['id_asociado'] ) ) {
+                $rows = existeTelefonoMovilAsociado( $asociado['telefono_movil'], $asociado['id_asociado'] );
             } else {
                 $rows = existeTelefonoMovilAsociado( $asociado['telefono_movil'] );
             }
@@ -197,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // $errors['telefono_linea'] = $messages['required'];
 
             // Si no tengo el telefono de línea, puedo insertar un string vácio por que el campo no es unique
-            // pero, para mantener todo bien, se insertará un valor null
+            // pero, para mantener la consistencia de los datos, se insertará un valor null
             $asociado['telefono_linea'] = null;
 
         } else if ( !validar_tel( $asociado['telefono_linea'] ) ) {
@@ -214,7 +216,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors['id_provincia'] = $messages['required'];
         } else if( isValidProvinceId( $asociado['id_provincia'] ) ) {
 
-            // Cargamos las localidades despues de que tenemos el id de provincia
+            // Cargamos las localidades despues de que tenemos el id de la provincia
             $localidades = getLocalidadesPorIdProvincia( (int) $asociado['id_provincia'] );
             
         } else {
@@ -242,34 +244,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors['sexo'] = $messages['valid_sex'];
         }
 
-        // Número de errores
-        $numberOferrors = count( $errors );
-
         /**
          * Si no existen errores en el array
          */
-        if( /*empty($errors)*/ $numberOferrors === 0 ) {
-
-            $returnValue = save( $asociado );
-            // Si el valor de retorno es true 
-            if ( $returnValue ) {
-                $lastInsertId = null;
-                // Si el valor de retorno no es un valor booleano, entonces tenemos el último id insertado
-                if( !is_bool($returnValue) ) {
-                    // Recuperamos el último id insertado
-                    $lastInsertId = $returnValue;
-                }
-
-                $id_asociado = $lastInsertId ?? $_SESSION['aid'];
-                // Despues de procesar, eliminamos las variables almacenadas en el array de session.
-                unset( $_SESSION['aid'] );
+        if( empty($errors) ) {
+            // Recibimos los datos del asociado despues de la inserción o actualización.
+            $asociado = save( $asociado );
+            // Verificamos que el valor de retorno sea distinto de false.
+            if ( $asociado ) {
                 unset( $_SESSION['_token'] );
-
                 // Seteamos el mensaje flash para la vista
-                Flash::addFlash('Los datos fueron guardados correctamente.', 'primary');
+                Flash::addFlash('Los datos fueron guardados correctamente.', 'success');
                 // Re dirigimos al usuario a la vista de detalle.
-                redirect('/asociado_detalle.php?aid=' . $id_asociado);
-
+                redirect('/asociado_detalle.php?aid=' . $asociado['id_asociado']);
             } else {
                 Flash::addFlash('Lo sentimos, no pudimos guardar el registro.', 'danger');
                 redirect('/');
@@ -280,29 +267,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $title = $edit ? 'Editar asociado' : 'Registrar asociado';
 
-$values = [
+render('asociado/agregar-editar.html', [
     'title' => $title,
     'asociado' => $asociado,
     'errors' => $errors,
-    'numberOferrors' => $numberOferrors,
     'localidades' => $localidades,
     'edit' => $edit
-];
+]);
 
-render('asociado/agregar-editar.html', $values);
-
+// Conmuta en función de si existe el id del asociado
 function save($asociado) {
-
-    $asociado['id_asociado'] = $_SESSION['aid'] ?? null;
-
     if ( $asociado['id_asociado'] === null ) {
         return insertarAsociado($asociado);
     }
     return actualizarAsociado($asociado);
 }
 
+// Devuelve un array de datos de asociado, de lo contrario devuelve false
 function actualizarAsociado($asociado) {
-    $last_modified = date('Y-m-d H:i:s');
+    $current_time = date('Y-m-d H:i:s');
     $asociado['fecha_nacimiento'] = dateToDb($asociado['fecha_nacimiento']);
     try {
         $db = Db::getInstance();
@@ -310,17 +293,17 @@ function actualizarAsociado($asociado) {
         $db->beginTransaction();
 
         // Consulta 1
-        $sql = 'UPDATE asociado set apellido = ?, nombre = ?, sexo = ?, fecha_nacimiento = ?, tipo_documento = ?, num_documento = ?, num_cuil = ?,
-        condicion_ingreso = ?, email = ?, domicilio = ?, id_localidad = ?, last_modified = ? WHERE id_asociado = ? ; ';
+        $sql = 'UPDATE asociado set apellido = ?, nombre = ?, sexo = ?, fecha_nacimiento = ?, tipo_documento = ?, num_documento = ?, 
+        num_cuil = ?, condicion_ingreso = ?, email = ?, domicilio = ?, id_localidad = ?, last_modified = ? WHERE id_asociado = ? ; ';
     
-        Db::query($sql, capitalize($asociado['apellido']), capitalize($asociado['nombre']), $asociado['sexo'], $asociado['fecha_nacimiento'], $asociado['tipo_documento'], 
-        $asociado['num_documento'], $asociado['num_cuil'], $asociado['condicion_ingreso'], $asociado['email'], $asociado['domicilio'], $asociado['id_localidad'], 
-        $last_modified, $asociado['id_asociado']);
+        Db::query($sql, capitalize($asociado['apellido']), capitalize($asociado['nombre']), $asociado['sexo'], $asociado['fecha_nacimiento'], 
+        $asociado['tipo_documento'], $asociado['num_documento'], $asociado['num_cuil'], $asociado['condicion_ingreso'], $asociado['email'], 
+        $asociado['domicilio'], $asociado['id_localidad'], $current_time, $asociado['id_asociado']);
 
         // Consulta 2
         $sql = 'UPDATE telefono set telefono_movil = ?, telefono_linea = ?, last_modified = ? WHERE id_asociado = ? ; ';
     
-        Db::query($sql, $asociado['telefono_movil'], $asociado['telefono_linea'], $last_modified, $asociado['id_asociado']);
+        Db::query($sql, $asociado['telefono_movil'], $asociado['telefono_linea'], $current_time, $asociado['id_asociado']);
 
         // commit the transaction
         $db->commit();
@@ -330,12 +313,12 @@ function actualizarAsociado($asociado) {
         trigger_error('Error:' . $e->getMessage(), E_USER_ERROR);
         return false;
     }
-    // Devuelve verdadero en caso de éxito, falso en caso de error
-    return true;
+    return $asociado;
 }
 
+// Devuelve un array de datos de asociado, de lo contrario devuelve false
 function insertarAsociado($asociado) {
-    $created = $last_modified = date('Y-m-d H:i:s');
+    $current_time = date('Y-m-d H:i:s');
     $asociado['fecha_nacimiento'] = dateToDb($asociado['fecha_nacimiento']);
     try {
         $db = Db::getInstance();
@@ -346,16 +329,17 @@ function insertarAsociado($asociado) {
         $sql = 'INSERT INTO asociado (apellido, nombre, sexo, fecha_nacimiento, tipo_documento, num_documento, num_cuil, condicion_ingreso, 
         email, domicilio, id_localidad, created, last_modified) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     
-        Db::query($sql, capitalize($asociado['apellido']), capitalize($asociado['nombre']), $asociado['sexo'], $asociado['fecha_nacimiento'], $asociado['tipo_documento'],
-        $asociado['num_documento'], $asociado['num_cuil'], $asociado['condicion_ingreso'], $asociado['email'], $asociado['domicilio'], $asociado['id_localidad'], $created, $last_modified);
+        Db::query($sql, capitalize($asociado['apellido']), capitalize($asociado['nombre']), $asociado['sexo'], $asociado['fecha_nacimiento'], 
+        $asociado['tipo_documento'], $asociado['num_documento'], $asociado['num_cuil'], $asociado['condicion_ingreso'], $asociado['email'], 
+        $asociado['domicilio'], $asociado['id_localidad'], $current_time, $current_time);
 
         // Seteamos el id del nuevo asociado insertado en la base de datos, para re dirigir a la página de detalle
-        $asociado['id_asociado'] = Db::getInstance()->lastInsertId();
+        $asociado['id_asociado'] = Db::getInstance()->lastInsertId();// ( lastInsertId() devuelve un tipo string ).
 
         // Consulta 2
         $sql = 'INSERT INTO telefono (telefono_movil, telefono_linea, id_asociado, created, last_modified) VALUES(?, ?, ?, ?, ?)';
     
-        Db::query($sql, $asociado['telefono_movil'], $asociado['telefono_linea'], $asociado['id_asociado'], $created, $last_modified);
+        Db::query($sql, $asociado['telefono_movil'], $asociado['telefono_linea'], $asociado['id_asociado'], $current_time, $current_time);
     
         // commit the transaction
         $db->commit();
@@ -363,7 +347,7 @@ function insertarAsociado($asociado) {
         // roll back the transaction if something failed
         $db->rollback();
         trigger_error('Error:' . $e->getMessage(), E_USER_ERROR);
-        return false; // Deberíamos devolver -1 en caso de error si estuvieramos en JAVA
+        return false; // Deberíamos devolver -1 en caso de error si estuvieramos en JAVA :)
     }
-    return $asociado['id_asociado']; // Devolvemos el último id insertado ( lastInsertId() devuelve un tipo string ).
+    return $asociado;
 }

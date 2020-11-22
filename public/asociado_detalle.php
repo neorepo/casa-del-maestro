@@ -3,12 +3,12 @@
 // configuration
 require '../includes/bootstrap.php';
 
-$data = getAsociadoPorId();
+$asociado = getAsociadoPorId();
 
-// $data['fecha_nacimiento'] = dateToTemplate( $data['fecha_nacimiento'] );
+// $asociado['fecha_nacimiento'] = dateToTemplate( $asociado['fecha_nacimiento'] );
 
-// $data['last_modified'] = formatDateTime( $data['last_modified'] );
+// $asociado['last_modified'] = formatDateTime( $asociado['last_modified'] );
 
-$data['sexo'] = ($data['sexo'] == 'F') ? 'Femenino' : 'Masculino';
+$asociado['sexo'] = ($asociado['sexo'] == 'F') ? 'Femenino' : 'Masculino';
 
-render('asociado/detalle.html', ['title' => 'Datos del asociado', 'data' => $data]);
+render('asociado/detalle.html', ['title' => 'Datos del asociado', 'asociado' => $asociado]);

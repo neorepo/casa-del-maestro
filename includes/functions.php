@@ -61,7 +61,7 @@ function findById($id_asociado) {
           p.id_provincia, p.nombre AS provincia,
           l.id_localidad, l.nombre AS localidad, l.cp
           FROM asociado a INNER JOIN telefono t ON a.id_asociado = t.id_asociado INNER JOIN localidad l ON a.id_localidad = l.id_localidad 
-          INNER JOIN provincia p ON l.id_provincia = p.id_provincia WHERE a.deleted = 0 AND a.id_asociado = ? LIMIT 1 ; ';
+          INNER JOIN provincia p ON l.id_provincia = p.id_provincia WHERE a.deleted = 0 AND a.id_asociado = ? LIMIT 1;';
 
     return Db::query($q, $id_asociado);
      // Devuelve un objeto de transferencia si lo encuentra,
@@ -84,7 +84,6 @@ function getAsociadoPorId() {
     } catch (Exception $ex) {
         render('error/404.html', ['title' => 'Error', 'message' => 'no se proporcionó ningún identificador de asociado.']);
     }
-    
     if ( !is_numeric($id) ) {
         render('error/404.html', ['title' => 'Error', 'message' => 'se proporcionó un identificador de asociado no válido.']);
     }

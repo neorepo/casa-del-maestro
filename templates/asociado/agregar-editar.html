@@ -1,28 +1,14 @@
 <section class="section">
 
-    <div class="row align-items-center mb-3">
-        <div class="col">
+    <div class="row align-items-center">
+        <div class="col-12">
             <h1 class="h2"><?= htmlspecialchars($title); ?></h1>
         </div>
-
-        <!-- <div class="col-auto">
-            <?php if( isset($_SESSION['aid']) ): ?>
-            <a href="/asociado_detalle.php?aid=<?= $_SESSION['aid']; ?>" title="Volver a detalle de asociado">
-                <i class="material-icons">fast_rewind</i>Volver</a>
-            <?php endif; ?>
-        </div> -->
     </div>
 
-    <?php if( isset($numberOferrors) ): ?>
-    <p style="color:#dc3545;background-color: #f8d7da;padding: 12px;border-radius: 4px;">
-        <span class="material-icons" style="color: #dc3545;">report_problem</span>Hay campos en el formulario que
-        requieren su atención.
-    </p>
-    <?php endif; ?>
-
     <form action="#" method="post" class="asociado">
-        <input type="hidden" name="token" value="<?= htmlspecialchars(Token::csrf()); ?>" readonly spellcheck="false" autocomplete="off"
-            autocorrect="off" autocapitalize="off">
+        <input type="hidden" name="token" value="<?= htmlspecialchars(Token::csrf()); ?>" readonly spellcheck="false"
+            autocomplete="off" autocorrect="off" autocapitalize="off">
 
         <div class="form-group">
             <label for="apellido">Apellidos *</label>
@@ -101,8 +87,9 @@
         <div class="form-group">
             <label for="email">Correo electrónico</label>
             <input type="email" name="email" id="email"
-                class="form-control <?= isset($errors['email']) ? 'is-invalid' : ''; ?>" value="<?= $asociado['email']; ?>"
-                spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
+                class="form-control <?= isset($errors['email']) ? 'is-invalid' : ''; ?>"
+                value="<?= $asociado['email']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
+                autocapitalize="off">
             <div class="invalid-feedback"><?= $errors['email'] ?? ''; ?></div>
         </div>
 
@@ -196,12 +183,8 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary"><?php echo $edit ? 'Guardar' : 'Registrar'; ?></button>
-        <?php if( isset($_SESSION['aid']) ): ?>
-        <a href="/asociado_detalle.php?aid=<?= htmlspecialchars($_SESSION['aid']); ?>" class="btn btn-secondary">Cancelar</a>
-        <?php else: ?>
-        <a href="/" class="btn btn-secondary">Cancelar</a>
-        <?php endif ?>
+        <button type="submit" class="btn btn-primary"><?= $edit ? 'Guardar' : 'Registrar'; ?></button>
+        <button type="submit" class="btn btn-secondary" name="cancel">Cancelar</button>
     </form>
 </section>
 <script>
