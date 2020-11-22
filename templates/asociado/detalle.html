@@ -6,7 +6,7 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
     <div class="mb-3">
         <h1 class="h2">
             <?= htmlspecialchars( $asociado['apellido'] . " " . $asociado['nombre'] ); ?>
-            <a class="float-right" href="/demopdf.php?aid=<?= $asociado['id_asociado']; ?>"
+            <a class="float-right" href="/generar_pdf.php?aid=<?= $asociado['id_asociado']; ?>"
                 title="Exportar registro en pdf" target="_blank">
                 <i class="material-icons pdf">picture_as_pdf</i>
             </a>

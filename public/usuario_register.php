@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'confirm_password' => $_POST['confirm_password']
         ];
 
+        // Map data no $_POST
         foreach ($usuario as $key => $value) {
             if (array_key_exists($key, $data)) {
                 $usuario[$key] = escape( $data[$key] );
@@ -104,7 +105,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
          * Si no existen errores
          */
         if( empty( $errors ) ) {
-            
             if ( insertarUsuario( $usuario ) ) {
                 // the CSRF token they submitted does not match the one we sent
                 unset($_SESSION['_token']);
@@ -117,10 +117,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-$title = 'Registro de Usuario';
-
 // Mostrar plantilla de registro de usuario
-render('usuario/register.html', ['title' => $title, 'usuario' => $usuario, 'errors' => $errors, 'registerSuccess' => $registerSuccess]);
+render('usuario/register.html', ['title' => 'Registro de Usuario', 'usuario' => $usuario, 'errors' => $errors, 'registerSuccess' => $registerSuccess]);
 
 function insertarUsuario($usuario) {
     $current_date = date('Y-m-d H:i:s');

@@ -156,8 +156,6 @@ https://github.com/PHPOffice/PhpSpreadsheet/blob/master/samples/templates/sample
 Buscador de prestador telefónico
 https://numeracion.enacom.gob.ar/
 
-
-
 <?php
 // https://www.youtube.com/watch?v=lUNwKeRygyI
 require_once 'TCPDF/tcpdf.php';

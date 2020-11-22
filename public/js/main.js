@@ -121,7 +121,7 @@ function sendHttpRequest(method, url, data, callback) {
     xhr.send(data);
 }
 
-// Validamos que contenga un identificador válido
+// Validamos que contenga un identificador de provincia válido
 function validId(id, min, max) {
     if (get_int(id)) {
         id = parseInt(id);
@@ -143,7 +143,7 @@ function get_int(n) {
 }
 
 function preventFormSubmit() {
-    // Evitar enviar el formulario presionando la tecla ENTER en un input field
+    // Evitar enviar el formulario presionando la tecla ENTER en input field
     if (!document.querySelector('form')) {
         return;
     }
@@ -171,14 +171,6 @@ function initShowPasswords() {
     }
 }
 
-function initFlashes() {
-    if (document.querySelector('.alert')) {
-        document.querySelectorAll('.alert').forEach(el => {
-            setTimeout(function () { /*el.style.display = 'none';*/ el.remove(); }, 7000);
-        });
-    }
-}
-
 function showPasswords() {
     let x = document.querySelector('#password');
     let y = document.querySelector('#confirm-password');
@@ -189,8 +181,16 @@ function showPasswords() {
     }
 }
 
+function initFlashes() {
+    if (document.querySelector('.alert')) {
+        document.querySelectorAll('.alert').forEach(el => {
+            setTimeout(function () { /*el.style.display = 'none';*/ el.remove(); }, 7000);
+        });
+    }
+}
+
 function initErrorFields() {
-    // Captura el primer error que exista en los formularios de registro
+    // Focus en el primer error que exista en los formularios de registro.
     if (document.querySelector('.is-invalid')) {
         document.querySelector('.is-invalid').focus();
     }
