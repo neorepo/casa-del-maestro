@@ -98,50 +98,6 @@ function loadLocalities(response) {
     }
 }
 
-// https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest
-function sendHttpRequest(method, url, data, callback) {
-    const xhr = getXhr();
-    xhr.onreadystatechange = processRequest;
-    function getXhr() {
-        if (window.XMLHttpRequest) {
-            return new XMLHttpRequest();
-        } else {
-            return new ActiveXObject("Microsoft.XMLHTTP");
-        }
-    }
-    function processRequest() {
-        if (xhr.readyState == XMLHttpRequest.DONE) {
-            if (xhr.status == 200) {
-                if (callback) callback(xhr.responseText);
-            }
-        }
-    }
-    xhr.open(method, url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime());
-    if (data && !(data instanceof FormData)) xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.send(data);
-}
-
-// Validamos que contenga un identificador de provincia válido
-function validId(id, min, max) {
-    if (get_int(id)) {
-        id = parseInt(id);
-        if (id >= min && id <= max) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function get_int(n) {
-    if (n != null) {
-        // Si es un caracter numérico entero
-        if (/^[+-]?\d+$/.test(n)) {
-            return true;
-        }
-    }
-    return false;
-}
-
 function preventFormSubmit() {
     // Evitar enviar el formulario presionando la tecla ENTER en input field
     if (!document.querySelector('form')) {
@@ -151,7 +107,7 @@ function preventFormSubmit() {
     document.querySelector('form').onkeypress = (e) => {
         if (e.target.tagName !== "TEXTAREA") {
             if (e.key === "Enter") {
-                // Evitamos que se ejecuté el evento
+                // Evitamos que se ejecute el evento
                 e.preventDefault();
                 // Retornamos false
                 return false;

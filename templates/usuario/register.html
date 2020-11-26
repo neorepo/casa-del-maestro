@@ -13,6 +13,7 @@
         <input type="hidden" name="token" value="<?= Token::csrf(); ?>" readonly spellcheck="false" autocomplete="off"
             autocorrect="off" autocapitalize="off">
         <div class="form-row">
+            <!-- Apellido -->
             <div class="form-group col-md-6">
                 <label for="apellido">Apellidos <span class="required">*</span></label>
                 <input type="text" class="form-control <?= isset($errors['apellido']) ? 'is-invalid' : ''; ?>"
@@ -20,6 +21,7 @@
                     autocomplete="off" autocorrect="off" autocapitalize="off" maxlength="40">
                 <div class="invalid-feedback"><?= $errors['apellido'] ?? ''; ?></div>
             </div>
+            <!-- Nombre -->
             <div class="form-group col-md-6">
                 <label for="nombre">Nombres <span class="required">*</span></label>
                 <input type="text" class="form-control <?= isset($errors['nombre']) ? 'is-invalid' : ''; ?>"
@@ -29,6 +31,7 @@
             </div>
         </div>
 
+        <!-- Número de documento -->
         <div class="form-group">
             <label for="usuario">Número de documento (ocho dígitos) <span class="required">*</span></label>
             <input type="text" class="form-control <?= isset($errors['usuario']) ? 'is-invalid' : ''; ?>" name="usuario"
@@ -38,6 +41,7 @@
             <div class="invalid-feedback"><?= $errors['usuario'] ?? ''; ?></div>
         </div>
 
+        <!-- Email -->
         <div class="form-group">
             <label for="email">Correo electrónico <span class="required">*</span></label>
             <input type="email" class="form-control <?= isset($errors['email']) ? 'is-invalid' : ''; ?>" name="email"
@@ -47,6 +51,7 @@
         </div>
 
         <div class="form-row">
+            <!-- Contraseña -->
             <div class="form-group col-md-6">
                 <label for="password">Contraseña <span class="required">*</span></label>
                 <input type="password" class="form-control <?= isset($errors['password']) ? 'is-invalid' : ''; ?>"
@@ -56,6 +61,8 @@
                     spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
                 <div class="invalid-feedback"><?= $errors['password'] ?? ''; ?></div>
             </div>
+
+            <!-- Confirmar contraseña -->
             <div class="form-group col-md-6">
                 <label for="confirm-password">Confirmación <span class="required">*</span></label>
                 <input type="password"
@@ -73,15 +80,115 @@
         </div>
 
         <button class="btn btn-success btn-block" type="submit">Crear usuario</button>
-        <!-- <div class="row align-items-center">
-            <div class="col">
-            </div>
-            <div class="col-auto">
-            </div>
-        </div> -->
 
     </form>
     <p class="mt-4 text-center">
         <a href="/usuario_login.php">¿Ya tienes una cuenta?</a>
     </p>
 </section>
+
+<script>
+    // https://wai-tutorials.netlify.app/tutorials/forms/notifications/
+    /**
+     * Enfoque 1: despues de enviar el formulario
+     * Enfoque 2: durante la escritura o tipificación
+     * Enfoque 3: en el cambio de enfoque
+     **/
+    const email = document.querySelector("#email");
+    const usuario = document.querySelector("#usuario");
+    const apellido = document.querySelector("#apellido");
+    const nombre = document.querySelector("#nombre");
+
+    const min_length = 3;
+    const max_length = 40;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        initEmailValidation();
+        initDocumentValidation();
+        initValidarApellido();
+        initValidarNombre();
+    });
+
+    function initValidarApellido() {
+        if (!apellido) return;
+        apellido.addEventListener("blur", function () {
+            let value = this.value.trim();
+            if (isEmpty(value)) {
+                setError(apellido, "Este campo es requerido.");
+            } else if (!onlyLetters(value)) {
+                setError(apellido, "Solo se permiten letras (a-zA-Z), y espacios en blanco.");
+            } else if (!minLength(value, min_length)) {
+                setError(apellido, "Aumenta la longitud a " + min_length + " caracteres como mínimo.");
+            } else if (!maxLength(value, max_length)) {
+                setError(apellido, "Reduce la longitud a " + max_length + " caracteres o menos.")
+            } else {
+                setSuccess(apellido);
+            }
+        });
+    }
+
+    function initValidarNombre() {
+        if (!nombre) return;
+        nombre.addEventListener("blur", function () {
+            let value = this.value.trim();
+            if (isEmpty(value)) {
+                setError(nombre, "Este campo es requerido.");
+            } else if (!onlyLetters(value)) {
+                setError(nombre, "Solo se permiten letras (a-zA-Z), y espacios en blanco.");
+            } else if (!minLength(value, min_length)) {
+                setError(nombre, "Aumenta la longitud a " + min_length + " caracteres como mínimo.");
+            } else if (!maxLength(value, max_length)) {
+                setError(nombre, "Reduce la longitud a " + max_length + " caracteres o menos.")
+            } else {
+                setSuccess(nombre);
+            }
+        });
+    }
+
+    function initDocumentValidation() {
+        if (!usuario) return;
+        usuario.addEventListener("blur", function () {
+            let value = this.value.trim();
+            if (isEmpty(value)) {
+                setError(usuario, "Este campo es requerido.");
+            } else if (validDocument(value)) {
+                let data = "usuario=" + encodeURIComponent(value);
+                sendHttpRequest('POST', 'usuario_document_exists.php', data, documentNumberExists);
+            } else {
+                setError(usuario, "El formato o el número de documento ingresado no es válido.");
+            }
+        });
+    }
+
+    function documentNumberExists(response) {
+        if (response == "ok") {
+            setSuccess(usuario);
+        } else {
+            setError(usuario, "Este número de documento ya se encuentra registrado.");
+        }
+    }
+
+    function initEmailValidation() {
+        if (!email) return;
+        email.addEventListener("blur", function () {
+            let value = this.value.trim();
+            if (isEmpty(value)) {
+                setError(email, "Este campo es requerido.");
+            } else if (validEmail(value)) {
+                let data = "email=" + encodeURIComponent(value);
+                sendHttpRequest('POST', 'usuario_email_exists.php', data, emailExists);
+            } else {
+                setError(email, "El correo electrónico no es válido.");
+            }
+        });
+    }
+
+    function emailExists(response) {
+        // var rta = Boolean(response);
+        if (response == "ok") {
+            setSuccess(email);
+        } else {
+            setError(email, "Este correo electrónico ya se encuentra registrado.");
+        }
+    }
+</script>

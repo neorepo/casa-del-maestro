@@ -546,13 +546,14 @@ function maxlength($value, $maxlength) {
 }
 
 function valid_email($email) {
+    // https://owasp.org/www-community/OWASP_Validation_Regex_Repository
+    // $regexEmail = '/^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/';
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
     return preg_match('/^[\w.-]+@[\w.-]+\.[A-Za-z]{2,6}$/', $email);
 }
 
 function isEmpty($value) {
     return ( !strlen( $value ) );
-    // return empty( trim( $value ) );
 }
 
 function cuilFormat($cuil) {
