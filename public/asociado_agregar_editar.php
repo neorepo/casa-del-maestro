@@ -285,7 +285,7 @@ function save($asociado) {
 
 // Devuelve un array de datos de asociado, de lo contrario devuelve false
 function actualizarAsociado($asociado) {
-    $current_time = date('Y-m-d H:i:s');
+    $now = date('Y-m-d H:i:s');
     $asociado['fecha_nacimiento'] = dateToDb($asociado['fecha_nacimiento']);
     try {
         $db = Db::getInstance();
@@ -298,12 +298,12 @@ function actualizarAsociado($asociado) {
     
         Db::query($sql, capitalize($asociado['apellido']), capitalize($asociado['nombre']), $asociado['sexo'], $asociado['fecha_nacimiento'], 
         $asociado['tipo_documento'], $asociado['num_documento'], $asociado['num_cuil'], $asociado['condicion_ingreso'], $asociado['email'], 
-        $asociado['domicilio'], $asociado['id_localidad'], $current_time, $asociado['id_asociado']);
+        $asociado['domicilio'], $asociado['id_localidad'], $now, $asociado['id_asociado']);
 
         // Consulta 2
         $sql = 'UPDATE telefono set telefono_movil = ?, telefono_linea = ?, last_modified = ? WHERE id_asociado = ? ; ';
     
-        Db::query($sql, $asociado['telefono_movil'], $asociado['telefono_linea'], $current_time, $asociado['id_asociado']);
+        Db::query($sql, $asociado['telefono_movil'], $asociado['telefono_linea'], $now, $asociado['id_asociado']);
 
         // commit the transaction
         $db->commit();
@@ -318,7 +318,7 @@ function actualizarAsociado($asociado) {
 
 // Devuelve un array de datos de asociado, de lo contrario devuelve false
 function insertarAsociado($asociado) {
-    $current_time = date('Y-m-d H:i:s');
+    $now = date('Y-m-d H:i:s');
     $asociado['fecha_nacimiento'] = dateToDb($asociado['fecha_nacimiento']);
     try {
         $db = Db::getInstance();
@@ -331,7 +331,7 @@ function insertarAsociado($asociado) {
     
         Db::query($sql, capitalize($asociado['apellido']), capitalize($asociado['nombre']), $asociado['sexo'], $asociado['fecha_nacimiento'], 
         $asociado['tipo_documento'], $asociado['num_documento'], $asociado['num_cuil'], $asociado['condicion_ingreso'], $asociado['email'], 
-        $asociado['domicilio'], $asociado['id_localidad'], $current_time, $current_time);
+        $asociado['domicilio'], $asociado['id_localidad'], $now, $now);
 
         // Seteamos el id del nuevo asociado insertado en la base de datos, para re dirigir a la página de detalle
         $asociado['id_asociado'] = Db::getInstance()->lastInsertId();// ( lastInsertId() devuelve un tipo string ).
@@ -339,7 +339,7 @@ function insertarAsociado($asociado) {
         // Consulta 2
         $sql = 'INSERT INTO telefono (telefono_movil, telefono_linea, id_asociado, created, last_modified) VALUES(?, ?, ?, ?, ?)';
     
-        Db::query($sql, $asociado['telefono_movil'], $asociado['telefono_linea'], $asociado['id_asociado'], $current_time, $current_time);
+        Db::query($sql, $asociado['telefono_movil'], $asociado['telefono_linea'], $asociado['id_asociado'], $now, $now);
     
         // commit the transaction
         $db->commit();

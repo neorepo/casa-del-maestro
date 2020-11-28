@@ -48,10 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors['apellido'] = $messages['onlyLetters'];
         } elseif ( !minlength( $usuario['apellido'], $minlength) ) {
             $errors['apellido'] = $messages['minLength'];
-            // Aumenta la longitud de este texto a ? caracteres o más (actualmente, el ? tiene ? caracteres)
         } elseif ( !maxlength($usuario['apellido'], $maxlength) ) {
             $errors['apellido'] = $messages['maxLength'];
-            // Reduce la longitud de este texto a 3 caracteres o menos (actualmente, el ? tiene ? caracteres)
         }
 
         // Validación del nombre

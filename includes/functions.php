@@ -7,7 +7,7 @@ require_once("constants.php");
  * FUNCIONES PARA MANTENER LA INTEGRIDAD DE LOS CAMPOS UNIQUE EN LA BASE DE DATOS
  */
 function existeNumDeDocumentoAsociado($num_documento, $id_asociado = null) {
-    if ($id_asociado != null) {
+    if ($id_asociado) {
         $q = 'SELECT num_documento FROM asociado WHERE num_documento = ? AND id_asociado != ? LIMIT 1 ;';
         return Db::query($q, $num_documento, $id_asociado);
     } else {
@@ -17,7 +17,7 @@ function existeNumDeDocumentoAsociado($num_documento, $id_asociado = null) {
 }
 
 function existeNumDeCuilAsociado($num_cuil, $id_asociado = null) {
-    if ($id_asociado != null) {
+    if ($id_asociado) {
         $q = 'SELECT num_cuil FROM asociado WHERE num_cuil = ? AND id_asociado != ? LIMIT 1 ;';
         return Db::query($q, $num_cuil, $id_asociado);
     } else {
@@ -27,7 +27,7 @@ function existeNumDeCuilAsociado($num_cuil, $id_asociado = null) {
 }
 
 function existeEmailAsociado($email, $id_asociado = null) {
-    if ($id_asociado != null) {
+    if ($id_asociado) {
         $q = 'SELECT email FROM asociado WHERE email = ? AND id_asociado != ? LIMIT 1 ;';
         return Db::query($q, $email, $id_asociado);
     } else {
@@ -37,7 +37,7 @@ function existeEmailAsociado($email, $id_asociado = null) {
 }
 
 function existeTelefonoMovilAsociado($telefono_movil, $id_asociado = null) {
-    if ($id_asociado != null) {
+    if ($id_asociado) {
         $q = 'SELECT telefono_movil FROM telefono WHERE telefono_movil = ? AND id_asociado != ? LIMIT 1 ;';
         return Db::query($q, $telefono_movil, $id_asociado);
     } else {
@@ -142,7 +142,7 @@ function getLocalidadesPorIdProvincia($id_provincia) {
  * Usuario
  */
 function existeNumDeDocumentoUsuario($num_documento, $id_usuario = null) {
-    if ($id_usuario == null) {
+    if ($id_usuario) {
         $q = 'SELECT num_documento FROM usuario WHERE num_documento = ? LIMIT 1 ;';
         return Db::query($q, $num_documento);
     } else {
@@ -152,12 +152,12 @@ function existeNumDeDocumentoUsuario($num_documento, $id_usuario = null) {
 }
 
 function existeEmailUsuario($email, $id_usuario = null) {
-    if ($id_usuario == null) {
-        $q = 'SELECT email FROM usuario WHERE email = ? LIMIT 1 ;';
-        return Db::query($q, $email);
-    } else {
-        $q = 'SELECT email FROM usuario WHERE email = ? AND id_usuario != ? LIMIT 1 ;';
+    if ($id_usuario) {
+        $q = 'SELECT id_usuario FROM usuario WHERE email = ? AND id_usuario != ? LIMIT 1 ;';
         return Db::query($q, $email, $id_usuario);
+    } else {
+        $q = 'SELECT id_usuario FROM usuario WHERE email = ? LIMIT 1 ;';
+        return Db::query($q, $email);
     }
 }
 

@@ -22,6 +22,10 @@ class Token {
         }
     }
 
+    private static function salt(){
+        return substr(strtr(base64_encode(hex2bin(self::generate(32))), '+', '.'), 0, 44);
+    }
+
     public static function validate($token) {
         // if ( !isset($token) || $token !== $_SESSION['_token'] ) {
         //     return false;
