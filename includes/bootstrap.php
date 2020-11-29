@@ -18,7 +18,8 @@ require_once '../src/Db.php';
 require_once '../src/Flash.php';
 
 // require authentication for most pages
-if (!preg_match("{(?:usuario_login|usuario_logout|usuario_register|usuario_forgot_password)\.php$}", $_SERVER["PHP_SELF"]))
+// 22-30
+if (!preg_match("{(?:usuario_login|usuario_logout|usuario_register|usuario_forgot_password|usuario_reset_password)\.php$}", $_SERVER["PHP_SELF"]))
 {
     if (empty($_SESSION["uid"]))
     {

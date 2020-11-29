@@ -55,22 +55,16 @@ render('usuario/login.html', ['title' => 'Acceso', 'usuario' => $usuario, 'error
 function authenticateUser($usuario, $password) {
     // Podemos acceder por número de documento o correo electrónico.
     $q = 'SELECT * FROM usuario WHERE num_documento = ? LIMIT 1;';
-
     $rows = Db::query($q, $usuario);
-    
     if ( count($rows) == 1 ) {
         // first (and only) row
         $usuario = $rows[0];
-
         if ( verifyPassword( $password, $usuario['password'] ) ) {
-
             // unset any session variables
             $_SESSION = [];
-
             $_SESSION['uid'] = $usuario['id_usuario'];
             $_SESSION['nombre'] = $usuario['nombre'];
             $_SESSION['rol'] = $usuario['rol'];
-
             return true;
         }
     }

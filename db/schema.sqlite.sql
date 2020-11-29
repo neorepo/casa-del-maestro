@@ -22884,13 +22884,11 @@ CREATE TABLE "telefono" (
 CREATE INDEX idx_tel_id_asociado_tipo ON telefono(id_asociado, telefono_movil);
 
 CREATE TABLE "recuperar" (
-  "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  "id_usuario" INTEGER NOT NULL UNIQUE,
+  "email" INTEGER NOT NULL UNIQUE,
   "token" TEXT NOT NULL,
   "time" INTEGER NOT NULL,
-  "estado" TEXT NOT NULL,
-  "created" DATETIME NOT NULL
+  "estado" TEXT NOT NULL
 );
-CREATE INDEX idx_forgot_password_user_id ON forgot_password(id_usuario, token);
+CREATE INDEX idx_forgot_password_user_id ON forgot_password(email, token);
 
 -- ALTER TABLE your_table ADD column_name TEXT/INTEGER default "unknown";

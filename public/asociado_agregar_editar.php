@@ -310,7 +310,7 @@ function actualizarAsociado($asociado) {
     } catch (PDOException $e) {
         // roll back the transaction if something failed
         $db->rollback();
-        trigger_error('Error:' . $e->getMessage(), E_USER_ERROR);
+        // trigger_error('Error:' . $e->getMessage(), E_USER_ERROR);
         return false;
     }
     return $asociado;
@@ -346,7 +346,7 @@ function insertarAsociado($asociado) {
     } catch (PDOException $e) {
         // roll back the transaction if something failed
         $db->rollback();
-        trigger_error('Error:' . $e->getMessage(), E_USER_ERROR);
+        // trigger_error('Error:' . $e->getMessage(), E_USER_ERROR);
         return false; // Deberíamos devolver -1 en caso de error si estuvieramos en JAVA :)
     }
     return $asociado;
