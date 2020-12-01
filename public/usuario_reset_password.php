@@ -3,68 +3,26 @@
 // configuration
 require '../includes/bootstrap.php';
 
-if (isset($_SESSION['uid'])) {
-    redirect('/');
+if (!empty($_SESSION["user_id"])) {
+    redirect("/");
 }
 
 $usuario = [
+    'email' => null,
     'password' => null,
     'confirm_password' => null
 ];
 $errors = [];
 
-// Aquí surge la duda de si, sanitizar y validar el email y el token
-if( array_key_exists('e', $_GET) && array_key_exists('t', $_GET) ) {
-    // Datos provenientes del correo electrónico del usuario.
-    $usuario['email'] = $_GET['e'];
-    $token = $_GET['t'];
-
-    if(!validarCredenciales($usuario, $token)) {
-        $html = <<<HTML
-        <p>Email o token no válidos. O la solicitud de restablecimiento caducó.</p>
-        <p><a href="http://localhost:8000/usuario_forgot_password.php">Clic aquí</a> para restablecer nuevamente la contraseña.</p>
-        HTML;
-        echo $html;
-        exit;
-    } else {
-        // Mostrar plantilla de restablecimiento de contraseña.
-        render('usuario/reset_password.html', ['title' => 'Restablecer contraseña', 'usuario' => $usuario, 'errors' => $errors]);
-    }
-
-}
-
+// graycen.doc@extraale.com
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    if ( !empty( $_POST['token'] ) && Token::validate( $_POST['token'] ) ) {
+    if (!empty( $_POST['token']) && Token::validate($_POST['token'])) {
 
-        $data = [
-            'email' => $_POST['usuario']['email'],
-            'password' => $_POST['usuario']['password'],
-            'confirm_password' => $_POST['usuario']['confirm_password']
-        ];
-        
-        if( array_key_exists('email', $data) ) {
-            $usuario['email'] = escape($data['email']);
-        }
-
-        if( array_key_exists('password', $data) ) {
-            $usuario['password'] = escape($data['password']);
-        }
-
-        if( array_key_exists('confirm_password', $data) ) {
-            $usuario['confirm_password'] = escape($data['confirm_password']);
-        }
-
-        // Validación del correo electrónico
-        if ( !$usuario['email'] ) {
-            $errors['email'] = $messages['required'];
-        } elseif ( valid_email( $usuario['email'] ) ) {
-            // $rows = existeEmailUsuario( $usuario['email'] );
-            // if (count($rows) == 1) {
-            //     $errors['email'] = str_replace(':f', 'correo electrónico', $messages['unique'] );;
-            // }
-        } else {
-            $errors['email'] = $messages['valid_email'];
+        foreach($usuario as $key => $value) {
+            if(array_key_exists($key, $_POST)) {
+                $usuario[$key] = escape($_POST[$key]);
+            }
         }
 
         // Validación de las contraseñas
@@ -79,30 +37,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
 
-        echo 'Datos en el array de errores:';
-        echo '<pre>';
-        print_r( $errors );
-        echo '</pre>';
-
-        /**
-         * Si no existen errores
-         */
+        // Si no existen errores
         if( empty( $errors ) ) {
-            if ( insertarUsuario( $usuario ) ) {
-                // the CSRF token they submitted does not match the one we sent
-                unset($_SESSION['_token']);
-                Flash::addFlash('Ahora puedes acceder al sistema.');
-                redirect('/');
-            } else {
-                $registerSuccess = false;
+            $usuario['email'] = $_SESSION['_e'];
+            $token = $_SESSION['_t'];
+
+            $usuario['password'] = hashPassword($usuario['password']);
+
+            if(restablecerClaveUsuario($usuario, $token)) {
+                // Eliminamos las variables contenidas en el array de $_SESSION utilizadas para la lógica de recuperación de contraseña.
+                $_SESSION = [];
+                // Re dirigimos al usuario a la página de login.
+                Flash::addFlash('Su contraseña ha sido restablecida exitosamente, ahora puedes iniciar sesión.', 'success');
+                redirect('/usuario_login.php');
             }
         } else {
             // Mostrar plantilla de restablecimiento de contraseña con feedback.
             render('usuario/reset_password.html', ['title' => 'Restablecer contraseña', 'usuario' => $usuario, 'errors' => $errors]);
         }
     }
+    Flash::addFlash('Algo salió mal. Vuelva a comprobar el enlace o póngase en contacto con el administrador del sistema.', 'info');
+    redirect('/usuario_forgot_password.php');
 }
 
+// Aquí surge la duda de si, sanitizar y validar el email y el token.
+if( array_key_exists('e', $_GET) && array_key_exists('t', $_GET) ) {
+    // Datos provenientes del correo electrónico del usuario.
+    $usuario['email'] = escape($_GET['e']);
+    $token = escape($_GET['t']);
+
+    if(validarCredenciales($usuario, $token)) {
+        // Almacenamos en el array $_SESSION el email y el token.
+        $_SESSION['_e'] = $usuario['email'];
+        $_SESSION['_t'] = $token;
+        // Mostrar plantilla de restablecimiento de contraseña.
+        render('usuario/reset_password.html', ['title' => 'Restablecer contraseña', 'usuario' => $usuario, 'errors' => $errors]);
+    }
+    Flash::addFlash('Email o token no válidos. O la solicitud de restablecimiento caducó.', 'info');
+    redirect('/usuario_forgot_password.php');
+}
+Flash::addFlash('Algo salió mal. Vuelva a comprobar el enlace o póngase en contacto con el administrador del sistema.', 'info');
+redirect('/usuario_forgot_password.php');
 
 /**
  * Funciones de persistencia
@@ -115,10 +90,34 @@ function validarCredenciales($usuario, $token) {
         $row = $rows[0];
         // Una alternativa no muy confiable según documentación es: => time() - (20 * 60);
         $time = mktime(date("H"), date("i")-20, date("s"));
-        
         if($row['time'] >= $time && $row['estado'] == 'pendiente') {
             return true;
         }
     }
     return false;
+}
+
+function restablecerClaveUsuario($usuario, $token) {
+    $now = date("Y-m-d H:i:s");
+    try {
+        $db = Db::getInstance();
+        // begin the transaction
+        $db->beginTransaction();
+
+        // Consulta 1
+        $sql = 'UPDATE usuario SET password = ?, last_modified = ? WHERE email = ? AND deleted = 0;';
+        Db::query($sql, $usuario['password'], $now, $usuario['email']);
+
+        // Consulta 2
+        $sql = 'UPDATE recuperar SET estado = "usado" WHERE token = ? AND email = ?;';
+        Db::query($sql, $token, $usuario['email']);
+
+        // commit the transaction
+        $db->commit();
+    } catch (PDOException $e) {
+        // roll back the transaction if something failed
+        $db->rollback();
+        return false;
+    }
+    return true;
 }

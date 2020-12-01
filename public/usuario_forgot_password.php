@@ -8,7 +8,6 @@ if (isset($_SESSION['uid'])) {
 }
 
 $usuario = [
-    'id_usuario' => null,
     'email' => null,
 ];
 
@@ -19,38 +18,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ( !empty( $_POST['token'] ) && Token::validate( $_POST['token'] ) ) {
 
-        $data = [
-            'email' => $_POST['usuario']['email']
+        $usuario = [
+            'email' => array_key_exists('email', $_POST) ? escape($_POST['email']) : null
         ];
-
-        // Por seguridad no mapear el array $_POST
-        if (array_key_exists('email', $data)) {
-            $usuario['email'] = escape( $data['email'] );
-        }
     
         // Validación del correo electrónico
         if ( !$usuario['email'] ) {
+            // Error, campo vacío
             $errors['email'] = $messages['required'];
         } elseif ( valid_email( $usuario['email'] ) ) {
-
             $rows = existeEmailUsuario( $usuario['email'] );
-            // No existe el correo electrónico
+            // Error: no existe el correo electrónico del usuario
             if (count($rows) != 1) {
                 $errors['email'] = 'No existe el usuario según el correo electrónico.';
             }
         } else {
+            // Error: e-mail no válido
             $errors['email'] = $messages['valid_email'];
         }
     
         // Si no hay errores
         if( empty( $errors ) ) {
-            $usuario['id_usuario'] = $rows[0]['id_usuario'];
-            // Create a unique recovery code 32 caracteres, ejemplo: cc58481ee70ce0027209abf27af17199
+            // Create a recovery token 32 caracteres, ejemplo: cc58481ee70ce0027209abf27af17199
             // $token = bin2hex(openssl_random_pseudo_bytes(16));
 
             $token = bin2hex(random_bytes(16));
             // https://github.com/nowakowskir/php-jwt
-
             // https://www.youtube.com/watch?v=mbsmsi7l3r4
 
             if ( insertarCodigoRecuperar($usuario, $token) ) {
@@ -60,15 +53,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $headers = 'MIME-Version: 1.0' . "\r\n";
                 $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
                 $headers .= 'From: Casa del Maestro y Previsión Social <noreply@app.com>' . "\r\n";
+                
                 $message = <<<EMAIL
-                <h1>Para restablecer su contraseña haga clic en el siguiente enlace:</h1>
+                <h2>Para restablecer su contraseña haga clic en el siguiente enlace:</h2>
                 <p><a href="$link">Clic en este enlace</a> o copie el siguiente código en la URL de su navegador.</p>
                 <code style="background-color: #000; color: #fff; padding: 4px;">$link</code>
                 <p>El enlace expirará en 20 minutos.</p>
-                <p>Si usted no ha hecho esta solicitud, ignore el presente mensaje.</p>
+                <p>Si usted no realizó esta solicitud, ignore el presente mensaje.</p>
                 EMAIL;
-                
-                echo $message;
 
                 if ( mail($to, $subject, $message, $headers) ) {
                     $sentSuccessfully = true;
@@ -109,7 +101,7 @@ function insertarCodigoRecuperar($usuario, $token) {
         // begin the transaction
         $db->beginTransaction();
         $sql = 'INSERT INTO recuperar (email, token, time, estado) VALUES 
-        (?, ?, ?, ?) ON CONFLICT(email) DO UPDATE SET token = ?, time = ?;';
+        (?, ?, ?, ?) ON CONFLICT(email) DO UPDATE SET token = ?, time = ?, estado = "pendiente";';
         Db::query($sql, $usuario['email'], $token, $time, 'pendiente', $token, $time);
         // commit the transaction
         $db->commit();

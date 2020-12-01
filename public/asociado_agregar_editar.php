@@ -5,7 +5,6 @@ require '../includes/bootstrap.php';
 
 $asociado = [];
 $errors = [];
-
 // Las localidades estarán disponibles solo cuando exista el id de la provincia.
 // Son 22793 localidades, solo listaremos las que pertenezcan a la provincia seleccionada
 $localidades = [];
@@ -42,29 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ( !empty( $_POST['token'] ) && Token::validate( $_POST['token'] ) ) {
-
-        // Por razones de seguridad, no mapear el array $_POST
-        $data = [
-            'apellido' => $_POST['apellido'],
-            'nombre' => $_POST['nombre'],
-            'fecha_nacimiento' => $_POST['fecha_nacimiento'],
-            'tipo_documento' => $_POST['tipo_documento'],
-            'num_documento' => $_POST['num_documento'],
-            'num_cuil' => $_POST['num_cuil'],
-            'condicion_ingreso' => $_POST['condicion_ingreso'],
-            'email' => $_POST['email'],
-            'telefono_movil' => $_POST['telefono_movil'],
-            'telefono_linea' => $_POST['telefono_linea'],
-            'domicilio' => $_POST['domicilio'],
-            'id_provincia' => $_POST['id_provincia'],
-            'id_localidad' => $_POST['id_localidad'],
-            'sexo' => $_POST['sexo'] ?? null // Si el campo sexo no es seleccionado 
-        ];
-
-        // Map $data no $_POST
+        
         foreach ($asociado as $key => $value) {
-            if ( array_key_exists( $key, $data ) ) {
-                $asociado[$key] = escape( $data[$key] );
+            if ( array_key_exists( $key, $_POST ) ) {
+                $asociado[$key] = escape( $_POST[$key] );
             }
         }
 

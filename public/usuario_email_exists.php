@@ -1,4 +1,5 @@
 <?php
+// Respuesta solicitud XMLHttpRequest por el email de usuario en el formulario de registro.
 require_once '../includes/functions.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once '../src/Db.php';
