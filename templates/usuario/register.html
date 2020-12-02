@@ -17,7 +17,7 @@
             <div class="form-group col-md-6">
                 <label for="apellido">Apellidos <span class="required">*</span></label>
                 <input type="text" class="form-control <?= isset($errors['apellido']) ? 'is-invalid' : ''; ?>"
-                    name="apellido" id="apellido" value="<?= $usuario['apellido']; ?>" spellcheck="false"
+                    name="" id="apellido" value="<?= $usuario['apellido']; ?>" spellcheck="false"
                     autocomplete="off" autocorrect="off" autocapitalize="off" maxlength="40">
                 <div class="invalid-feedback"><?= $errors['apellido'] ?? ''; ?></div>
             </div>

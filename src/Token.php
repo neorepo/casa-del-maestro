@@ -27,9 +27,6 @@ class Token {
     }
 
     public static function validate($token) {
-        // if ( !isset($token) || $token !== $_SESSION['_token'] ) {
-        //     return false;
-        // }
         if ( !isset($token) || !hash_equals($_SESSION['_token'], $token) ) {
             return false;
         }

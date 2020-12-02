@@ -18,9 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ( !empty( $_POST['token'] ) && Token::validate( $_POST['token'] ) ) {
 
-        $usuario = [
-            'email' => array_key_exists('email', $_POST) ? escape($_POST['email']) : null
-        ];
+        if (array_key_exists('email', $_POST)) {
+            $usuario['email'] = escape($_POST['email']);
+        }
     
         // Validación del correo electrónico
         if ( !$usuario['email'] ) {

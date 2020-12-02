@@ -25,19 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (!empty($_POST['token']) && Token::validate( $_POST['token'] )) {
 
-        $data = [
-            'apellido' => $_POST['apellido'],
-            'nombre' => $_POST['nombre'],
-            'usuario' => $_POST['usuario'],
-            'email' => $_POST['email'],
-            'password' => $_POST['password'],
-            'confirm_password' => $_POST['confirm_password']
-        ];
-
-        // Map data no $_POST
         foreach ($usuario as $key => $value) {
-            if (array_key_exists($key, $data)) {
-                $usuario[$key] = escape( $data[$key] );
+            if (array_key_exists($key, $_POST)) {
+                $usuario[$key] = escape( $_POST[$key] );
             }
         }
 
@@ -88,11 +78,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Validación de las contraseñas
-        if ( !$usuario['password'] ) {
+        if (!$usuario['password']) {
             $errors['password'] = $messages['required'];
-        } elseif ( !$usuario['confirm_password'] ) {
-            $errors['confirm_password'] = 'Confirme su contraseña.';
-        } else {
+        }
+        if (!$usuario['confirm_password']) {
+            $errors['confirm_password'] = $messages['required'];
+        }
+        if ($usuario['password'] && $usuario['confirm_password']) {
             // Comparación segura a nivel binario sensible a mayúsculas y minúsculas.
             if (strcmp($usuario['password'], $usuario['confirm_password']) !== 0) {
                 $errors['confirm_password'] = 'Las contraseñas que ingresó no coinciden.';
