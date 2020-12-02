@@ -11,14 +11,16 @@ define('BASE_URL', 'http://localhost:8000/cdm');
 
 // $password = "{4_8$\U,mK(zdsg$\RL-lXfDl)ky&Se2(.N)";
 
-$minlength = 3;
-$maxlength = 40;
+define('PEPPER', 'r8UN#uHVX5');// x~&4+ZaG&y
+// Constantes
+define('LONGITUD_MAXIMA', 40);
+define('LONGITUD_MINIMA', 3);
 
 $messages = [
     'required' => 'Este campo es requerido.',
     'onlyLetters' => 'Solo se permiten letras (a-zA-Z), y espacios en blanco.',
-    'minLength' => 'Aumenta la longitud a ' . $minlength . ' caracteres como mínimo.',
-    'maxLength' => 'Reduce la longitud a ' . $maxlength . ' caracteres o menos.',
+    'minLength' => 'Aumenta la longitud a ' . LONGITUD_MINIMA . ' caracteres como mínimo.',
+    'maxLength' => 'Reduce la longitud a ' . LONGITUD_MAXIMA . ' caracteres o menos.',
     'valid_date' => 'El formato o la fecha ingresada no es válida.',
     'valid_email' => 'El correo electrónico no es válido.',
     'valid_document_type' => 'El tipo de documento seleccionado no es válido.',

@@ -519,12 +519,11 @@ function render($template, $values = []) {
 
 // función para encriptar contraseña
 function hashPassword($password) {
-    // x~&4+ZaG&y
-    return password_hash($password . 'r8UN#uHVX5', PASSWORD_BCRYPT, ['cost' => 12]);
+    return password_hash($password . PEPPER, PASSWORD_BCRYPT, ['cost' => 12]);
 }
 
 function verifyPassword($password, $passwordHash) {
-    return (password_verify($password . 'r8UN#uHVX5', $passwordHash) == $passwordHash);
+    return (password_verify($password . PEPPER, $passwordHash) == $passwordHash);
 }
 
 function onlyletters($value) {

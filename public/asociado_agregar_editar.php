@@ -55,9 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors['apellido'] = $messages['required'];
         } else if ( !onlyletters( $asociado['apellido'] ) ) {
             $errors['apellido'] = $messages['onlyLetters'];
-        } else if ( !minlength( $asociado['apellido'], $minlength) ) {
+        } else if ( !minlength( $asociado['apellido'], LONGITUD_MINIMA) ) {
             $errors['apellido'] = $messages['minLength'];
-        } else if ( !maxlength($asociado['apellido'], $maxlength) ) {
+        } else if ( !maxlength($asociado['apellido'], LONGITUD_MAXIMA) ) {
             $errors['apellido'] = $messages['maxLength'];
         }
 
@@ -66,9 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors['nombre'] = $messages['required'];
         } else if ( !onlyletters( $asociado['nombre'] ) ) {
             $errors['nombre'] = $messages['onlyLetters'];
-        } else if ( !minlength( $asociado['nombre'], $minlength) ) {
+        } else if ( !minlength( $asociado['nombre'], LONGITUD_MINIMA) ) {
             $errors['nombre'] = $messages['minLength'];
-        } else if ( !maxlength($asociado['nombre'], $maxlength) ) {
+        } else if ( !maxlength($asociado['nombre'], LONGITUD_MAXIMA) ) {
             $errors['nombre'] = $messages['maxLength'];
         }
 
