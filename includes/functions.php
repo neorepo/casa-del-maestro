@@ -27,6 +27,7 @@ function existeNumDeCuilAsociado($num_cuil, $id_asociado = null) {
 }
 
 function existeEmailAsociado($email, $id_asociado = null) {
+    $email = strtolower($email);
     if ($id_asociado) {
         $q = 'SELECT email FROM asociado WHERE email = ? AND id_asociado != ? LIMIT 1 ;';
         return Db::query($q, $email, $id_asociado);
@@ -152,6 +153,7 @@ function existeNumDeDocumentoUsuario($num_documento, $id_usuario = null) {
 }
 
 function existeEmailUsuario($email, $id_usuario = null) {
+    $email = strtolower($email);
     if ($id_usuario) {
         $q = 'SELECT id_usuario FROM usuario WHERE email = ? AND id_usuario != ? LIMIT 1 ;';
         return Db::query($q, $email, $id_usuario);

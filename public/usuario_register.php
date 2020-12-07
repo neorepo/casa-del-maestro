@@ -23,86 +23,94 @@ $registerSuccess = true;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    if (!empty($_POST['token']) && Token::validate( $_POST['token'] )) {
-
-        foreach ($usuario as $key => $value) {
-            if (array_key_exists($key, $_POST)) {
-                $usuario[$key] = escape( $_POST[$key] );
-            }
+    if (array_key_exists('token', $_POST)) {
+        if (!Token::validate($_POST['token'])) {
+            // Si el token CSRF que enviaron no coincide con el que enviamos.
+            redirect('/usuario_logout.php');
         }
+    }
+    // No existe la key token
+    else {
+        redirect('/usuario_logout.php');
+    }
 
-        // Validación del apellido
-        if ( !$usuario['apellido'] ) {
-            $errors['apellido'] = $messages['required'];
-        } elseif ( !onlyletters( $usuario['apellido'] ) ) {
-            $errors['apellido'] = $messages['onlyLetters'];
-        } elseif ( !minlength( $usuario['apellido'], LONGITUD_MINIMA) ) {
-            $errors['apellido'] = $messages['minLength'];
-        } elseif ( !maxlength($usuario['apellido'], LONGITUD_MAXIMA) ) {
-            $errors['apellido'] = $messages['maxLength'];
+    foreach ($usuario as $key => $value) {
+        if (array_key_exists($key, $_POST)) {
+            $usuario[$key] = escape( $_POST[$key] );
         }
+    }
 
-        // Validación del nombre
-        if ( !$usuario['nombre'] ) {
-            $errors['nombre'] = $messages['required'];
-        } elseif ( !onlyletters( $usuario['nombre'] ) ) {
-            $errors['nombre'] = $messages['onlyLetters'];
-        } elseif ( !minlength( $usuario['nombre'], LONGITUD_MINIMA) ) {
-            $errors['nombre'] = $messages['minLength'];
-        } elseif ( !maxlength($usuario['nombre'], LONGITUD_MAXIMA) ) {
-            $errors['nombre'] = $messages['maxLength'];
+    // Validación del apellido
+    if ( !$usuario['apellido'] ) {
+        $errors['apellido'] = $messages['required'];
+    } elseif ( !onlyletters( $usuario['apellido'] ) ) {
+        $errors['apellido'] = $messages['onlyLetters'];
+    } elseif ( !minlength( $usuario['apellido'], LONGITUD_MINIMA) ) {
+        $errors['apellido'] = $messages['minLength'];
+    } elseif ( !maxlength($usuario['apellido'], LONGITUD_MAXIMA) ) {
+        $errors['apellido'] = $messages['maxLength'];
+    }
+
+    // Validación del nombre
+    if ( !$usuario['nombre'] ) {
+        $errors['nombre'] = $messages['required'];
+    } elseif ( !onlyletters( $usuario['nombre'] ) ) {
+        $errors['nombre'] = $messages['onlyLetters'];
+    } elseif ( !minlength( $usuario['nombre'], LONGITUD_MINIMA) ) {
+        $errors['nombre'] = $messages['minLength'];
+    } elseif ( !maxlength($usuario['nombre'], LONGITUD_MAXIMA) ) {
+        $errors['nombre'] = $messages['maxLength'];
+    }
+
+    // Validación del número de documento (usuario)
+    if ( !$usuario['usuario'] ) {
+        $errors['usuario'] = $messages['required'];
+    } elseif ( preg_match('/^[\d]{8}$/', $usuario['usuario']) ) {
+        $rows = existeNumDeDocumentoUsuario( $usuario['usuario'] );
+        if (count($rows) == 1) {
+            $errors['usuario'] = str_replace(':f', 'número de documento', $messages['unique'] );
         }
+    } else {
+        $errors['usuario'] = $messages['valid_document'];
+    }
 
-        // Validación del número de documento (usuario)
-        if ( !$usuario['usuario'] ) {
-            $errors['usuario'] = $messages['required'];
-        } elseif ( preg_match('/^[\d]{8}$/', $usuario['usuario']) ) {
-            $rows = existeNumDeDocumentoUsuario( $usuario['usuario'] );
-            if (count($rows) == 1) {
-                $errors['usuario'] = str_replace(':f', 'número de documento', $messages['unique'] );
-            }
+    // Validación del correo electrónico
+    if ( !$usuario['email'] ) {
+        $errors['email'] = $messages['required'];
+    } elseif ( valid_email( $usuario['email'] ) ) {
+        $rows = existeEmailUsuario( $usuario['email'] );
+        if (count($rows) == 1) {
+            $errors['email'] = str_replace(':f', 'correo electrónico', $messages['unique'] );;
+        }
+    } else {
+        $errors['email'] = $messages['valid_email'];
+    }
+
+    // Validación de las contraseñas
+    if (!$usuario['password']) {
+        $errors['password'] = $messages['required'];
+    }
+    if (!$usuario['confirm_password']) {
+        $errors['confirm_password'] = $messages['required'];
+    }
+    if ($usuario['password'] && $usuario['confirm_password']) {
+        // Comparación segura a nivel binario sensible a mayúsculas y minúsculas.
+        if (strcmp($usuario['password'], $usuario['confirm_password']) !== 0) {
+            $errors['confirm_password'] = 'Las contraseñas que ingresó no coinciden.';
+        }
+    }
+
+    /**
+     * Si no existen errores
+     */
+    if( empty( $errors ) ) {
+        if ( insertarUsuario( $usuario ) ) {
+            // the CSRF token they submitted does not match the one we sent
+            unset($_SESSION['_token']);
+            Flash::addFlash('Ahora puedes acceder al sistema.');
+            redirect('/');
         } else {
-            $errors['usuario'] = $messages['valid_document'];
-        }
-
-        // Validación del correo electrónico
-        if ( !$usuario['email'] ) {
-            $errors['email'] = $messages['required'];
-        } elseif ( valid_email( $usuario['email'] ) ) {
-            $rows = existeEmailUsuario( $usuario['email'] );
-            if (count($rows) == 1) {
-                $errors['email'] = str_replace(':f', 'correo electrónico', $messages['unique'] );;
-            }
-        } else {
-            $errors['email'] = $messages['valid_email'];
-        }
-
-        // Validación de las contraseñas
-        if (!$usuario['password']) {
-            $errors['password'] = $messages['required'];
-        }
-        if (!$usuario['confirm_password']) {
-            $errors['confirm_password'] = $messages['required'];
-        }
-        if ($usuario['password'] && $usuario['confirm_password']) {
-            // Comparación segura a nivel binario sensible a mayúsculas y minúsculas.
-            if (strcmp($usuario['password'], $usuario['confirm_password']) !== 0) {
-                $errors['confirm_password'] = 'Las contraseñas que ingresó no coinciden.';
-            }
-        }
-    
-        /**
-         * Si no existen errores
-         */
-        if( empty( $errors ) ) {
-            if ( insertarUsuario( $usuario ) ) {
-                // the CSRF token they submitted does not match the one we sent
-                unset($_SESSION['_token']);
-                Flash::addFlash('Ahora puedes acceder al sistema.');
-                redirect('/');
-            } else {
-                $registerSuccess = false;
-            }
+            $registerSuccess = false;
         }
     }
 }

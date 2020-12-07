@@ -17,7 +17,7 @@
             <input type="text" name="usuario" id="usuario"
                 class="form-control <?= isset($errors['usuario']) ? 'is-invalid' : ''; ?>"
                 value="<?= $usuario['usuario']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
-                autocapitalize="off">
+                autocapitalize="off" tabindex="1">
             <div class="invalid-feedback"><?= $errors['usuario'] ?? ''; ?></div>
         </div>
 
@@ -26,11 +26,11 @@
             <a href="/usuario_forgot_password.php" class="form-sublink">¿Se te olvidó tu contraseña?</a>
             <input type="password" name="password" id="password"
                 class="form-control <?= isset($errors['password']) ? 'is-invalid' : ''; ?>"
-                value="<?= $usuario['password']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
-                autocapitalize="off">
+                value="" spellcheck="false" autocomplete="off" autocorrect="off"
+                autocapitalize="off" tabindex="2">
             <div class="invalid-feedback"><?= $errors['password'] ?? ''; ?></div>
         </div>
 
-        <button type="submit" class="btn btn-success btn-block">Ingresar</button>
+        <button type="submit" class="btn btn-success btn-block" tabindex="3">Ingresar</button>
     </form>
 </section>

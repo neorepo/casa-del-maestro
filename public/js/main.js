@@ -1,7 +1,7 @@
 'use strict';
 
-const provincia = document.querySelector("#id-provincia");
-const localidad = document.querySelector("#id-localidad");
+const provincia = document.querySelector("select#id-provincia");
+const localidad = document.querySelector("select#id-localidad");
 
 $(document).ready(function () {
     initDataTable();
@@ -118,22 +118,20 @@ function preventFormSubmit() {
 
 function initShowPasswords() {
     // Muestra las contraseñas en el formulario de registro de usuario
-    if (document.querySelector('#password')
-        && document.querySelector('#confirm-password')) {
-
-        if (document.querySelector('#show-password')) {
-            document.querySelector('#show-password').onclick = showPasswords;
-        }
+    if (document.querySelector('#show-password')) {
+        document.querySelector('#show-password').onclick = showPasswords;
     }
 }
 
 function showPasswords() {
-    let x = document.querySelector('#password');
-    let y = document.querySelector('#confirm-password');
-    if (x.type === 'password' && y.type === 'password') {
-        x.type = y.type = 'text';
-    } else {
-        x.type = y.type = 'password';
+    if (document.querySelector('#password') && document.querySelector('#confirm-password')) {
+        let x = document.querySelector('#password');
+        let y = document.querySelector('#confirm-password');
+        if (x.type === 'password' && y.type === 'password') {
+            x.type = y.type = 'text';
+        } else {
+            x.type = y.type = 'password';
+        }
     }
 }
 

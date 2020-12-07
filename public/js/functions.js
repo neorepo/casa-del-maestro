@@ -54,10 +54,7 @@ function maxLength(str, maxLength) {
 function isEmpty(str) {
     return (str.length == 0);
 }
-// https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address
-// /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-// https://www.w3.org/Bugs/Public/show_bug.cgi?id=15489
-// const regexEmail = /^[a-zA-Z0-9.!#$%&'*+-/=?\^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
 // https://owasp.org/www-community/OWASP_Validation_Regex_Repository
 const regexEmail = /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/;
 
@@ -86,3 +83,26 @@ function setSuccess(el) {
     el.classList.remove("is-invalid");
     el.parentNode.querySelector('.invalid-feedback').innerHTML = "";
 }
+
+/*related select*/
+/*$('select#idEspecie').on('change', function () {
+    var idEspecie = $(this).val(),
+        selectRaza = $('select#idRaza');
+    console.log($('option', selectRaza));
+    $(selector).filter(filterFn);
+    $('option', selectRaza).hide().filter('[data-id-especie="' + idEspecie + '"],[data-id-especie=""]').show();
+    selectRaza.val('');
+}).trigger('change');
+
+document.querySelector('select#idEspecie').onchange = function (e) {
+    let idEspecie = this.value;
+    let selectRaza = document.querySelector('select#idRaza');
+    let options = selectRaza.querySelectorAll('option');
+    options.forEach(option => { option.style.display = 'none'; });
+    Array.prototype.filter.call(options, option => {
+        if (option.dataset.idEspecie === idEspecie) {
+            option.style.display = 'block';
+        }
+    });
+    selectRaza.value = '';
+}*/

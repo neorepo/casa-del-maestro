@@ -32,6 +32,17 @@ if ($edit) {
  */
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+    if (array_key_exists('token', $_POST)) {
+        if (!Token::validate($_POST['token'])) {
+            // Si el token CSRF que enviaron no coincide con el que enviamos.
+            redirect('/usuario_logout.php');
+        }
+    }
+    // No existe la key token
+    else {
+        redirect('/usuario_logout.php');
+    }
+
     if (array_key_exists('cancel', $_POST)) {
         if ($asociado['id_asociado'] === null) {
             redirect('/');
@@ -40,207 +51,204 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         redirect('/asociado_detalle.php?aid=' . $asociado['id_asociado']);
     }
 
-    if ( !empty( $_POST['token'] ) && Token::validate( $_POST['token'] ) ) {
+    foreach ($asociado as $key => $value) {
+        if ( array_key_exists( $key, $_POST ) ) {
+            $asociado[$key] = escape( $_POST[$key] );
+        }
+    }
+
+    // Validaciones, el array de mensajes de error se encuentra en la carpeta includes/bootstrap
+
+    // Apellido
+    if ( !$asociado['apellido'] ) {
+        $errors['apellido'] = $messages['required'];
+    } else if ( !onlyletters( $asociado['apellido'] ) ) {
+        $errors['apellido'] = $messages['onlyLetters'];
+    } else if ( !minlength( $asociado['apellido'], LONGITUD_MINIMA) ) {
+        $errors['apellido'] = $messages['minLength'];
+    } else if ( !maxlength($asociado['apellido'], LONGITUD_MAXIMA) ) {
+        $errors['apellido'] = $messages['maxLength'];
+    }
+
+    // Nombre
+    if ( !$asociado['nombre'] ) {
+        $errors['nombre'] = $messages['required'];
+    } else if ( !onlyletters( $asociado['nombre'] ) ) {
+        $errors['nombre'] = $messages['onlyLetters'];
+    } else if ( !minlength( $asociado['nombre'], LONGITUD_MINIMA) ) {
+        $errors['nombre'] = $messages['minLength'];
+    } else if ( !maxlength($asociado['nombre'], LONGITUD_MAXIMA) ) {
+        $errors['nombre'] = $messages['maxLength'];
+    }
+
+    // Fecha de nacimiento
+    if ( !$asociado['fecha_nacimiento'] ) {
+        $errors['fecha_nacimiento'] = $messages['required'];
+    } else if ( !validate_date( $asociado['fecha_nacimiento'] ) ) {
+        $errors['fecha_nacimiento'] = $messages['valid_date'];
+    } else if ( !validLegalAge( calculateAge( $asociado['fecha_nacimiento'] ) ) ) {
+        $errors['fecha_nacimiento'] = $messages['valid_legal_age'];
+    }
+
+    // Tipo de documento
+    if ( !$asociado['tipo_documento'] ) {
+        $errors['tipo_documento'] = $messages['required'];
+    } else if ( !in_array( $asociado['tipo_documento'], ['DNI', 'LC', 'LE'] ) ) {
+        $errors['tipo_documento'] = $messages['valid_document_type'];
+    }
+
+    // Número de documento
+    if ( !$asociado['num_documento'] ) {
+        $errors['num_documento'] = $messages['required'];
+    } else if ( preg_match('/^[\d]{8}$/', $asociado['num_documento']) ) {
         
-        foreach ($asociado as $key => $value) {
-            if ( array_key_exists( $key, $_POST ) ) {
-                $asociado[$key] = escape( $_POST[$key] );
-            }
-        }
-
-        // Validaciones, el array de mensajes de error se encuentra en la carpeta includes/bootstrap
-
-        // Apellido
-        if ( !$asociado['apellido'] ) {
-            $errors['apellido'] = $messages['required'];
-        } else if ( !onlyletters( $asociado['apellido'] ) ) {
-            $errors['apellido'] = $messages['onlyLetters'];
-        } else if ( !minlength( $asociado['apellido'], LONGITUD_MINIMA) ) {
-            $errors['apellido'] = $messages['minLength'];
-        } else if ( !maxlength($asociado['apellido'], LONGITUD_MAXIMA) ) {
-            $errors['apellido'] = $messages['maxLength'];
-        }
-
-        // Nombre
-        if ( !$asociado['nombre'] ) {
-            $errors['nombre'] = $messages['required'];
-        } else if ( !onlyletters( $asociado['nombre'] ) ) {
-            $errors['nombre'] = $messages['onlyLetters'];
-        } else if ( !minlength( $asociado['nombre'], LONGITUD_MINIMA) ) {
-            $errors['nombre'] = $messages['minLength'];
-        } else if ( !maxlength($asociado['nombre'], LONGITUD_MAXIMA) ) {
-            $errors['nombre'] = $messages['maxLength'];
-        }
-
-        // Fecha de nacimiento
-        if ( !$asociado['fecha_nacimiento'] ) {
-            $errors['fecha_nacimiento'] = $messages['required'];
-        } else if ( !validate_date( $asociado['fecha_nacimiento'] ) ) {
-            $errors['fecha_nacimiento'] = $messages['valid_date'];
-        } else if ( !validLegalAge( calculateAge( $asociado['fecha_nacimiento'] ) ) ) {
-            $errors['fecha_nacimiento'] = $messages['valid_legal_age'];
-        }
-
-        // Tipo de documento
-        if ( !$asociado['tipo_documento'] ) {
-            $errors['tipo_documento'] = $messages['required'];
-        } else if ( !in_array( $asociado['tipo_documento'], ['DNI', 'LC', 'LE'] ) ) {
-            $errors['tipo_documento'] = $messages['valid_document_type'];
-        }
-
-        // Número de documento
-        if ( !$asociado['num_documento'] ) {
-            $errors['num_documento'] = $messages['required'];
-        } else if ( preg_match('/^[\d]{8}$/', $asociado['num_documento']) ) {
-            
-            if ( isset( $asociado['id_asociado'] ) ) {
-                $rows = existeNumDeDocumentoAsociado( $asociado['num_documento'], $asociado['id_asociado'] );
-            } else {
-                $rows = existeNumDeDocumentoAsociado( $asociado['num_documento'] );
-            }
-
-            // Unique
-            if (count($rows) == 1) {
-                $errors['num_documento'] = str_replace(':f', 'número de documento', $messages['unique'] );
-            }
+        if ( isset( $asociado['id_asociado'] ) ) {
+            $rows = existeNumDeDocumentoAsociado( $asociado['num_documento'], $asociado['id_asociado'] );
         } else {
-            $errors['num_documento'] = $messages['valid_document'];
+            $rows = existeNumDeDocumentoAsociado( $asociado['num_documento'] );
         }
 
-        // Número de cuil
-        if ( !$asociado['num_cuil'] ) {
-            $errors['num_cuil'] = $messages['required'];
-        } else if ( validar_cuit( $asociado['num_cuil'] ) ) {
+        // Unique
+        if (count($rows) == 1) {
+            $errors['num_documento'] = str_replace(':f', 'número de documento', $messages['unique'] );
+        }
+    } else {
+        $errors['num_documento'] = $messages['valid_document'];
+    }
 
-            if ( isset( $asociado['id_asociado'] ) ) {
-                $rows = existeNumDeCuilAsociado( $asociado['num_cuil'], $asociado['id_asociado'] );
-            } else {
-                $rows = existeNumDeCuilAsociado( $asociado['num_cuil'] );
-            }
-            
-            // Unique
-            if (count($rows) == 1) {
-                $errors['num_cuil'] = str_replace(':f', 'número de cuil', $messages['unique'] );
-            }
+    // Número de cuil
+    if ( !$asociado['num_cuil'] ) {
+        $errors['num_cuil'] = $messages['required'];
+    } else if ( validar_cuit( $asociado['num_cuil'] ) ) {
+
+        if ( isset( $asociado['id_asociado'] ) ) {
+            $rows = existeNumDeCuilAsociado( $asociado['num_cuil'], $asociado['id_asociado'] );
         } else {
-            $errors['num_cuil'] = $messages['valid_cuil'];
+            $rows = existeNumDeCuilAsociado( $asociado['num_cuil'] );
         }
-
-        // Condición de ingreso
-        if ( !$asociado['condicion_ingreso'] ) {
-            $errors['condicion_ingreso'] = $messages['required'];
-        } else if ( !in_array( $asociado['condicion_ingreso'], ['ACTIVO', 'ADHERENTE', 'JUBILADO'] ) ) {
-            $errors['condicion_ingreso'] = $messages['valid_entry_condition'];
+        
+        // Unique
+        if (count($rows) == 1) {
+            $errors['num_cuil'] = str_replace(':f', 'número de cuil', $messages['unique'] );
         }
+    } else {
+        $errors['num_cuil'] = $messages['valid_cuil'];
+    }
 
-        // E-mail, no es un campo requerido
-        if ( !$asociado['email'] ) {
-            // $errors['email'] = $messages['required'];
+    // Condición de ingreso
+    if ( !$asociado['condicion_ingreso'] ) {
+        $errors['condicion_ingreso'] = $messages['required'];
+    } else if ( !in_array( $asociado['condicion_ingreso'], ['ACTIVO', 'ADHERENTE', 'JUBILADO'] ) ) {
+        $errors['condicion_ingreso'] = $messages['valid_entry_condition'];
+    }
 
-            // Si no tengo el email, no puedo insertar un string vácio por que el campo es unique. Leer README.txt
-            $asociado['email'] = null;
-            
-        } else if ( valid_email( $asociado['email'] ) ) {
-            
-            if ( isset( $asociado['id_asociado'] ) ) {
-                $rows = existeEmailAsociado( $asociado['email'], $asociado['id_asociado'] );
-            } else {
-                $rows = existeEmailAsociado( $asociado['email'] );
-            }
-            
-            // Unique
-            if (count($rows) == 1) {
-                $errors['email'] = str_replace(':f', 'correo electrónico', $messages['unique'] );
-            }
+    // E-mail, no es un campo requerido
+    if ( !$asociado['email'] ) {
+        // $errors['email'] = $messages['required'];
+
+        // Si no tengo el email, no puedo insertar un string vácio por que el campo es unique. Leer README.txt
+        $asociado['email'] = null;
+        
+    } else if ( valid_email( $asociado['email'] ) ) {
+        
+        if ( isset( $asociado['id_asociado'] ) ) {
+            $rows = existeEmailAsociado( $asociado['email'], $asociado['id_asociado'] );
         } else {
-            $errors['email'] = $messages['valid_email'];
+            $rows = existeEmailAsociado( $asociado['email'] );
         }
+        
+        // Unique
+        if (count($rows) == 1) {
+            $errors['email'] = str_replace(':f', 'correo electrónico', $messages['unique'] );
+        }
+    } else {
+        $errors['email'] = $messages['valid_email'];
+    }
 
-        // Teléfono móvil
-        if ( !$asociado['telefono_movil'] ) {
-            $errors['telefono_movil'] = $messages['required'];
-        } else if ( validar_tel( $asociado['telefono_movil'] ) ) {
-            if( isset( $asociado['id_asociado'] ) ) {
-                $rows = existeTelefonoMovilAsociado( $asociado['telefono_movil'], $asociado['id_asociado'] );
-            } else {
-                $rows = existeTelefonoMovilAsociado( $asociado['telefono_movil'] );
-            }
-            
-            // Unique
-            if (count($rows) == 1) {
-                $errors['telefono_movil'] = str_replace(':f', 'teléfono móvil', $messages['unique'] );
-            }
+    // Teléfono móvil
+    if ( !$asociado['telefono_movil'] ) {
+        $errors['telefono_movil'] = $messages['required'];
+    } else if ( validar_tel( $asociado['telefono_movil'] ) ) {
+        if( isset( $asociado['id_asociado'] ) ) {
+            $rows = existeTelefonoMovilAsociado( $asociado['telefono_movil'], $asociado['id_asociado'] );
         } else {
-            $errors['telefono_movil'] = $messages['valid_mobile_phone'];
+            $rows = existeTelefonoMovilAsociado( $asociado['telefono_movil'] );
         }
-
-        // Teléfono de línea, no es un campo requerido
-        if ( !$asociado['telefono_linea'] ) {
-            // $errors['telefono_linea'] = $messages['required'];
-
-            // Si no tengo el telefono de línea, puedo insertar un string vácio por que el campo no es unique
-            // pero, para mantener la consistencia de los datos, se insertará un valor null
-            $asociado['telefono_linea'] = null;
-
-        } else if ( !validar_tel( $asociado['telefono_linea'] ) ) {
-            $errors['telefono_linea'] = $messages['valid_phone'];
+        
+        // Unique
+        if (count($rows) == 1) {
+            $errors['telefono_movil'] = str_replace(':f', 'teléfono móvil', $messages['unique'] );
         }
+    } else {
+        $errors['telefono_movil'] = $messages['valid_mobile_phone'];
+    }
 
-        // Domicilio
-        if ( !$asociado['domicilio'] ) {
-            $errors['domicilio'] = $messages['required'];
-        }
+    // Teléfono de línea, no es un campo requerido
+    if ( !$asociado['telefono_linea'] ) {
+        // $errors['telefono_linea'] = $messages['required'];
 
-        // Provincia
-        if ( !$asociado['id_provincia'] ) {
-            $errors['id_provincia'] = $messages['required'];
-        } else if( isValidProvinceId( $asociado['id_provincia'] ) ) {
+        // Si no tengo el telefono de línea, puedo insertar un string vácio por que el campo no es unique
+        // pero, para mantener la consistencia de los datos, se insertará un valor null
+        $asociado['telefono_linea'] = null;
 
-            // Cargamos las localidades despues de que tenemos el id de la provincia
-            $localidades = getLocalidadesPorIdProvincia( (int) $asociado['id_provincia'] );
-            
-        } else {
-            $errors['id_provincia'] = "Seleccione una provincia de la lista.";
-        }
+    } else if ( !validar_tel( $asociado['telefono_linea'] ) ) {
+        $errors['telefono_linea'] = $messages['valid_phone'];
+    }
 
-        // Localidad, aquí se verifica que la localidad pertenezca a la provincia selecionada
-        if ( !$asociado['id_localidad'] ) {
-            $errors['id_localidad'] = $messages['required'];
-        } else if( isPositiveInt( $asociado['id_localidad'] ) )  {
-            // Si el id de la provincia es vacío, devolvera 0 filas
-            $rows = existeLocalidadDeProvincia( (int) $asociado['id_localidad'], (int) $asociado['id_provincia'] );
-            
-            if (count($rows) == 0) {
-                $errors['id_localidad'] = 'Seleccione una localidad de la lista.';
-            }
-        } else {
+    // Domicilio
+    if ( !$asociado['domicilio'] ) {
+        $errors['domicilio'] = $messages['required'];
+    }
+
+    // Provincia
+    if ( !$asociado['id_provincia'] ) {
+        $errors['id_provincia'] = $messages['required'];
+    } else if( isValidProvinceId( $asociado['id_provincia'] ) ) {
+
+        // Cargamos las localidades despues de que tenemos el id de la provincia
+        $localidades = getLocalidadesPorIdProvincia( (int) $asociado['id_provincia'] );
+        
+    } else {
+        $errors['id_provincia'] = "Seleccione una provincia de la lista.";
+    }
+
+    // Localidad, aquí se verifica que la localidad pertenezca a la provincia selecionada
+    if ( !$asociado['id_localidad'] ) {
+        $errors['id_localidad'] = $messages['required'];
+    } else if( isPositiveInt( $asociado['id_localidad'] ) )  {
+        // Si el id de la provincia es vacío, devolvera 0 filas
+        $rows = existeLocalidadDeProvincia( (int) $asociado['id_localidad'], (int) $asociado['id_provincia'] );
+        
+        if (count($rows) == 0) {
             $errors['id_localidad'] = 'Seleccione una localidad de la lista.';
         }
-        
-        // Sexo
-        if ( !$asociado['sexo'] ) {
-            $errors['sexo'] = $messages['required'];
-        } else if( !in_array( $asociado['sexo'], ['F', 'M'] ) ) {
-            $errors['sexo'] = $messages['valid_sex'];
-        }
+    } else {
+        $errors['id_localidad'] = 'Seleccione una localidad de la lista.';
+    }
+    
+    // Sexo
+    if ( !$asociado['sexo'] ) {
+        $errors['sexo'] = $messages['required'];
+    } else if( !in_array( $asociado['sexo'], ['F', 'M'] ) ) {
+        $errors['sexo'] = $messages['valid_sex'];
+    }
 
-        /**
-         * Si no existen errores en el array
-         */
-        if( empty($errors) ) {
-            // Recibimos los datos del asociado despues de la inserción o actualización.
-            $asociado = save( $asociado );
-            // Verificamos que el valor de retorno sea distinto de false.
-            if ( $asociado ) {
-                unset( $_SESSION['_token'] );
-                // Seteamos el mensaje flash para la vista
-                Flash::addFlash('Los datos fueron guardados correctamente.', 'success');
-                // Re dirigimos al usuario a la vista de detalle.
-                redirect('/asociado_detalle.php?aid=' . $asociado['id_asociado']);
-            } else {
-                Flash::addFlash('Lo sentimos, no pudimos guardar el registro.', 'danger');
-                redirect('/');
-            }
+    /**
+     * Si no existen errores en el array
+     */
+    if( empty($errors) ) {
+        // Recibimos los datos del asociado despues de la inserción o actualización.
+        $asociado = save( $asociado );
+        // Verificamos que el valor de retorno sea distinto de false.
+        if ( $asociado ) {
+            unset( $_SESSION['_token'] );
+            // Seteamos el mensaje flash para la vista
+            Flash::addFlash('Los datos fueron guardados correctamente.', 'success');
+            // Re dirigimos al usuario a la vista de detalle.
+            redirect('/asociado_detalle.php?aid=' . $asociado['id_asociado']);
+        } else {
+            Flash::addFlash('Lo sentimos, no pudimos guardar el registro.', 'danger');
+            redirect('/');
         }
     }
 }

@@ -16,9 +16,9 @@
             <!-- Apellido -->
             <div class="form-group col-md-6">
                 <label for="apellido">Apellidos <span class="required">*</span></label>
-                <input type="text" class="form-control <?= isset($errors['apellido']) ? 'is-invalid' : ''; ?>"
-                    name="" id="apellido" value="<?= $usuario['apellido']; ?>" spellcheck="false"
-                    autocomplete="off" autocorrect="off" autocapitalize="off" maxlength="40">
+                <input type="text" class="form-control <?= isset($errors['apellido']) ? 'is-invalid' : ''; ?>" name=""
+                    id="apellido" value="<?= $usuario['apellido']; ?>" spellcheck="false" autocomplete="off"
+                    autocorrect="off" autocapitalize="off" maxlength="40">
                 <div class="invalid-feedback"><?= $errors['apellido'] ?? ''; ?></div>
             </div>
             <!-- Nombre -->
@@ -67,7 +67,7 @@
                 <label for="confirm-password">Confirmación <span class="required">*</span></label>
                 <input type="password"
                     class="form-control <?= isset($errors['confirm_password']) ? 'is-invalid' : ''; ?>"
-                    name="confirm_password" id="confirm-password" value="<?= $usuario['confirm_password']; ?>"
+                    name="confirm_password" id="confirm-password" value=""
                     spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
                 <div class="invalid-feedback"><?= $errors['confirm_password'] ?? ''; ?></div>
             </div>
@@ -94,13 +94,14 @@
      * Enfoque 2: durante la escritura o tipificación
      * Enfoque 3: en el cambio de enfoque
      **/
-    const email = document.querySelector("#email");
-    const usuario = document.querySelector("#usuario");
-    const apellido = document.querySelector("#apellido");
-    const nombre = document.querySelector("#nombre");
+    const email = document.querySelector("input#email");
+    const usuario = document.querySelector("input#usuario");
+    const apellido = document.querySelector("input#apellido");
+    const nombre = document.querySelector("input#nombre");
 
-    const min_length = 3;
-    const max_length = 40;
+    const MAX_LENGTH = 40;
+    const MIN_LENGTH = 3;
+    const MAX_PASSWORD_LENGTH = 60;
 
     document.addEventListener("DOMContentLoaded", () => {
         initEmailValidation();
@@ -117,10 +118,10 @@
                 setError(apellido, "Este campo es requerido.");
             } else if (!onlyLetters(value)) {
                 setError(apellido, "Solo se permiten letras (a-zA-Z), y espacios en blanco.");
-            } else if (!minLength(value, min_length)) {
-                setError(apellido, "Aumenta la longitud a " + min_length + " caracteres como mínimo.");
-            } else if (!maxLength(value, max_length)) {
-                setError(apellido, "Reduce la longitud a " + max_length + " caracteres o menos.")
+            } else if (!minLength(value, MIN_LENGTH)) {
+                setError(apellido, "Aumenta la longitud a " + MIN_LENGTH + " caracteres como mínimo.");
+            } else if (!maxLength(value, MAX_LENGTH)) {
+                setError(apellido, "Reduce la longitud a " + MAX_LENGTH + " caracteres o menos.")
             } else {
                 setSuccess(apellido);
             }
@@ -135,10 +136,10 @@
                 setError(nombre, "Este campo es requerido.");
             } else if (!onlyLetters(value)) {
                 setError(nombre, "Solo se permiten letras (a-zA-Z), y espacios en blanco.");
-            } else if (!minLength(value, min_length)) {
-                setError(nombre, "Aumenta la longitud a " + min_length + " caracteres como mínimo.");
-            } else if (!maxLength(value, max_length)) {
-                setError(nombre, "Reduce la longitud a " + max_length + " caracteres o menos.")
+            } else if (!minLength(value, MIN_LENGTH)) {
+                setError(nombre, "Aumenta la longitud a " + MIN_LENGTH + " caracteres como mínimo.");
+            } else if (!maxLength(value, MAX_LENGTH)) {
+                setError(nombre, "Reduce la longitud a " + MAX_LENGTH + " caracteres o menos.")
             } else {
                 setSuccess(nombre);
             }
@@ -175,7 +176,7 @@
             if (isEmpty(value)) {
                 setError(email, "Este campo es requerido.");
             } else if (validEmail(value)) {
-                let data = "email=" + encodeURIComponent(value);
+                let data = "email=" + encodeURIComponent(value.toLowerCase());
                 sendHttpRequest('POST', 'usuario_email_exists.php', data, emailExists);
             } else {
                 setError(email, "El correo electrónico no es válido.");

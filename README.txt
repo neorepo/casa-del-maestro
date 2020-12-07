@@ -113,16 +113,6 @@ session_set_cookie_params([
     'samesite' => 'lax'
 ]);
 
-
-Sintaxis heredoc
-// $form = <<<HTML
-// <form action="" method="post" enctype="multipart/form-data">
-//   Select image to upload:
-//   <input type="file" name="fileToUpload" id="fileToUpload">
-//   <input type="submit" value="Upload Image" name="submit">
-// </form>
-// HTML;
-
 // https://www.php.net/manual/es/language.constants.predefined.php
 echo __DIR__; es equivalente a dirname(__FILE__);
 

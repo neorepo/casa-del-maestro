@@ -17,33 +17,33 @@ $logonSuccess = true;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    if (!empty($_POST['token']) && Token::validate( $_POST['token'] )) {
-
-        if (!empty($_POST['usuario'])) {
-            // Escapamos caracteres no permitidos
-            $usuario['usuario'] = escape( $_POST['usuario'] );
-        } else {
-            $errors['usuario'] = 'Ingrese su usuario.';
-        }
-    
-        if (!empty($_POST['password'])) {
-            // Escapamos caracteres no permitidos
-            $usuario['password'] = escape( $_POST['password'] );
-        } else {
-            $errors['password'] = 'Ingrese su contraseña.';
-        }
-
-        // Si no hay errores
-        if ( empty( $errors ) ) {
-            if ( authenticateUser( $usuario['usuario'], $usuario['password']) ) {
-                // the CSRF token they submitted does not match the one we sent
-                unset($_SESSION['_token']);
-                redirect('/');
-            } else {
-                $logonSuccess = false;
-            }
+    if (array_key_exists('token', $_POST)) {
+        if (!Token::validate($_POST['token'])) {
+            // Si el token CSRF que enviaron no coincide con el que enviamos.
+            redirect('/usuario_logout.php');
         }
     }
+    // No existe la key token
+    else {
+        redirect('/usuario_logout.php');
+    }
+
+    foreach ($usuario as $key => $value) {
+        if (array_key_exists($key, $_POST)) {
+            $usuario[$key] = escape( $_POST[$key] );
+        }
+    }
+
+    // Si no hay errores
+    // if ( empty( $errors ) ) {
+        if ( authenticateUser( $usuario['usuario'], $usuario['password']) ) {
+            // the CSRF token they submitted does not match the one we sent
+            unset($_SESSION['_token']);
+            redirect('/');
+        } else {
+            $logonSuccess = false;
+        }
+    // }
 }
 
 // Mostrar plantilla de login de usuario
@@ -53,7 +53,6 @@ render('usuario/login.html', ['title' => 'Acceso', 'usuario' => $usuario, 'error
  * Funciones de persistencia
  */
 function authenticateUser($usuario, $password) {
-    // Podemos acceder por número de documento o correo electrónico.
     $q = 'SELECT * FROM usuario WHERE num_documento = ? LIMIT 1;';
     $rows = Db::query($q, $usuario);
     if ( count($rows) == 1 ) {

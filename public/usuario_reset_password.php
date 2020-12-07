@@ -17,45 +17,54 @@ $errors = [];
 // graycen.doc@extraale.com
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    if (!empty( $_POST['token']) && Token::validate($_POST['token'])) {
-
-        foreach($usuario as $key => $value) {
-            if(array_key_exists($key, $_POST)) {
-                $usuario[$key] = escape($_POST[$key]);
-            }
-        }
-
-        // Validación de las contraseñas
-        if ( !$usuario['password'] ) {
-            $errors['password'] = $messages['required'];
-        } elseif ( !$usuario['confirm_password'] ) {
-            $errors['confirm_password'] = 'Confirme su contraseña.';
-        } else {
-            // Comparación segura a nivel binario sensible a mayúsculas y minúsculas.
-            if (strcmp($usuario['password'], $usuario['confirm_password']) !== 0) {
-                $errors['confirm_password'] = 'Las contraseñas que ingresó no coinciden.';
-            }
-        }
-
-        // Si no existen errores
-        if( empty( $errors ) ) {
-            $usuario['email'] = $_SESSION['_e'];
-            $token = $_SESSION['_t'];
-
-            $usuario['password'] = hashPassword($usuario['password']);
-
-            if(restablecerClaveUsuario($usuario, $token)) {
-                // Eliminamos las variables contenidas en el array de $_SESSION utilizadas para la lógica de recuperación de contraseña.
-                $_SESSION = [];
-                // Re dirigimos al usuario a la página de login.
-                Flash::addFlash('Su contraseña ha sido restablecida exitosamente, ahora puedes iniciar sesión.', 'success');
-                redirect('/usuario_login.php');
-            }
-        } else {
-            // Mostrar plantilla de restablecimiento de contraseña con feedback.
-            render('usuario/reset_password.html', ['title' => 'Restablecer contraseña', 'usuario' => $usuario, 'errors' => $errors]);
+    if (array_key_exists('token', $_POST)) {
+        if (!Token::validate($_POST['token'])) {
+            // Si el token CSRF que enviaron no coincide con el que enviamos.
+            redirect('/usuario_logout.php');
         }
     }
+    // No existe la key token
+    else {
+        redirect('/usuario_logout.php');
+    }
+
+    foreach($usuario as $key => $value) {
+        if(array_key_exists($key, $_POST)) {
+            $usuario[$key] = escape($_POST[$key]);
+        }
+    }
+
+    // Validación de las contraseñas
+    if ( !$usuario['password'] ) {
+        $errors['password'] = $messages['required'];
+    } elseif ( !$usuario['confirm_password'] ) {
+        $errors['confirm_password'] = 'Confirme su contraseña.';
+    } else {
+        // Comparación segura a nivel binario sensible a mayúsculas y minúsculas.
+        if (strcmp($usuario['password'], $usuario['confirm_password']) !== 0) {
+            $errors['confirm_password'] = 'Las contraseñas que ingresó no coinciden.';
+        }
+    }
+
+    // Si no existen errores
+    if( empty( $errors ) ) {
+        $usuario['email'] = $_SESSION['_e'];
+        $token = $_SESSION['_t'];
+
+        $usuario['password'] = hashPassword($usuario['password']);
+
+        if(restablecerClaveUsuario($usuario, $token)) {
+            // Eliminamos las variables contenidas en el array de $_SESSION utilizadas para la lógica de recuperación de contraseña.
+            $_SESSION = [];
+            // Re dirigimos al usuario a la página de login.
+            Flash::addFlash('Su contraseña ha sido restablecida exitosamente, ahora puedes iniciar sesión.', 'success');
+            redirect('/usuario_login.php');
+        }
+    } else {
+        // Mostrar plantilla de restablecimiento de contraseña con feedback.
+        render('usuario/reset_password.html', ['title' => 'Restablecer contraseña', 'usuario' => $usuario, 'errors' => $errors]);
+    }
+
     Flash::addFlash('Algo salió mal. Vuelva a comprobar el enlace o póngase en contacto con el administrador del sistema.', 'info');
     redirect('/usuario_forgot_password.php');
 }

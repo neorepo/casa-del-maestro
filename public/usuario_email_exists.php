@@ -6,10 +6,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $sql = "SELECT id_usuario FROM usuario WHERE email = ? LIMIT 1;";
     $rows = Db::query($sql, $email);
-    if (count($rows) == 1) {
-        echo "error";
-    } else {
+    if (!$rows) {
         echo "ok";
+    } else {
+        echo "error";
     }
 }
 else {

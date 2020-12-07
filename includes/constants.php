@@ -12,11 +12,12 @@ define('BASE_URL', 'http://localhost:8000/cdm');
 // $password = "{4_8$\U,mK(zdsg$\RL-lXfDl)ky&Se2(.N)";
 
 
-https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+// https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
 define('PEPPER', 'r8UN#uHVX5');// x~&4+ZaG&y
 // Constantes
 define('LONGITUD_MAXIMA', 40);
 define('LONGITUD_MINIMA', 3);
+define('MAX_PASSWORD_LENGTH', 64);
 
 $messages = [
     'required' => 'Este campo es requerido.',

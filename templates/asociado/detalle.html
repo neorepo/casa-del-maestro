@@ -143,7 +143,7 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
 
 <script>
 
-    let deleteLink = document.querySelector('#delete-link');
+    let deleteLink = document.querySelector('a#delete-link');
     let backdrop = document.querySelector('.backdrop');
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -162,12 +162,12 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
         if (!deleteLink) {
             return;
         }
-        document.querySelector('#ok-btn').onclick = () => {
+        document.querySelector('button#ok-btn').onclick = () => {
             closeDeleteDialog();
             // href = asociado_eliminar.php?aid=3;
             location.href = deleteLink.href; // Solicitud equivalente a GET en PHP
         }
-        document.querySelector('#cancel-btn').onclick = () => {
+        document.querySelector('button#cancel-btn').onclick = () => {
             closeDeleteDialog();
         }
         deleteLink.onclick = () => {
