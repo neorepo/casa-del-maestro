@@ -1,8 +1,5 @@
 'use strict';
 
-const provincia = document.querySelector("select#id-provincia");
-const localidad = document.querySelector("select#id-localidad");
-
 $(document).ready(function () {
     initDataTable();
 });
@@ -12,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initErrorFields();
     initShowPasswords();
     initFlashes();
-    // preventFormSubmit();
+    // formSubmissionHandler();
 });
 
 $(function () {
@@ -41,39 +38,44 @@ function initDataTable() {
     });
 }
 
+// Inicio el proceso carga de localidades según la provincia seleccionada
+const selectProvincia = document.querySelector("select#id-provincia");
+const selectLocalidad = document.querySelector("select#id-localidad");
 
 function initOnchangeProvincia() {
-    // Si existe el id de provincia y el id de localidad 
-    if (!provincia && !localidad) return;
-
-    provincia.onchange = function () {
-        if (this.value === '5') {
+    // Si no existe el elemento select provincia, detenemos el proceso
+    if (!selectProvincia) return;
+    selectProvincia.onchange = function (e) {
+        // Si no existe el elemento select localidad, detenemos el proceso
+        if (!selectLocalidad) return;
+        let idProvincia = this.value;
+        if (idProvincia === '5') {
             reset();
             let newOption = document.createElement("option");
             newOption.value = 5001;
             newOption.text = "CIUDAD AUTONOMA DE BUENOS AIRES";
             try {
-                localidad.add(newOption);
+                selectLocalidad.add(newOption);
             } catch (e) {
-                localidad.appendChild(newOption);
+                selectLocalidad.appendChild(newOption);
             }
             return;
         }
         // Validamos el id de provincia
-        if (!validId(this.value, 1, 24)) {
+        if (!validId(idProvincia, 1, 24)) {
             reset();
             return;
         }
-
-        let data = "id_provincia=" + encodeURIComponent(this.value);
+        // S todo esta Okay enviamos la solicitud al servidor
+        let data = "id_provincia=" + encodeURIComponent(idProvincia);
         sendHttpRequest('POST', 'server_processing.php', data, loadLocalities);
     }
 }
 
 function reset() {
-    localidad.options.length = 0;
-    localidad.options[0] = new Option("- Seleccionar -");
-    localidad.options[0].value = 0;
+    selectLocalidad.options.length = 0;
+    selectLocalidad.options[0] = new Option("- Seleccionar -");
+    selectLocalidad.options[0].value = 0;
 }
 
 function loadLocalities(response) {
@@ -94,58 +96,60 @@ function loadLocalities(response) {
                 $fragment.appendChild(newOption);
             }
         });
-        localidad.appendChild($fragment);
+        selectLocalidad.appendChild($fragment);
+    }
+}
+// Fin el proceso carga de localidades según la provincia seleccionada
+
+function formSubmissionHandler() {
+    const formEl = document.querySelector('form');
+    // Evitar enviar el formulario presionando la tecla ENTER en input field
+    if (!formEl) return;
+    // También se puede utilizar el evento onkeydown
+    formEl.onkeypress = function (e) { return disableSendWithEnter(this, e); }
+}
+
+function disableSendWithEnter(obj, objEvent) {
+    var iKeyCode;
+    // console.log(objEvent.target.tagName);
+    if (objEvent && objEvent.type == 'keypress') {
+        if (objEvent.keyCode)
+            iKeyCode = objEvent.keyCode;
+        else if (objEvent.which)
+            iKeyCode = objEvent.which;
+        if (iKeyCode == 13)
+            return false;
     }
 }
 
-function preventFormSubmit() {
-    // Evitar enviar el formulario presionando la tecla ENTER en input field
-    if (!document.querySelector('form')) {
-        return;
-    }
-    // También se puede utilizar el evento onkeydown
-    document.querySelector('form').onkeypress = (e) => {
-        if (e.target.tagName !== "TEXTAREA") {
-            if (e.key === "Enter") {
-                // Evitamos que se ejecute el evento
-                e.preventDefault();
-                // Retornamos false
-                return false;
+function initShowPasswords() {
+    const showPsw = document.querySelector('#show-password');
+    if (showPsw) {
+        showPsw.onclick = function (e) {
+            const psw1 = document.querySelector('#password');
+            const psw2 = document.querySelector('#confirm-password');
+            if (psw1 && psw2) {
+                if (psw1.type === 'password' && psw2.type === 'password') {
+                    psw1.type = psw2.type = 'text';
+                } else {
+                    psw1.type = psw2.type = 'password';
+                }
             }
         }
     }
 }
 
-function initShowPasswords() {
-    // Muestra las contraseñas en el formulario de registro de usuario
-    if (document.querySelector('#show-password')) {
-        document.querySelector('#show-password').onclick = showPasswords;
-    }
-}
-
-function showPasswords() {
-    if (document.querySelector('#password') && document.querySelector('#confirm-password')) {
-        let x = document.querySelector('#password');
-        let y = document.querySelector('#confirm-password');
-        if (x.type === 'password' && y.type === 'password') {
-            x.type = y.type = 'text';
-        } else {
-            x.type = y.type = 'password';
-        }
-    }
-}
-
 function initFlashes() {
-    if (document.querySelector('.alert')) {
-        document.querySelectorAll('.alert').forEach(el => {
-            setTimeout(function () { /*el.style.display = 'none';*/ el.remove(); }, 7000);
-        });
+    const obj = document.querySelector('div.alert');
+    if (obj) {
+        obj.forEach(el => { setTimeout(function () { el.remove(); }, 7000); });
     }
 }
 
+// Focus en el primer error que exista en los formularios de registro.
 function initErrorFields() {
-    // Focus en el primer error que exista en los formularios de registro.
-    if (document.querySelector('.is-invalid')) {
-        document.querySelector('.is-invalid').focus();
+    const obj = document.querySelector('.is-invalid');
+    if (obj) {
+        obj.focus();
     }
 }

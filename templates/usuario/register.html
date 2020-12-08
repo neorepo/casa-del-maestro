@@ -67,8 +67,8 @@
                 <label for="confirm-password">Confirmación <span class="required">*</span></label>
                 <input type="password"
                     class="form-control <?= isset($errors['confirm_password']) ? 'is-invalid' : ''; ?>"
-                    name="confirm_password" id="confirm-password" value=""
-                    spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
+                    name="confirm_password" id="confirm-password" value="" spellcheck="false" autocomplete="off"
+                    autocorrect="off" autocapitalize="off">
                 <div class="invalid-feedback"><?= $errors['confirm_password'] ?? ''; ?></div>
             </div>
         </div>
@@ -112,7 +112,7 @@
 
     function initValidarApellido() {
         if (!apellido) return;
-        apellido.addEventListener("blur", function () {
+        apellido.addEventListener("blur", function (e) {
             let value = this.value.trim();
             if (isEmpty(value)) {
                 setError(apellido, "Este campo es requerido.");
@@ -130,7 +130,7 @@
 
     function initValidarNombre() {
         if (!nombre) return;
-        nombre.addEventListener("blur", function () {
+        nombre.addEventListener("blur", function (e) {
             let value = this.value.trim();
             if (isEmpty(value)) {
                 setError(nombre, "Este campo es requerido.");
@@ -148,7 +148,7 @@
 
     function initDocumentValidation() {
         if (!usuario) return;
-        usuario.addEventListener("blur", function () {
+        usuario.addEventListener("blur", function (e) {
             let value = this.value.trim();
             if (isEmpty(value)) {
                 setError(usuario, "Este campo es requerido.");
@@ -171,7 +171,7 @@
 
     function initEmailValidation() {
         if (!email) return;
-        email.addEventListener("blur", function () {
+        email.addEventListener("blur", function (e) {
             let value = this.value.trim();
             if (isEmpty(value)) {
                 setError(email, "Este campo es requerido.");

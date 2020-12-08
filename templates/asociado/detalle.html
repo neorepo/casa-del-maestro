@@ -98,7 +98,7 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
 </section>
 
 <!-- Todo lo que viene a continuación genera la ventana modal para eliminar vía método GET -->
-<!-- <a href="/asociado_eliminar.php?aid=<?php ?>" id="delete-link" title="Delete it.">
+<!-- <a href="/asociado_eliminar.php?aid=<?php //echo $asociado['id_asociado']; ?>" id="delete-link" title="Delete it.">
     <i class="material-icons multi">delete</i>
 </a> -->
 <style>
@@ -143,13 +143,12 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
 
 <script>
 
-    let deleteLink = document.querySelector('a#delete-link');
     let backdrop = document.querySelector('.backdrop');
 
     document.addEventListener('DOMContentLoaded', () => {
         initDeleteDialog();
 
-        // Detectar la tecla escape
+        // Detectar la tecla escape, para cerrar el dialog de advertencia de eliminación de asociado
         // document.onkeydown = function (evt) {
         //     evt = evt || window.event;
         //     if (evt.keyCode == 27) {
@@ -159,24 +158,34 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
     });
 
     function initDeleteDialog() {
-        if (!deleteLink) {
-            return;
-        }
-        document.querySelector('button#ok-btn').onclick = () => {
+        let deleteLink = document.querySelector('a#delete-link');
+        if (!deleteLink) return;
+        deleteLink.onclick = function (e) { openDeleteDialog(this, e); }
+        let okBtn = document.querySelector('button#ok-btn');
+        if (!okBtn) return;
+        okBtn.onclick = () => {
             closeDeleteDialog();
-            // href = asociado_eliminar.php?aid=3;
             location.href = deleteLink.href; // Solicitud equivalente a GET en PHP
         }
-        document.querySelector('button#cancel-btn').onclick = () => {
+        let cancelBtn = document.querySelector('button#cancel-btn');
+        if (!cancelBtn) return;
+        cancelBtn.onclick = () => {
             closeDeleteDialog();
-        }
-        deleteLink.onclick = () => {
-            backdrop.style.display = 'block';
-            return false;
         }
     }
 
     function closeDeleteDialog() {
-        backdrop.style.display = "none";
+        if (backdrop) {
+            backdrop.style.display = "none";
+        }
+    }
+
+    function openDeleteDialog(el, event) {
+        if (event && event.type == 'click') {
+            if (backdrop) {
+                backdrop.style.display = "block";
+                event.preventDefault();
+            }
+        }
     }
 </script>

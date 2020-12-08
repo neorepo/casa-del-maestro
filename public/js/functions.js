@@ -55,22 +55,22 @@ function isEmpty(str) {
     return (str.length == 0);
 }
 
-// https://owasp.org/www-community/OWASP_Validation_Regex_Repository
-const regexEmail = /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/;
 
 function validEmail(email) {
+    // https://owasp.org/www-community/OWASP_Validation_Regex_Repository
+    const regexEmail = /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/;
     return regexEmail.test(email);
 }
 
-const regexOnlyNumbers = /^[\d]{8}$/;
 
 function validDocument(usuario) {
+    const regexOnlyNumbers = /^[\d]{8}$/;
     return regexOnlyNumbers.test(usuario);
 }
 
-const regexOnlyLetters = /^[a-zA-ZáéíóúÁÉÍÓÚÑñÜü\' ]+$/;
 
 function onlyLetters(str) {
+    const regexOnlyLetters = /^[a-zA-ZáéíóúÁÉÍÓÚÑñÜü\' ]+$/;
     return regexOnlyLetters.test(str);
 }
 
