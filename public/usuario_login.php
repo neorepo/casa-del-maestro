@@ -35,15 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Si no hay errores
-    // if ( empty( $errors ) ) {
-        if ( authenticateUser( $usuario['usuario'], $usuario['password']) ) {
-            // the CSRF token they submitted does not match the one we sent
-            unset($_SESSION['_token']);
-            redirect('/');
-        } else {
-            $logonSuccess = false;
-        }
-    // }
+    if ( authenticateUser( $usuario['usuario'], $usuario['password']) ) {
+        // the CSRF token they submitted does not match the one we sent
+        unset($_SESSION['_token']);
+        redirect('/');
+    } else {
+        $logonSuccess = false;
+    }
 }
 
 // Mostrar plantilla de login de usuario
