@@ -112,8 +112,9 @@
 
     function initValidarApellido() {
         if (!apellido) return;
+        let value;
         apellido.addEventListener("blur", function (e) {
-            let value = this.value.trim();
+            value = this.value.trim();
             if (isEmpty(value)) {
                 setError(apellido, "Este campo es requerido.");
             } else if (!onlyLetters(value)) {
@@ -130,8 +131,9 @@
 
     function initValidarNombre() {
         if (!nombre) return;
+        let value;
         nombre.addEventListener("blur", function (e) {
-            let value = this.value.trim();
+            value = this.value.trim();
             if (isEmpty(value)) {
                 setError(nombre, "Este campo es requerido.");
             } else if (!onlyLetters(value)) {
@@ -148,12 +150,13 @@
 
     function initDocumentValidation() {
         if (!usuario) return;
+        let value, data;
         usuario.addEventListener("blur", function (e) {
-            let value = this.value.trim();
+            value = this.value.trim();
             if (isEmpty(value)) {
                 setError(usuario, "Este campo es requerido.");
             } else if (validDocument(value)) {
-                let data = "usuario=" + encodeURIComponent(value);
+                data = "usuario=" + encodeURIComponent(value);
                 sendHttpRequest('POST', 'usuario_document_exists.php', data, documentNumberExists);
             } else {
                 setError(usuario, "El formato o el número de documento ingresado no es válido.");
@@ -171,12 +174,13 @@
 
     function initEmailValidation() {
         if (!email) return;
+        let value, data;
         email.addEventListener("blur", function (e) {
-            let value = this.value.trim();
+            value = this.value.trim();
             if (isEmpty(value)) {
                 setError(email, "Este campo es requerido.");
             } else if (validEmail(value)) {
-                let data = "email=" + encodeURIComponent(value.toLowerCase());
+                data = "email=" + encodeURIComponent(value.toLowerCase());
                 sendHttpRequest('POST', 'usuario_email_exists.php', data, emailExists);
             } else {
                 setError(email, "El correo electrónico no es válido.");

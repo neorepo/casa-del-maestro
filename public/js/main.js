@@ -48,7 +48,7 @@ function initOnchangeProvincia() {
     selectProvincia.onchange = function (e) {
         // Si no existe el elemento select localidad, detenemos el proceso
         if (!selectLocalidad) return;
-        let idProvincia = this.value;
+        const idProvincia = this.value;
         if (idProvincia === '5') {
             reset();
             let newOption = document.createElement("option");
@@ -67,7 +67,7 @@ function initOnchangeProvincia() {
             return;
         }
         // S todo esta Okay enviamos la solicitud al servidor
-        let data = "id_provincia=" + encodeURIComponent(idProvincia);
+        const data = "id_provincia=" + encodeURIComponent(idProvincia);
         sendHttpRequest('POST', 'server_processing.php', data, loadLocalities);
     }
 }
@@ -79,9 +79,9 @@ function reset() {
 }
 
 function loadLocalities(response) {
-    let newOption;
+    var newOption;
     const $fragment = document.createDocumentFragment();
-    let data = JSON.parse(response);
+    const data = JSON.parse(response);
     if (data.success) {
         reset();
         data.localidades.forEach(item => {

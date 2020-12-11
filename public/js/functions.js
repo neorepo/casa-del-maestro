@@ -42,12 +42,12 @@ function get_int(n) {
 }
 
 function minLength(str, minLength) {
-    let strlen = str.length;
+    const strlen = str.length;
     return (strlen >= minLength);
 }
 
 function maxLength(str, maxLength) {
-    let strlen = str.length;
+    const strlen = str.length;
     return (strlen <= maxLength);
 }
 

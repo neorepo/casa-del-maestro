@@ -192,7 +192,7 @@
     document.querySelector('#id-provincia').value = "<?= $asociado['id_provincia']; ?>";
     document.querySelector('#id-localidad').value = "<?= $asociado['id_localidad']; ?>";
 
-    let radios = document.querySelectorAll('input[name="sexo"]');
+    const radios = document.querySelectorAll('input[name="sexo"]');
     // console.log(radios);
     radios.forEach(radio => {
         if (radio.value == "<?= $asociado['sexo']; ?>") {

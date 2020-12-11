@@ -144,7 +144,7 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
 
 <script>
 
-    let backdrop = document.querySelector('.backdrop');
+    const backdrop = document.querySelector('.backdrop');
 
     document.addEventListener('DOMContentLoaded', () => {
         initDeleteDialog();
@@ -159,16 +159,16 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
     });
 
     function initDeleteDialog() {
-        let deleteLink = document.querySelector('a#delete-link');
+        const deleteLink = document.querySelector('a#delete-link');
         if (!deleteLink) return;
         deleteLink.onclick = function (e) { openDeleteDialog(this, e); }
-        let okBtn = document.querySelector('button#ok-btn');
+        const okBtn = document.querySelector('button#ok-btn');
         if (!okBtn) return;
         okBtn.onclick = () => {
             closeDeleteDialog();
             location.href = deleteLink.href; // Solicitud equivalente a GET en PHP
         }
-        let cancelBtn = document.querySelector('button#cancel-btn');
+        const cancelBtn = document.querySelector('button#cancel-btn');
         if (!cancelBtn) return;
         cancelBtn.onclick = () => {
             closeDeleteDialog();
