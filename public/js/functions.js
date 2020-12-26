@@ -99,10 +99,6 @@ document.querySelector('select#idEspecie').onchange = function (e) {
     let selectRaza = document.querySelector('select#idRaza');
     let options = selectRaza.querySelectorAll('option');
     options.forEach(option => { option.style.display = 'none'; });
-    Array.prototype.filter.call(options, option => {
-        if (option.dataset.idEspecie === idEspecie) {
-            option.style.display = 'block';
-        }
-    });
-    selectRaza.value = '';
+    Array.prototype.filter.call(options, opt => opt.dataset.idEspecie === idEspecie).forEach(opt => opt.style.display = 'block');
+    selectRaza.selectedIndex = '0';
 }*/

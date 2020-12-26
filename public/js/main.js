@@ -50,7 +50,7 @@ function initOnchangeProvincia() {
         if (!selectLocalidad) return;
         const idProvincia = this.value;
         if (idProvincia === '5') {
-            reset();
+            removeOptions();
             let newOption = document.createElement("option");
             newOption.value = 5001;
             newOption.text = "CIUDAD AUTONOMA DE BUENOS AIRES";
@@ -63,27 +63,29 @@ function initOnchangeProvincia() {
         }
         // Validamos el id de provincia
         if (!validId(idProvincia, 1, 24)) {
-            reset();
+            removeOptions();
             return;
         }
-        // S todo esta Okay enviamos la solicitud al servidor
+        // Si todo esta Okay enviamos la solicitud al servidor
         const data = "id_provincia=" + encodeURIComponent(idProvincia);
         sendHttpRequest('POST', 'server_processing.php', data, loadLocalities);
     }
 }
 
-function reset() {
-    selectLocalidad.options.length = 0;
-    selectLocalidad.options[0] = new Option("- Seleccionar -");
-    selectLocalidad.options[0].value = 0;
+function removeOptions() {
+    // selectLocalidad.options.length = 0;
+    let len = selectLocalidad.options.length;
+    while (len-- > 1) {
+        selectLocalidad.remove(1);
+    }
 }
 
 function loadLocalities(response) {
     var newOption;
-    const $fragment = document.createDocumentFragment();
+    const fragment = document.createDocumentFragment();
     const data = JSON.parse(response);
     if (data.success) {
-        reset();
+        removeOptions();
         data.localidades.forEach(item => {
             newOption = document.createElement("option");
             newOption.value = item.id_localidad;
@@ -91,19 +93,19 @@ function loadLocalities(response) {
             // add the new option 
             try {
                 // this will fail in DOM browsers but is needed for IE
-                $fragment.add(newOption);
+                fragment.add(newOption);
             } catch (e) {
-                $fragment.appendChild(newOption);
+                fragment.appendChild(newOption);
             }
         });
-        selectLocalidad.appendChild($fragment);
+        selectLocalidad.appendChild(fragment);
     }
 }
 // Fin el proceso carga de localidades según la provincia seleccionada
 
+// Evitar enviar el formulario presionando la tecla ENTER en input field
 function formSubmissionHandler() {
     const formEl = document.querySelector('form');
-    // Evitar enviar el formulario presionando la tecla ENTER en input field
     if (!formEl) return;
     // También se puede utilizar el evento onkeydown
     formEl.onkeypress = function (e) { return disableSendWithEnter(this, e); }
