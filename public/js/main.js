@@ -42,6 +42,8 @@ function initDataTable() {
 const selectProvincia = document.querySelector("select#id-provincia");
 const selectLocalidad = document.querySelector("select#id-localidad");
 
+const fragment = document.createDocumentFragment();
+
 function initOnchangeProvincia() {
     // Si no existe el elemento select provincia, detenemos el proceso
     if (!selectProvincia) return;
@@ -51,7 +53,7 @@ function initOnchangeProvincia() {
         const idProvincia = this.value;
         if (idProvincia === '5') {
             removeOptions();
-            let newOption = document.createElement("option");
+            const newOption = document.createElement("option");
             newOption.value = 5001;
             newOption.text = "CIUDAD AUTONOMA DE BUENOS AIRES";
             try {
@@ -66,7 +68,7 @@ function initOnchangeProvincia() {
             removeOptions();
             return;
         }
-        // Si todo esta Okay enviamos la solicitud al servidor
+        // Si todo esta okay enviamos la solicitud al servidor
         const data = "id_provincia=" + encodeURIComponent(idProvincia);
         sendHttpRequest('POST', 'server_processing.php', data, loadLocalities);
     }
@@ -81,8 +83,7 @@ function removeOptions() {
 }
 
 function loadLocalities(response) {
-    var newOption;
-    const fragment = document.createDocumentFragment();
+    let newOption;
     const data = JSON.parse(response);
     if (data.success) {
         removeOptions();
