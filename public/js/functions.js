@@ -22,23 +22,15 @@ function sendHttpRequest(method, url, data, callback) {
 }
 
 function validId(id, min, max) {
-    if (get_int(id)) {
-        id = parseInt(id);
-        if (id >= min && id <= max) {
-            return true;
-        }
-    }
-    return false;
+    if (!get_int(id)) return false;
+    id = parseInt(id);
+    return (id >= min && id <= max);
 }
 
 function get_int(n) {
-    if (n != null) {
-        // Si es un caracter numérico entero
-        if (/^[+-]?\d+$/.test(n)) {
-            return true;
-        }
-    }
-    return false;
+    if (n == null) return false;
+    // Si es un caracter numérico entero
+    return (/^[+-]?\d+$/.test(n));
 }
 
 function minLength(str, minLength) {
@@ -63,9 +55,9 @@ function validEmail(email) {
 }
 
 
-function validDocument(usuario) {
+function validDocument(num) {
     const regexOnlyNumbers = /^[\d]{8}$/;
-    return regexOnlyNumbers.test(usuario);
+    return regexOnlyNumbers.test(num);
 }
 
 
@@ -88,17 +80,15 @@ function setSuccess(el) {
 /*$('select#idEspecie').on('change', function () {
     var idEspecie = $(this).val(),
         selectRaza = $('select#idRaza');
-    console.log($('option', selectRaza));
-    $(selector).filter(filterFn);
     $('option', selectRaza).hide().filter('[data-id-especie="' + idEspecie + '"],[data-id-especie=""]').show();
     selectRaza.val('');
 }).trigger('change');
 
 document.querySelector('select#idEspecie').onchange = function (e) {
-    let idEspecie = this.value;
-    let selectRaza = document.querySelector('select#idRaza');
-    let options = selectRaza.querySelectorAll('option');
-    options.forEach(option => { option.style.display = 'none'; });
+    const idEspecie = this.value;
+    const selectRaza = document.querySelector('select#idRaza');
+    const options = selectRaza.querySelectorAll('option');
+    options.forEach(opt => opt.style.display = 'none');
     Array.prototype.filter.call(options, opt => opt.dataset.idEspecie === idEspecie).forEach(opt => opt.style.display = 'block');
     selectRaza.selectedIndex = '0';
 }*/

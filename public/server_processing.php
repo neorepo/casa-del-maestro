@@ -3,20 +3,20 @@
 // configuration
 require '../includes/bootstrap.php';
 
-$id_provincia = null;
-$data['success'] = false;
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $id_provincia = null;
+    $response = null;
     if(array_key_exists('id_provincia', $_POST)) {
         $id_provincia = $_POST['id_provincia'];
     }
     if($id_provincia) {
-        $data['success'] = true;
-        $data['localidades'] = getLocalidadesPorIdProvincia( (int) $id_provincia );
-        echo json_encode($data);
-        exit;
+        $response = getLocalidadesPorIdProvincia( (int) $id_provincia );
     }
-} else {
-    header('Location: index.php');
+    if (!$response) {
+        $response = 'something went wrong!';
+    }
+    echo json_encode($response);
     exit;
 }
+header('Location: index.php');
+exit;
