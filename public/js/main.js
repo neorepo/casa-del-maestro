@@ -52,7 +52,7 @@ function initOnchangeProvincia() {
 function handleChange(objSelect, objEvent) {
     // Si no existe el elemento select localidad, detenemos el proceso.
     if (!selectLocalidad) return;
-    // Si existen opciones, las removemos.
+    // Si existen opciones en el select de localidades, las removemos.
     removeOptions(selectLocalidad);
     const idProvincia = objSelect.value;
     // Validamos el id de provincia, si no es válido detenemos el proceso.
@@ -68,7 +68,7 @@ function handleChange(objSelect, objEvent) {
             selectLocalidad.appendChild(newOption);
         }
     } else {
-        // Si todo esta okay enviamos la solicitud al servidor
+        // Enviamos la solicitud al servidor.
         const data = "id_provincia=" + encodeURIComponent(idProvincia);
         sendHttpRequest('POST', 'server_processing.php', data, loadLocalities);
     }
@@ -85,7 +85,8 @@ function removeOptions(objSelect) {
 function loadLocalities(response) {
     let newOption;
     const data = JSON.parse(response);
-    data.forEach(obj => {
+    if (!data.success) return;
+    data.localidades.forEach(obj => {
         newOption = document.createElement("option");
         newOption.value = obj.id_localidad;
         newOption.text = `${obj.nombre} (${obj.cp})`;
@@ -98,7 +99,6 @@ function loadLocalities(response) {
         }
     });
     selectLocalidad.appendChild(fragment);
-
 }
 // Fin el proceso carga de localidades según la provincia seleccionada
 

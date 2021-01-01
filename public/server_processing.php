@@ -4,16 +4,16 @@
 require '../includes/bootstrap.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id_provincia = null;
-    $response = null;
+    $idProvincia = null;
+    $response = ['success' => false, 'localidades' => null];
     if(array_key_exists('id_provincia', $_POST)) {
-        $id_provincia = $_POST['id_provincia'];
+        $idProvincia = $_POST['id_provincia'];
     }
-    if($id_provincia) {
-        $response = getLocalidadesPorIdProvincia( (int) $id_provincia );
+    if($idProvincia) {
+        $response['localidades'] = getLocalidadesPorIdProvincia( (int) $idProvincia );
     }
-    if (!$response) {
-        $response = 'something went wrong!';
+    if ($response['localidades']) {
+        $response['success'] = true;
     }
     echo json_encode($response);
     exit;
