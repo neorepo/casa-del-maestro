@@ -213,11 +213,11 @@
         </div>
 
         <button type="submit" class="btn btn-primary"><?= $edit ? 'Guardar' : 'Registrar'; ?></button>
-        <!-- Bajo la ténica required en los campos select, no se puede usar el botón cancelar que enviá al servidor
+        <!-- Bajo el atributo required en los elementos select, no se puede usar el botón cancelar que enviá al servidor
             la solicitud de cancelación, ya que si no se ha elegido alguna opción de las distintas listas desplegables
             no podremos cancelar la operación, por lo tanto se utiliza aquí un link con el href a la raíz. -->
-        <!-- <button type="submit" class="btn btn-secondary" name="cancel">Cancelar</button> -->
-        <a href="/" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-secondary" name="cancel">Cancelar</button>
+        <!-- <a href="/" class="btn btn-secondary">Cancelar</a> -->
     </form>
 </section>
 <script>

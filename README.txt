@@ -411,3 +411,6 @@ function formatDateEs($date) {
 
     return $days[$idxDay] . ", " . $dt->format("j") . " de " . $months[$idxMonth] . " de " . $dt->format("Y");
 }
+
+Validación de formulario
+https://www.w3.org/TR/WCAG20-TECHS/client-side-script.html#SCR32

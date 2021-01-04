@@ -52,6 +52,7 @@ function validEmail(email) {
     // https://owasp.org/www-community/OWASP_Validation_Regex_Repository
     const regexEmail = /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/;
     return regexEmail.test(email);
+    // var objRE = /^[\w-\.\']{1,}\@([\da-zA-Z\-]{1,}\.){1,}[\da-zA-Z\-]{2,}$/;
 }
 
 
@@ -62,7 +63,7 @@ function validDocument(num) {
 
 
 function onlyLetters(str) {
-    const regexOnlyLetters = /^[a-zA-ZáéíóúÁÉÍÓÚÑñÜü\' ]+$/;
+    const regexOnlyLetters = /^[a-zA-ZáéíóúÁÉÍÓÚÑñÜü\s]+$/;
     return regexOnlyLetters.test(str);
 }
 

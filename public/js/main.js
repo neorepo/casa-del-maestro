@@ -5,7 +5,8 @@ $(document).ready(function () {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    initOnchangeProvincia();
+    initChangeProvincia();
+    initChangeLocalidad();
     initErrorFields();
     initShowPasswords();
     initFlashes();
@@ -39,66 +40,82 @@ function initDataTable() {
 }
 
 // Inicio el proceso carga de localidades según la provincia seleccionada
-const selectProvincia = document.querySelector("select#id-provincia");
-const selectLocalidad = document.querySelector("select#id-localidad");
-const fragment = document.createDocumentFragment();
+const selectP = document.querySelector("select#id-provincia");
+const selectL = document.querySelector("select#id-localidad");
 
-function initOnchangeProvincia() {
+// Inicializa el proceso de cambio de Provincia
+function initChangeProvincia() {
     // Si no existe el elemento select provincia, detenemos el proceso
-    if (!selectProvincia) return;
-    selectProvincia.onchange = function (e) { return handleChange(this, e); }
+    if (!selectP) return;
+    selectP.onchange = function (e) { return handleChangeProvincia(this, e); }
 }
 
-function handleChange(objSelect, objEvent) {
+/*function initChangeLocalidad() {
+    // Si no existe el elemento select localidad, detenemos el proceso
+    if (!selectL) return;
+    // El select de localidades tiene un estado inicial deshabilitado
+    selectL.disabled = true;
+    // selectL.onchange = function (e) { return handleChangeLocalidad(this, e); }
+}*/
+
+// Manejador del cambio de Provincia
+function handleChangeProvincia(objSelect, objEvent) {
     // Si no existe el elemento select localidad, detenemos el proceso.
-    if (!selectLocalidad) return;
+    if (!selectL) return;
     // Si existen opciones en el select de localidades, las removemos.
-    removeOptions(selectLocalidad);
-    const idProvincia = objSelect.value;
-    // Validamos el id de provincia, si no es válido detenemos el proceso.
-    if (!validId(idProvincia, 1, 24)) return;
-    // Si la opción es 5, creamos una opción por defecto.
-    if (idProvincia === '5') {
-        const newOption = document.createElement("option");
-        newOption.value = 5001;
-        newOption.text = "CIUDAD AUTONOMA DE BUENOS AIRES";
-        try {
-            selectLocalidad.add(newOption);
-        } catch (e) {
-            selectLocalidad.appendChild(newOption);
+    removeOptions(selectL);
+    // Deshabilitamos el select de localidades
+    selectL.disabled = true;
+    if (objSelect.selectedIndex > 0) {
+        // Habilitamos el select de localidades
+        selectL.disabled = false;
+        // Obtenemos el id de la provincia seleccionada
+        const idProvincia = objSelect.value;
+        // Validamos el id de la provincia seleccionada, si no es válido detenemos el proceso.
+        if (!validId(idProvincia, 1, 24)) return;
+        // Si el valor es 5, creamos una opción por defecto.
+        if (idProvincia === '5') {
+            createOptions(selectL, [{ id_localidad: "5001", nombre: "CIUDAD AUTONOMA DE BUENOS AIRES", cp: "" }]);
         }
-    } else {
         // Enviamos la solicitud al servidor.
-        const data = "id_provincia=" + encodeURIComponent(idProvincia);
-        sendHttpRequest('POST', 'server_processing.php', data, loadLocalities);
+        else {
+            const data = "id_provincia=" + encodeURIComponent(idProvincia);
+            sendHttpRequest('POST', 'server_processing.php', data, loadLocalities);
+        }
     }
 }
 
-function removeOptions(objSelect) {
-    // selectLocalidad.options.length = 0;
-    let len = objSelect.options.length;
-    while (len-- > 1) {
-        objSelect.remove(1);
-    }
-}
-
+// Carga localidades
 function loadLocalities(response) {
-    let newOption;
     const data = JSON.parse(response);
     if (!data.success) return;
-    data.localidades.forEach(obj => {
-        newOption = document.createElement("option");
-        newOption.value = obj.id_localidad;
-        newOption.text = `${obj.nombre} (${obj.cp})`;
+    createOptions(selectL, data.localidades);
+}
+
+// Remueve opciones en elementos select
+function removeOptions(objSelect) {
+    // objSelect.options.length = 0;
+    let len = objSelect.options.length;
+    while (len-- > 1) objSelect.remove(1);
+}
+
+// Crea opciones en elementos select
+function createOptions(selectObj, data) {
+    let newOpt;
+    const fragment = document.createDocumentFragment();
+    data.forEach(obj => {
+        newOpt = document.createElement('option');
+        newOpt.value = obj.id_localidad;
+        newOpt.text = `${obj.nombre} (${obj.cp})`;
         // add the new option 
         try {
             // this will fail in DOM browsers but is needed for IE
-            fragment.add(newOption);
+            fragment.add(newOpt);
         } catch (e) {
-            fragment.appendChild(newOption);
+            fragment.appendChild(newOpt);
         }
     });
-    selectLocalidad.appendChild(fragment);
+    selectObj.appendChild(fragment);
 }
 // Fin el proceso carga de localidades según la provincia seleccionada
 

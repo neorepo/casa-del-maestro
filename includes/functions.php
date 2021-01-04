@@ -529,7 +529,7 @@ function verifyPassword($password, $passwordHash) {
 }
 
 function onlyletters($value) {
-    return preg_match('/^[A-Za-záéíóúÁÉÍÓÚÑñÜü\'. ]+$/', $value);
+    return preg_match('/^[A-Za-záéíóúÁÉÍÓÚÑñÜü\s]+$/', $value);
 }
 
 function onlynumbers($value) {
