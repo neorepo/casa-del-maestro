@@ -14,67 +14,79 @@
             autocorrect="off" autocapitalize="off">
         <div class="form-row">
             <!-- Apellido -->
-            <div class="form-group col-md-6">
+            <div class="mb-3 col-md-6">
                 <label for="apellido">Apellidos <span class="required">*</span></label>
                 <input type="text" class="form-control <?= isset($errors['apellido']) ? 'is-invalid' : ''; ?>" name=""
                     id="apellido" value="<?= $usuario['apellido']; ?>" spellcheck="false" autocomplete="off"
                     autocorrect="off" autocapitalize="off" maxlength="40">
-                <div class="invalid-feedback"><?= $errors['apellido'] ?? ''; ?></div>
+                <div class="invalid-feedback">
+                    <?= $errors['apellido'] ?? ''; ?>
+                </div>
             </div>
             <!-- Nombre -->
-            <div class="form-group col-md-6">
+            <div class="mb-3 col-md-6">
                 <label for="nombre">Nombres <span class="required">*</span></label>
                 <input type="text" class="form-control <?= isset($errors['nombre']) ? 'is-invalid' : ''; ?>"
                     name="nombre" id="nombre" value="<?= $usuario['nombre']; ?>" spellcheck="false" autocomplete="off"
                     autocorrect="off" autocapitalize="off" maxlength="40">
-                <div class="invalid-feedback"><?= $errors['nombre'] ?? ''; ?></div>
+                <div class="invalid-feedback">
+                    <?= $errors['nombre'] ?? ''; ?>
+                </div>
             </div>
         </div>
 
         <!-- Número de documento -->
-        <div class="form-group">
+        <div class="mb-3">
             <label for="usuario">Número de documento (ocho dígitos) <span class="required">*</span></label>
             <input type="text" class="form-control <?= isset($errors['usuario']) ? 'is-invalid' : ''; ?>" name="usuario"
                 id="usuario" value="<?= $usuario['usuario']; ?>" data-toggle="tooltip" data-placement="left"
                 title="Completar con ceros a la izquierda si es necesario" spellcheck="false" autocomplete="off"
                 autocorrect="off" autocapitalize="off">
-            <div class="invalid-feedback"><?= $errors['usuario'] ?? ''; ?></div>
+            <div class="invalid-feedback">
+                <?= $errors['usuario'] ?? ''; ?>
+            </div>
         </div>
 
         <!-- Email -->
-        <div class="form-group">
+        <div class="mb-3">
             <label for="email">Correo electrónico <span class="required">*</span></label>
             <input type="email" class="form-control <?= isset($errors['email']) ? 'is-invalid' : ''; ?>" name="email"
                 id="email" value="<?= $usuario['email']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off">
-            <div class="invalid-feedback"><?= $errors['email'] ?? ''; ?></div>
+            <div class="invalid-feedback">
+                <?= $errors['email'] ?? ''; ?>
+            </div>
         </div>
 
         <div class="form-row">
             <!-- Contraseña -->
-            <div class="form-group col-md-6">
+            <div class="mb-3 col-md-6">
                 <label for="password">Contraseña <span class="required">*</span></label>
                 <input type="password" class="form-control <?= isset($errors['password']) ? 'is-invalid' : ''; ?>"
                     name="password" id="password" value="<?= $usuario['password']; ?>" data-toggle="tooltip"
                     data-placement="left"
                     title="Utiliza ocho caracteres como mínimo con una combinación de letras, números y símbolos"
                     spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
-                <div class="invalid-feedback"><?= $errors['password'] ?? ''; ?></div>
+                <div class="invalid-feedback">
+                    <?= $errors['password'] ?? ''; ?>
+                </div>
             </div>
 
             <!-- Confirmar contraseña -->
-            <div class="form-group col-md-6">
+            <div class="mb-3 col-md-6">
                 <label for="confirm-password">Confirmación <span class="required">*</span></label>
                 <input type="password"
                     class="form-control <?= isset($errors['confirm_password']) ? 'is-invalid' : ''; ?>"
                     name="confirm_password" id="confirm-password" value="" spellcheck="false" autocomplete="off"
                     autocorrect="off" autocapitalize="off">
-                <div class="invalid-feedback"><?= $errors['confirm_password'] ?? ''; ?></div>
+                <div class="invalid-feedback">
+                    <?= $errors['confirm_password'] ?? ''; ?>
+                </div>
             </div>
         </div>
 
         <!-- CHECKBOX Mostrar contraseña -->
-        <div class="form-group">
+        <div class="mb-3">
             <input type="checkbox" id="show-password" style="position: relative; top: 2px;height: 16px;width: 16px;">
             <label for="show-password" style="font-weight: normal;">Mostrar contraseña</label>
         </div>
@@ -92,7 +104,7 @@
     /**
      * Enfoque 1: despues de enviar el formulario
      * Enfoque 2: durante la escritura o tipificación
-     * Enfoque 3: en el cambio de enfoque
+     * Enfoque 3: en el cambio de focus
      **/
     const email = document.querySelector("input#email");
     const usuario = document.querySelector("input#usuario");
@@ -112,9 +124,8 @@
 
     function initValidarApellido() {
         if (!apellido) return;
-        let value;
         apellido.addEventListener("blur", function (e) {
-            value = this.value.trim();
+            const value = this.value.trim();
             if (isEmpty(value)) {
                 setError(apellido, "Este campo es requerido.");
             } else if (!onlyLetters(value)) {
@@ -131,9 +142,8 @@
 
     function initValidarNombre() {
         if (!nombre) return;
-        let value;
         nombre.addEventListener("blur", function (e) {
-            value = this.value.trim();
+            const value = this.value.trim();
             if (isEmpty(value)) {
                 setError(nombre, "Este campo es requerido.");
             } else if (!onlyLetters(value)) {
@@ -150,13 +160,12 @@
 
     function initDocumentValidation() {
         if (!usuario) return;
-        let value, data;
         usuario.addEventListener("blur", function (e) {
-            value = this.value.trim();
+            const value = this.value.trim();
             if (isEmpty(value)) {
                 setError(usuario, "Este campo es requerido.");
             } else if (validDocument(value)) {
-                data = "usuario=" + encodeURIComponent(value);
+                const data = "usuario=" + encodeURIComponent(value);
                 sendHttpRequest('POST', 'usuario_document_exists.php', data, documentNumberExists);
             } else {
                 setError(usuario, "El formato o el número de documento ingresado no es válido.");
@@ -174,13 +183,12 @@
 
     function initEmailValidation() {
         if (!email) return;
-        let value, data;
         email.addEventListener("blur", function (e) {
-            value = this.value.trim();
+            const value = this.value.trim();
             if (isEmpty(value)) {
                 setError(email, "Este campo es requerido.");
             } else if (validEmail(value)) {
-                data = "email=" + encodeURIComponent(value.toLowerCase());
+                const data = "email=" + encodeURIComponent(value.toLowerCase());
                 sendHttpRequest('POST', 'usuario_email_exists.php', data, emailExists);
             } else {
                 setError(email, "El correo electrónico no es válido.");

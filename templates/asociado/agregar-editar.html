@@ -10,7 +10,7 @@
         <input type="hidden" name="token" value="<?= htmlspecialchars(Token::csrf()); ?>" readonly spellcheck="false"
             autocomplete="off" autocorrect="off" autocapitalize="off">
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="apellido">Apellidos *</label>
             <input type="text" name="apellido" id="apellido"
                 class="form-control <?= isset( $errors['apellido'] ) ? 'is-invalid' : ''; ?>"
@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="nombre">Nombres *</label>
             <input type="text" name="nombre" id="nombre"
                 class="form-control <?= isset($errors['nombre']) ? 'is-invalid' : ''; ?>"
@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="fecha-nacimiento">Fecha de nacimiento (dd/mm/aaaa) *</label>
             <input type="text" name="fecha_nacimiento" id="fecha-nacimiento"
                 class="form-control <?= isset($errors['fecha_nacimiento']) ? 'is-invalid' : ''; ?>"
@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="tipo-documento">Tipo de documento *</label>
             <select name="tipo_documento" id="tipo-documento"
                 class="custom-select <?= isset($errors['tipo_documento']) ? 'is-invalid' : ''; ?>">
@@ -58,7 +58,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="num-documento">Número de documento (ocho dígitos) *</label>
             <input type="text" name="num_documento" id="num-documento"
                 class="form-control <?= isset($errors['num_documento']) ? 'is-invalid' : ''; ?>" data-toggle="tooltip"
@@ -70,7 +70,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="num-cuil">Número de cuil *</label>
             <a class="form-sublink" href="http://www0.unsl.edu.ar/~jolguin/cuit.php" target="_blank">Cálculo de
                 CUIT/CUIL</a>
@@ -84,7 +84,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="condicion-ingreso">Condición de ingreso *</label>
             <select name="condicion_ingreso" id="condicion-ingreso"
                 class="custom-select <?= isset($errors['condicion_ingreso']) ? 'is-invalid' : ''; ?>">
@@ -98,7 +98,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="email">Correo electrónico</label>
             <input type="email" name="email" id="email"
                 class="form-control <?= isset($errors['email']) ? 'is-invalid' : ''; ?>"
@@ -109,7 +109,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="telefono-movil">Teléfono móvil *</label>
             <input type="text" name="telefono_movil" id="telefono-movil"
                 class="form-control <?= isset($errors['telefono_movil']) ? 'is-invalid' : ''; ?>"
@@ -121,7 +121,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="telefono-linea">Teléfono de línea</label>
             <input type="text" name="telefono_linea" id="telefono-linea"
                 class="form-control <?= isset($errors['telefono_linea']) ? 'is-invalid' : ''; ?>"
@@ -133,7 +133,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="domicilio">Domicilio *</label>
             <input type="text" name="domicilio" id="domicilio"
                 class="form-control <?= isset($errors['domicilio']) ? 'is-invalid' : ''; ?>"
@@ -144,7 +144,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="id-provincia">Provincia *</label>
             <select name="id_provincia" id="id-provincia"
                 class="custom-select <?= isset($errors['id_provincia']) ? 'is-invalid' : ''; ?>">
@@ -179,7 +179,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="id-localidad">Localidad *</label>
             <select name="id_localidad" id="id-localidad"
                 class="custom-select <?= isset($errors['id_localidad']) ? 'is-invalid' : ''; ?>">
@@ -195,7 +195,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="sexo">Sexo *</label>
             <div class="custom-control custom-radio">
                 <input type="radio" class="custom-control-input <?= isset($errors['sexo']) ? 'is-invalid' : ''; ?>"

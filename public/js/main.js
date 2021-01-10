@@ -173,7 +173,7 @@ function initErrorFields() {
     if (obj) obj.focus();
 }
 
-function print(obj, message) {
-    const obj = document.querySelector(obj);
+function print(el, message) {
+    const obj = document.querySelector(el);
     if (obj) obj.innerHTML = message;
 }

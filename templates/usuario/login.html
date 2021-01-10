@@ -12,7 +12,7 @@
     <form action="/usuario_login.php" method="POST">
         <input type="hidden" name="token" value="<?= Token::csrf(); ?>" readonly spellcheck="false" autocomplete="off"
             autocorrect="off" autocapitalize="off">
-        <div class="form-group">
+        <div class="mb-3">
             <label for="usuario">Usuario</label>
             <input type="text" name="usuario" id="usuario"
                 class="form-control <?= isset($errors['usuario']) ? 'is-invalid' : ''; ?>"
@@ -21,7 +21,7 @@
             <div class="invalid-feedback"><?= $errors['usuario'] ?? ''; ?></div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <label for="password">Contraseña</label>
             <a href="/usuario_forgot_password.php" class="form-sublink">¿Se te olvidó tu contraseña?</a>
             <input type="password" name="password" id="password"
