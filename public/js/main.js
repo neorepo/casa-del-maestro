@@ -1,12 +1,12 @@
 'use strict';
 
-$(document).ready(function () {
-    initDataTable();
-});
+// $(document).ready(function () {
+// });
 
 document.addEventListener('DOMContentLoaded', () => {
+    initDataTable();
     initChangeProvincia();
-    initChangeLocalidad();
+    // initChangeLocalidad();
     initErrorFields();
     initShowPasswords();
     initFlashes();
@@ -43,6 +43,11 @@ function initDataTable() {
 const selectP = document.querySelector("select#id-provincia");
 const selectL = document.querySelector("select#id-localidad");
 
+(function () {
+    // El select de localidades tiene un estado inicial deshabilitado
+    if (selectL) selectL.disabled = true;
+})();
+
 // Inicializa el proceso de cambio de Provincia
 function initChangeProvincia() {
     // Si no existe el elemento select provincia, detenemos el proceso
@@ -53,8 +58,6 @@ function initChangeProvincia() {
 /*function initChangeLocalidad() {
     // Si no existe el elemento select localidad, detenemos el proceso
     if (!selectL) return;
-    // El select de localidades tiene un estado inicial deshabilitado
-    selectL.disabled = true;
     // selectL.onchange = function (e) { return handleChangeLocalidad(this, e); }
 }*/
 
@@ -66,10 +69,11 @@ function handleChangeProvincia(objSelect, objEvent) {
     removeOptions(selectL);
     // Deshabilitamos el select de localidades
     selectL.disabled = true;
+    // Si la opción elegida es distinta del marcador de posición
     if (objSelect.selectedIndex > 0) {
         // Habilitamos el select de localidades
         selectL.disabled = false;
-        // Obtenemos el id de la provincia seleccionada
+        // Obtenemos el valor de la provincia seleccionada, en este caso el id
         const idProvincia = objSelect.value;
         // Validamos el id de la provincia seleccionada, si no es válido detenemos el proceso.
         if (!validId(idProvincia, 1, 24)) return;
@@ -94,7 +98,6 @@ function loadLocalities(response) {
 
 // Remueve opciones en elementos select
 function removeOptions(objSelect) {
-    // objSelect.options.length = 0;
     let len = objSelect.options.length;
     while (len-- > 1) objSelect.remove(1);
 }
@@ -117,7 +120,7 @@ function createOptions(selectObj, data) {
     });
     selectObj.appendChild(fragment);
 }
-// Fin el proceso carga de localidades según la provincia seleccionada
+// Fin del proceso carga de localidades según la provincia seleccionada
 
 // Evitar enviar el formulario presionando la tecla ENTER en input field
 function formSubmissionHandler() {
@@ -157,7 +160,7 @@ function initShowPasswords() {
 }
 
 function initFlashes() {
-    const obj = document.querySelector('div.alert');
+    const obj = document.querySelector('.alert');
     if (obj) {
         // obj.forEach(el => { setTimeout(function () { el.remove(); }, 7000); });
         setTimeout(function () { obj.remove(); }, 7000);
@@ -166,9 +169,11 @@ function initFlashes() {
 
 // Focus en el primer error que exista en los formularios de registro.
 function initErrorFields() {
-    // Si no voy a reasignar la variable obj, entonces puedo utilizar una constante
     const obj = document.querySelector('.is-invalid');
-    if (obj) {
-        obj.focus();
-    }
+    if (obj) obj.focus();
+}
+
+function print(obj, message) {
+    const obj = document.querySelector(obj);
+    if (obj) obj.innerHTML = message;
 }
