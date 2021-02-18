@@ -43,11 +43,6 @@ function initDataTable() {
 const selectP = document.querySelector("select#id-provincia");
 const selectL = document.querySelector("select#id-localidad");
 
-(function () {
-    // El select de localidades tiene un estado inicial deshabilitado
-    if (selectL) selectL.disabled = true;
-})();
-
 // Inicializa el proceso de cambio de Provincia
 function initChangeProvincia() {
     // Si no existe el elemento select provincia, detenemos el proceso
@@ -71,8 +66,6 @@ function handleChangeProvincia(objSelect, objEvent) {
     selectL.disabled = true;
     // Si la opción elegida es distinta del marcador de posición
     if (objSelect.selectedIndex > 0) {
-        // Habilitamos el select de localidades
-        selectL.disabled = false;
         // Obtenemos el valor de la provincia seleccionada, en este caso el id
         const idProvincia = objSelect.value;
         // Validamos el id de la provincia seleccionada, si no es válido detenemos el proceso.
@@ -86,6 +79,8 @@ function handleChangeProvincia(objSelect, objEvent) {
             const data = "id_provincia=" + encodeURIComponent(idProvincia);
             sendHttpRequest('POST', 'server_processing.php', data, loadLocalities);
         }
+        // Habilitamos el select de localidades
+        selectL.disabled = false;
     }
 }
 

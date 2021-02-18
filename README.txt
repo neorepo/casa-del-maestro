@@ -100,7 +100,6 @@ https://seti.afip.gob.ar/padron-puc-constancia-internet/ConsultaConstanciaAction
 Datos reales
 https://www.mockaroo.com/
 
-
 Investigar acerca de esto
 // session_name('ID');
 $path = rtrim(dirname($_SERVER["PHP_SELF"]), "/\\");
@@ -116,12 +115,12 @@ session_set_cookie_params([
 // https://www.php.net/manual/es/language.constants.predefined.php
 echo __DIR__; es equivalente a dirname(__FILE__);
 
-neo.code.edu@gmail.com
-
 Para generación del FAVICON
 https://favicon.io/
 
-https://www.youtube.com/watch?v=kiDwp0SR9jk => tutorial para editar imagenes en la página https://www7.lunapic.com/editor/
+tutorial para editar imagenes en la página https://www7.lunapic.com/editor/
+https://www.youtube.com/watch?v=kiDwp0SR9jk
+
 El codigo ASCII
 https://elcodigoascii.com.ar/codigos-ascii-extendidos/signo-ordinal-femenino-genero-codigo-ascii-166.html
 codigo ascii 166 = ª ( Ordinal femenino, indicador de genero femenino ) => (ª alt + 166 ) undécima
@@ -335,7 +334,6 @@ $pdf->Output('test.pdf', 'I');
 // END OF FILE
 //============================================================+
 
-
 // Dao Pattern
 https://www.oracle.com/java/technologies/dataaccessobject.html
 
@@ -380,7 +378,6 @@ public Collection selectCustomersTO(...) {
   // Alternativamente, implemente para devolver una colección de objetos de transferencia.
 }
 
-
 /********************************************************************
 Ejemplo 1
 $months = [1 => 'enero','febrero','marzo','abril','mayo','junio','julio',
@@ -414,3 +411,10 @@ function formatDateEs($date) {
 
 Validación de formulario
 https://www.w3.org/TR/WCAG20-TECHS/client-side-script.html#SCR32
+
+Servidor web incorporado
+https://www.php.net/manual/en/features.commandline.webserver.php
+-S <addr>:<port> Run with built-in web server.
+-t <docroot> Specify document root <docroot> for built-in web server.
+Iniciar el servidor web interno con una raíz de documentos específica
+php -S localhost:8000 -t public/

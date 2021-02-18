@@ -13,12 +13,18 @@ function sendHttpRequest(method, url, data, callback) {
         if (xhr.readyState == XMLHttpRequest.DONE) {
             if (xhr.status == 200) {
                 if (callback) callback(xhr.responseText);
+            } else {
+                console.log('Hubo un problema recibiendo los datos: ' + xhr.statusText);
             }
         }
+    }
+    function handleError(e) {
+        console.log('Error: ' + e + ' No podemos cargar la url.');
     }
     xhr.open(method, url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime());
     if (data && !(data instanceof FormData)) xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.send(data);
+    xhr.onerror = function (e) { return handleError(e); }
 }
 
 function validId(id, min, max) {
@@ -47,7 +53,6 @@ function isEmpty(str) {
     return (str.length == 0);
 }
 
-
 function validEmail(email) {
     // https://owasp.org/www-community/OWASP_Validation_Regex_Repository
     const regexEmail = /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/;
@@ -55,12 +60,10 @@ function validEmail(email) {
     // var objRE = /^[\w-\.\']{1,}\@([\da-zA-Z\-]{1,}\.){1,}[\da-zA-Z\-]{2,}$/;
 }
 
-
 function validDocument(num) {
     const regexOnlyNumbers = /^[\d]{8}$/;
     return regexOnlyNumbers.test(num);
 }
-
 
 function onlyLetters(str) {
     const regexOnlyLetters = /^[a-zA-ZáéíóúÁÉÍÓÚÑñÜü\s]+$/;

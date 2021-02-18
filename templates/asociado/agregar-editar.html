@@ -212,11 +212,13 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary"><?= $edit ? 'Guardar' : 'Registrar'; ?></button>
+        <button type="submit" class="btn btn-primary">
+            <?= $edit ? 'Guardar' : 'Registrar'; ?>
+        </button>
         <!-- Bajo el atributo required en los elementos select, no se puede usar el botón cancelar que enviá al servidor
             la solicitud de cancelación, ya que si no se ha elegido alguna opción de las distintas listas desplegables
             no podremos cancelar la operación, por lo tanto se utiliza aquí un link con el atributo href a la raíz. -->
-            <!-- <a href="/" class="btn btn-secondary">Cancelar</a> -->
+        <!-- <a href="/" class="btn btn-secondary">Cancelar</a> -->
         <button type="submit" class="btn btn-secondary" name="cancel">Cancelar</button>
     </form>
 </section>
@@ -234,4 +236,13 @@
             radio.checked = true;
         }
     });
+
+    (function () {
+        const edit = "<?= $edit; ?>";
+        if (edit == "") {
+            if (document.querySelector('#id-localidad')) {
+                document.querySelector('#id-localidad').disabled = true;
+            }
+        }
+    })();
 </script>
