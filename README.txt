@@ -418,3 +418,17 @@ https://www.php.net/manual/en/features.commandline.webserver.php
 -t <docroot> Specify document root <docroot> for built-in web server.
 Iniciar el servidor web interno con una raíz de documentos específica
 php -S localhost:8000 -t public/
+
+<!-- https://emojipedia.org/ -->
+<span class="cross-mark icon">❌</span>
+<span class="check-mark icon">✔️</span>
+<span class="pen icon">🖊️</span>
+<span class="sun icon">☀️</span>
+<span class="crescent-moon icon">🌙</span>
+<span class="warning icon">⚠️</span>
+<span class="copyright icon">©️</span>
+<span class="no-entry icon">⛔</span>
+<span class="fast-reverse-button icon">⏪</span>
+<span class="plus icon">➕</span>
+<span class="information icon">ℹ️</span>
+<span class="wastebasket icon">🗑️</span>

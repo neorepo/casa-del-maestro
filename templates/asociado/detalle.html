@@ -5,10 +5,11 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
 
     <div class="mb-3">
         <h1 class="h2">
+            <span style="vertical-align: text-top;" class="user icon">👤</span>
             <?= htmlspecialchars( $asociado['apellido'] . " " . $asociado['nombre'] ); ?>
             <a class="float-right" href="/generar_pdf.php?aid=<?= $asociado['id_asociado']; ?>"
                 title="Exportar registro en pdf" target="_blank">
-                <i class="material-icons pdf">picture_as_pdf</i>
+                <button class="btn btn-sm btn-danger">Pdf</button>
             </a>
         </h1>
     </div>
@@ -73,22 +74,23 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
         <tr>
             <td>
                 <a href="/" class="" title="Volver a la lista">
-                    <i class="material-icons back">fast_rewind</i> a la lista
+                    <span class="fast-reverse-button icon">⏪</span> a la lista
                 </a>
             </td>
             <td>
                 <div class="actions">
                     <!-- Acción editar: método de envío GET -->
                     <a href="/asociado_agregar_editar.php?aid=<?= $asociado['id_asociado']; ?>"
-                        title="Editar registro"><i class="material-icons edit">edit</i></a>
+                        title="Editar registro"><span class="pen icon">🖊️</span></a>
                     <!-- Acción eliminar: método de envío POST -->
                     <form action="/asociado_eliminar.php" method="POST" style="display: inline-block;"
                         title="Eliminar registro">
                         <input type="hidden" name="token" value="<?= htmlspecialchars(Token::csrf()); ?>">
                         <input type="hidden" name="aid" value="<?= $asociado['id_asociado']; ?>">
                         <button type="submit" class="icon-style"
-                            onclick="return confirm('Este registro será eliminado. ¿Estás seguro?');"><i
-                                class="material-icons delete">delete</i></button>
+                            onclick="return confirm('Este registro será eliminado. ¿Estás seguro?');">
+                            <span class="cross-mark icon">❌</span>
+                        </button>
                     </form>
                 </div>
             </td>
@@ -143,14 +145,13 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
 </div>
 
 <script>
+    const d = document;
 
-    const backdrop = document.querySelector('.backdrop');
-
-    document.addEventListener('DOMContentLoaded', () => {
+    d.addEventListener('DOMContentLoaded', () => {
         initDeleteDialog();
 
         // Detectar la tecla escape, para cerrar el dialog de advertencia de eliminación de asociado
-        // document.onkeydown = function (evt) {
+        // d.onkeydown = function (evt) {
         //     evt = evt || window.event;
         //     if (evt.keyCode == 27) {
         //         closeDeleteDialog();
@@ -159,34 +160,32 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
     });
 
     function initDeleteDialog() {
-        const deleteLink = document.querySelector('a#delete-link');
-        if (!deleteLink) return;
-        deleteLink.onclick = function (e) { openDeleteDialog(this, e); }
-        const okBtn = document.querySelector('button#ok-btn');
-        if (!okBtn) return;
-        okBtn.onclick = () => {
-            closeDeleteDialog();
-            location.href = deleteLink.href; // Solicitud equivalente a GET en PHP
-        }
-        const cancelBtn = document.querySelector('button#cancel-btn');
-        if (!cancelBtn) return;
-        cancelBtn.onclick = () => {
-            closeDeleteDialog();
-        }
-    }
+        const deleteLink = d.querySelector('a#delete-link');
+        const backdrop = d.querySelector('.backdrop');
+        
+        if (!deleteLink || !backdrop) return;
 
-    function closeDeleteDialog() {
-        if (backdrop) {
+        deleteLink.onclick = function (e) { return openDeleteDialog(backdrop, e); }
+
+        const okBtn = d.querySelector('button#ok-btn');
+        if (!okBtn) return;
+
+        okBtn.onclick = () => {
+            backdrop.style.display = "none";
+            location.href = deleteLink.href;
+        }
+        const cancelBtn = d.querySelector('button#cancel-btn');
+        if (!cancelBtn) return;
+
+        cancelBtn.onclick = () => {
             backdrop.style.display = "none";
         }
     }
 
     function openDeleteDialog(el, event) {
         if (event && event.type == 'click') {
-            if (backdrop) {
-                backdrop.style.display = "block";
-                event.preventDefault();
-            }
+            el.style.cssText = "display:block;";
         }
+        return false;
     }
 </script>

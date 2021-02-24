@@ -145,3 +145,8 @@ button.icon-style:focus {
 .fs-14 {
     font-size: 14px;
 }
+
+/*  */
+a {
+    text-decoration: none !important;
+}
