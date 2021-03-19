@@ -2,6 +2,7 @@
 
 require_once("constants.php");
 
+
 /**
  * PERSISTENCIA
  * FUNCIONES PARA MANTENER LA INTEGRIDAD DE LOS CAMPOS UNIQUE EN LA BASE DE DATOS
@@ -203,7 +204,7 @@ function get_int($n) {
     if ($n === null) {
         return 0;
     }
-    // Si es un caracter numérico entero
+    // Si es un carácter numérico entero
     return preg_match('/^[+-]?\d+$/', $n);
 }
 

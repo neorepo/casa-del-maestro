@@ -46,8 +46,10 @@ form .form-control {
 /* BUTTON */
 button.icon-style {
     padding: 0;
+    margin-left: 8px;
     background: transparent;
     border: none;
+    cursor: pointer;
 }
 button.icon-style:focus {
     outline: none;

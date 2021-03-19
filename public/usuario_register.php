@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif ( valid_email( $usuario['email'] ) ) {
         $rows = existeEmailUsuario( $usuario['email'] );
         if (count($rows) == 1) {
-            $errors['email'] = str_replace(':f', 'correo electrónico', $messages['unique'] );;
+            $errors['email'] = str_replace(':f', 'correo electrónico', $messages['unique'] );
         }
     } else {
         $errors['email'] = $messages['valid_email'];

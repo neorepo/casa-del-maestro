@@ -100,7 +100,7 @@
 
         <div class="mb-3">
             <label for="email">Correo electrónico</label>
-            <input type="email" name="email" id="email"
+            <input type="text" name="email" id="email"
                 class="form-control <?= isset($errors['email']) ? 'is-invalid' : ''; ?>"
                 value="<?= $asociado['email']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off">
@@ -238,11 +238,5 @@
     });
 
     (function () {
-        const edit = "<?= $edit; ?>";
-        if (edit == "") {
-            if (document.querySelector('#id-localidad')) {
-                document.querySelector('#id-localidad').disabled = true;
-            }
-        }
     })();
 </script>

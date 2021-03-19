@@ -122,6 +122,7 @@ tutorial para editar imagenes en la página https://www7.lunapic.com/editor/
 https://www.youtube.com/watch?v=kiDwp0SR9jk
 
 El codigo ASCII
+https://www.rae.es/dpd/ordinales
 https://elcodigoascii.com.ar/codigos-ascii-extendidos/signo-ordinal-femenino-genero-codigo-ascii-166.html
 codigo ascii 166 = ª ( Ordinal femenino, indicador de genero femenino ) => (ª alt + 166 ) undécima
 ( entidad HTML = &ordf; )

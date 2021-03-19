@@ -5,7 +5,7 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
 
     <div class="mb-3">
         <h1 class="h2">
-            <span style="vertical-align: text-top;" class="user icon">👤</span>
+            <span style="vertical-align: text-top;" class="user emoji">👤</span>
             <?= htmlspecialchars( $asociado['apellido'] . " " . $asociado['nombre'] ); ?>
             <a class="float-right" href="/generar_pdf.php?aid=<?= $asociado['id_asociado']; ?>"
                 title="Exportar registro en pdf" target="_blank">
@@ -74,14 +74,14 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
         <tr>
             <td>
                 <a href="/" class="" title="Volver a la lista">
-                    <span class="fast-reverse-button icon">⏪</span> a la lista
+                    <span class="fast-reverse-button emoji">⏪</span> a la lista
                 </a>
             </td>
             <td>
                 <div class="actions">
                     <!-- Acción editar: método de envío GET -->
                     <a href="/asociado_agregar_editar.php?aid=<?= $asociado['id_asociado']; ?>"
-                        title="Editar registro"><span class="pen icon">🖊️</span></a>
+                        title="Editar registro"><span class="pen emoji">🖊️</span></a>
                     <!-- Acción eliminar: método de envío POST -->
                     <form action="/asociado_eliminar.php" method="POST" style="display: inline-block;"
                         title="Eliminar registro">
@@ -89,7 +89,7 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
                         <input type="hidden" name="aid" value="<?= $asociado['id_asociado']; ?>">
                         <button type="submit" class="icon-style"
                             onclick="return confirm('Este registro será eliminado. ¿Estás seguro?');">
-                            <span class="cross-mark icon">❌</span>
+                            <span class="cross-mark emoji">❌</span>
                         </button>
                     </form>
                 </div>
