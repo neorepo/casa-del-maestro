@@ -39,7 +39,7 @@ CREATE TABLE "localidad" (
 	PRIMARY KEY("id_localidad"),
 	FOREIGN KEY("id_provincia") REFERENCES "provincia"("id_provincia")
 );
-CREATE INDEX idx_localidad_id_provincia ON localidad(nombre, id_provincia);
+CREATE INDEX idx_localidad_id_provincia ON localidad(nombre);
 
 INSERT INTO "localidad" ("id_localidad","nombre","cp","id_provincia") VALUES 
  (1111,'CABEZA DE CHANCHO',3061,21),
@@ -22870,7 +22870,6 @@ CREATE TABLE "asociado" (
 	FOREIGN KEY("id_localidad") REFERENCES "localidad"("id_localidad")
 );
 CREATE INDEX idx_asociado_documento_cuil_email ON asociado(num_documento, num_cuil, email);
-CREATE INDEX idx_asociado_apellido ON asociado(apellido);
 
 CREATE TABLE "telefono" (
 	"id_telefono"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,

@@ -6,12 +6,12 @@ la razón es que son personas mayores que no les interesa contar con uno.
 Por consiguiente, el campo dirección que hace referencia al correo electrónico en la tabla email deberá permitir
 campos NULL, esto quiere decir que se podrá insertar la palabra NULL, lo cual significa que la persona no tiene 
 un correo electrónico.
-Asi mismo el campo mencionado anteriormente (dirección) tendrá o será INDICE ÚNICO, lo cual significa que no existirán
+Asi mismo el campo mencionado anteriormente (dirección de correo) tendrá o será INDICE ÚNICO, lo cual significa que no existirán
 dos direcciones iguales, si así fuese se produciría un error, inclusive si se tratará de ingresar valores vacíos repetidos
 ejemplo:
 
-INSERT INTO email (direccion) VALUES('');
-INSERT INTO email (direccion) VALUES('');
+INSERT INTO email (direccion de correo) VALUES('');
+INSERT INTO email (direccion de correo) VALUES('');
 
 También se produciría un error.
 Entonces si un campo en nuestro formulario no es obligatorio, puede estar o no estar, deberemos setear el campo de la base
@@ -20,18 +20,14 @@ cuenta con un correo electrónico.
 
 Lo mismo sucede con el campo teléfono de línea.
 
-Respecto al campo teléfono de línea, no es ÍNDICE ÚNICO, lo que quiere decir que podrán haber dos o más registros con el mismo
-número de teléfono de línea, ya que podría suceder que dos o más personas que vengan a asociarse vivan en el mismo domicilio en
-cuyo caso tendrán probablemente el mismo teléfono de línea.
+Respecto al campo teléfono de línea, no es ÍNDICE ÚNICO, lo que quiere decir que podrán haber dos o más registros con el mismo número de teléfono de línea, ya que podría suceder que dos o más personas que vengan a asociarse vivan en el mismo domicilio, en cuyo caso tendrán probablemente el mismo teléfono de línea.
 
-Despues de analizar la posible estructura de la tabla teléfono cuya relación de cardinalidad con la tabla asociado es de 1 a n,
-un asociado puede tener varios números de teléfono (teléfono hogar, teléfono móvil, teléfono trabajo etc.), según la información
-disponible, se permitirián dos números de teléfono, el móvil y el de línea, siendo este último no obligatorio (puede estar o no estar).
+Despues de analizar la posible estructura de la tabla teléfono cuya relación de cardinalidad con la tabla asociado es de 1 a n, un asociado puede tener varios números de teléfono (teléfono hogar, teléfono móvil, teléfono trabajo etc.), según la información disponible, se permitirián dos números de teléfono, el móvil y el de línea, siendo este último no obligatorio (puede estar o no estar).
 
-Se pensó en principio una tabla con la siguiente estructura, que almacenará en el campo número tanto el número movil con el de línea:
+Se pensó en principio una tabla con la siguiente estructura, que almacenará en el campo número tanto el número movil como el de línea:
 
 teléfono		
-id	    numero	          id_asociado
+id	   numero	      id_asociado
 1  2617475748-2614100193       1
 
 Esta tabla almacenaría si existiera el teléfono de línea junto con el teléfono móvil.
@@ -41,23 +37,22 @@ Esta tabla almacenaría si existiera el teléfono de línea junto con el teléfo
 Luego se pensó lo siguiente:
 
 teléfono		
-id	   numero       tipo	  id_asociado
+id     numero       tipo	  id_asociado
 1    2617475748     movil          1
 2    2614100193     linea          1
 
-En esta estructura al recuperar los números de teléfono del asociado, si tuviera ambos, tendriamos un array multidimensional, lo cual es más
-complicado de manejar al unir las tablas.
+En esta estructura al recuperar los números de teléfono del asociado, si tuviera ambos, tendriamos un array multidimensional, lo cual es más complicado de manejar al unir las tablas.
 
 -------------------------------
 
 Por último se decidio utilizar la siguiente estructura:
 
 teléfono		
-id	   telefono_movil     telefono_linea	  id_asociado
+id	telefono_movil     telefono_linea	 id_asociado
 1        2617475748         2614200174             1
 2        2614100193            NULL                2
 
-En esta estructura tendriamos campos NULL para los asociados que no cuenten con un teléfono de línea, sin embargo es más sencillo de manejar.
+En esta estructura tendriamos campos NULL para los asociados que no cuenten con un teléfono de línea, este diseño es más sencillo de manejar.
 Con el teléfono móvil no tendriamos problemas ya que es un campo obligatorio.
 
 -------------------------------------
@@ -81,6 +76,7 @@ números enteros positivos, o los campos de consulta son valores válidos.
 
 Planeación de consultas
 https://www.sqlite.org/queryplanner.html
+https://drive.google.com/file/d/1bEax88ujKeNoIIyjTKCuY2SeUDYzJuVc/view?usp=sharing
 
 DER: Grado y Cardinalidad de las relaciones
 https://www.youtube.com/watch?v=DFbCvXNptmY&list=PLMCtO4953x-7S0RhIEoPHifalcGAwwKHt&index=87
@@ -433,3 +429,5 @@ php -S localhost:8000 -t public/
 <span class="plus icon">➕</span>
 <span class="information icon">ℹ️</span>
 <span class="wastebasket icon">🗑️</span>
+
+https://www.enacom.gob.ar/numeracion_p136
