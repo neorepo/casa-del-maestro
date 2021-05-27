@@ -30,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $asociado = $rows[0];
             // Eliminamos el asociado
             if( eliminarAsociado( $asociado['id_asociado'] ) ) {
-                unset($_SESSION['_token']);
                 $message = 'El registro fue eliminado correctamente.';
                 $class = 'info';
             }

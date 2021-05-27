@@ -3,8 +3,7 @@
 class Token {
 
     public static function csrf() {
-        $_SESSION['_token'] = self::generate();
-        return $_SESSION['_token'];
+        return $_SESSION['_token'] = self::generate();
     }
 
     private static function generate($length = 32) {
@@ -27,9 +26,10 @@ class Token {
     }
 
     public static function validate($token) {
-        if ( !isset($token) || !hash_equals($_SESSION['_token'], $token) ) {
-            return false;
+        if ( hash_equals($_SESSION['_token'], $token) ) {
+            unset( $_SESSION['_token'] );
+            return true;
         }
-        return true;
+        return false;
     }
 }

@@ -105,8 +105,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      */
     if( empty( $errors ) ) {
         if ( insertarUsuario( $usuario ) ) {
-            // the CSRF token they submitted does not match the one we sent
-            unset($_SESSION['_token']);
             Flash::addFlash('Ahora puedes acceder al sistema.');
             redirect('/');
         } else {

@@ -241,7 +241,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $asociado = save( $asociado );
         // Verificamos que el valor de retorno sea distinto de false.
         if ( $asociado ) {
-            unset( $_SESSION['_token'] );
             // Seteamos el mensaje flash para la vista
             Flash::addFlash('Los datos fueron guardados correctamente.', 'success');
             // Re dirigimos al usuario a la vista de detalle.

@@ -1,11 +1,16 @@
 <?php
 $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
 ?>
+
+<style>
+    table a {
+        color: initial !important;
+    }
+</style>
 <section class="">
 
     <div class="mb-3">
         <h1 class="h2">
-            <span style="vertical-align: text-top;" class="user emoji">👤</span>
             <?= htmlspecialchars( $asociado['apellido'] . " " . $asociado['nombre'] ); ?>
             <a class="float-right" href="/generar_pdf.php?aid=<?= $asociado['id_asociado']; ?>"
                 title="Exportar registro en pdf" target="_blank">
@@ -13,89 +18,112 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
             </a>
         </h1>
     </div>
-
-    <table class="table table-sm">
-        <tr>
-            <th>Fecha de registro</th>
-            <td><?= htmlspecialchars($asociado['created'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-        </tr>
-        <tr>
-            <th>Sexo</th>
-            <td><?= htmlspecialchars($asociado['sexo'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-        </tr>
-        <tr>
-            <th>Fecha de nacimiento</th>
-            <td><?= htmlspecialchars($asociado['fecha_nacimiento'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-        </tr>
-        <tr>
-            <th>Documento</th>
-            <td><?= htmlspecialchars($asociado['tipo_documento'] . ' - ' . $asociado['num_documento'], ENT_NOQUOTES, 'UTF-8'); ?>
-            </td>
-        </tr>
-        <tr>
-            <th>Número de cuil</th>
-            <td><?= cuilFormat(htmlspecialchars($asociado['num_cuil'], ENT_NOQUOTES, 'UTF-8')); ?></td>
-        </tr>
-        <tr>
-            <th>Tipo de asociado</th>
-            <td><?= htmlspecialchars($asociado['condicion_ingreso'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-        </tr>
-        <tr>
-            <th>Correo electrónico</th>
-            <td><?= htmlspecialchars($asociado['email'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-        </tr>
-        <tr>
-            <th>Teléfono móvil</th>
-            <td><?= htmlspecialchars($asociado['telefono_movil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-        </tr>
-        <tr>
-            <th>Teléfono de línea</th>
-            <td><?= htmlspecialchars($asociado['telefono_linea'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-        </tr>
-        <tr>
-            <th>Domicilio</th>
-            <td><?= htmlspecialchars($asociado['domicilio'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-        </tr>
-        <tr>
-            <th>Localidad</th>
-            <td><?= ucwords( htmlspecialchars($asociado['localidad'], ENT_NOQUOTES, 'UTF-8') ); ?></td>
-        </tr>
-        <tr>
-            <th>Código postal</th>
-            <td><?= htmlspecialchars($asociado['cp'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-        </tr>
-        <tr>
-            <th>Provincia</th>
-            <td><?= ucwords( htmlspecialchars($asociado['provincia'], ENT_NOQUOTES, 'UTF-8') ); ?></td>
-        </tr>
-        <tr>
-            <th colspan="2">&nbsp;</th>
-        </tr>
-        <tr>
-            <td>
-                <a href="/" class="" title="Volver a la lista">
-                    <span class="fast-reverse-button emoji">⏪</span> a la lista
-                </a>
-            </td>
-            <td>
-                <div class="actions">
-                    <!-- Acción editar: método de envío GET -->
-                    <a href="/asociado_agregar_editar.php?aid=<?= $asociado['id_asociado']; ?>"
-                        title="Editar registro"><span class="pen emoji">🖊️</span></a>
-                    <!-- Acción eliminar: método de envío POST -->
-                    <form action="/asociado_eliminar.php" method="POST" style="display: inline-block;"
-                        title="Eliminar registro">
-                        <input type="hidden" name="token" value="<?= htmlspecialchars(Token::csrf()); ?>">
-                        <input type="hidden" name="aid" value="<?= $asociado['id_asociado']; ?>">
-                        <button type="submit" class="icon-style"
+    <!-- Acción eliminar: método de envío POST -->
+    <form action="/asociado_eliminar.php" method="POST">
+        <input type="hidden" name="token" value="<?= htmlspecialchars(Token::csrf()); ?>">
+        <table class="">
+            <tr>
+                <th>Fecha de registro</th>
+                <td>
+                    <?= htmlspecialchars($asociado['created'], ENT_NOQUOTES, 'UTF-8'); ?>
+                </td>
+            </tr>
+            <tr>
+                <th>Sexo</th>
+                <td>
+                    <?= htmlspecialchars($asociado['sexo'], ENT_NOQUOTES, 'UTF-8'); ?>
+                </td>
+            </tr>
+            <tr>
+                <th>Fecha de nacimiento</th>
+                <td>
+                    <?= htmlspecialchars($asociado['fecha_nacimiento'], ENT_NOQUOTES, 'UTF-8'); ?>
+                </td>
+            </tr>
+            <tr>
+                <th>Documento</th>
+                <td>
+                    <?= htmlspecialchars($asociado['tipo_documento'] . ' - ' . $asociado['num_documento'], ENT_NOQUOTES, 'UTF-8'); ?>
+                </td>
+            </tr>
+            <tr>
+                <th>Número de cuil</th>
+                <td>
+                    <?= cuilFormat(htmlspecialchars($asociado['num_cuil'], ENT_NOQUOTES, 'UTF-8')); ?>
+                </td>
+            </tr>
+            <tr>
+                <th>Tipo de asociado</th>
+                <td>
+                    <?= htmlspecialchars($asociado['condicion_ingreso'], ENT_NOQUOTES, 'UTF-8'); ?>
+                </td>
+            </tr>
+            <tr>
+                <th>Correo electrónico</th>
+                <td>
+                    <?= htmlspecialchars($asociado['email'], ENT_NOQUOTES, 'UTF-8'); ?>
+                </td>
+            </tr>
+            <tr>
+                <th>Teléfono móvil</th>
+                <td>
+                    <?= htmlspecialchars($asociado['telefono_movil'], ENT_NOQUOTES, 'UTF-8'); ?>
+                </td>
+            </tr>
+            <tr>
+                <th>Teléfono de línea</th>
+                <td>
+                    <?= htmlspecialchars($asociado['telefono_linea'], ENT_NOQUOTES, 'UTF-8'); ?>
+                </td>
+            </tr>
+            <tr>
+                <th>Domicilio</th>
+                <td>
+                    <?= htmlspecialchars($asociado['domicilio'], ENT_NOQUOTES, 'UTF-8'); ?>
+                </td>
+            </tr>
+            <tr>
+                <th>Localidad</th>
+                <td>
+                    <?= ucwords( htmlspecialchars($asociado['localidad'], ENT_NOQUOTES, 'UTF-8') ); ?>
+                </td>
+            </tr>
+            <tr>
+                <th>Código postal</th>
+                <td>
+                    <?= htmlspecialchars($asociado['cp'], ENT_NOQUOTES, 'UTF-8'); ?>
+                </td>
+            </tr>
+            <tr>
+                <th>Provincia</th>
+                <td>
+                    <?= ucwords( htmlspecialchars($asociado['provincia'], ENT_NOQUOTES, 'UTF-8') ); ?>
+                </td>
+            </tr>
+            <tr>
+                <th colspan="2">&nbsp;</th>
+            </tr>
+            <tr>
+                <td>
+                    <a href="/" class="" title="Volver a la lista">
+                        <span class="fast-reverse-button emoji">⏪</span> a la lista
+                    </a>
+                </td>
+                <td>
+                    <div class="actions">
+                        <!-- Acción editar: método de envío GET -->
+                        <a href="/asociado_agregar_editar.php?aid=<?= $asociado['id_asociado']; ?>"
+                            title="Editar registro"><span class="pen emoji">🖊️ Editar</span></a>
+                        <button type="submit" class="icon-style" title="Borrar registro" name="aid"
+                            value="<?= $asociado['id_asociado']; ?>"
                             onclick="return confirm('Este registro será eliminado. ¿Estás seguro?');">
-                            <span class="cross-mark emoji">❌</span>
+                            <span class="cross-mark emoji">❌ Borrar</span>
                         </button>
-                    </form>
-                </div>
-            </td>
-        </tr>
-    </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
 
 </section>
 
@@ -162,7 +190,7 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
     function initDeleteDialog() {
         const deleteLink = d.querySelector('a#delete-link');
         const backdrop = d.querySelector('.backdrop');
-        
+
         if (!deleteLink || !backdrop) return;
 
         deleteLink.onclick = function (e) { return openDeleteDialog(backdrop, e); }
@@ -172,7 +200,7 @@ $asociado['id_asociado'] = htmlspecialchars($asociado['id_asociado']);
 
         okBtn.onclick = () => {
             backdrop.style.display = "none";
-            location.href = deleteLink.href;
+            window.location.href = deleteLink.href;
         }
         const cancelBtn = d.querySelector('button#cancel-btn');
         if (!cancelBtn) return;

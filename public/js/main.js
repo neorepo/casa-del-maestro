@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 // $(document).ready(function () {
 // });
@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initDataTable();
     initChangeProvincia();
     // initChangeLocalidad();
+    // initPreventKeyboard();
     initErrorFields();
     initShowPasswords();
     initFlashes();
@@ -171,4 +172,14 @@ function initErrorFields() {
 function print(el, message) {
     const obj = document.querySelector(el);
     if (obj) obj.innerHTML = message;
+}
+
+function initPreventKeyboard() {
+    window.oncontextmenu = (e) => { e.preventDefault(); }
+    window.onkeydown = (e) => {
+        if ((e.ctrlKey && e.shiftKey && e.keyCode == 73) ||
+            (e.ctrlKey && e.keyCode == 85)) {
+            e.preventDefault();
+        }
+    }
 }

@@ -5,8 +5,6 @@ require '../includes/bootstrap.php';
 
 $asociado = getAsociadoPorId();
 
-// $asociado['fecha_nacimiento'] = dateToTemplate( $asociado['fecha_nacimiento'] );
-
 // $asociado['last_modified'] = formatDateTime( $asociado['last_modified'] );
 
 $asociado['sexo'] = ($asociado['sexo'] == 'F') ? 'Femenino' : 'Masculino';

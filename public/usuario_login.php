@@ -35,9 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Si no hay errores
-    if ( authenticateUser( $usuario['usuario'], $usuario['password']) ) {
-        // the CSRF token they submitted does not match the one we sent
-        unset($_SESSION['_token']);
+    if ( authenticateUser( $usuario['usuario'], $usuario['password'] ) ) {
         redirect('/');
     } else {
         $logonSuccess = false;
@@ -45,7 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Mostrar plantilla de login de usuario
-render('usuario/login.html', ['title' => 'Acceso', 'usuario' => $usuario, 'errors' => $errors, 'logonSuccess' => $logonSuccess]);
+render('usuario/login.html', [
+    'title' => 'Acceso',
+    'usuario' => $usuario,
+    'errors' => $errors,
+    'logonSuccess' => $logonSuccess
+    ]
+);
 
 /**
  * Funciones de persistencia

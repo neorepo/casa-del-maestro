@@ -1,4 +1,4 @@
-Consideraciones acerca de los campos de la base de datos
+﻿Consideraciones acerca de los campos de la base de datos
 
 E-mail:
 Hay ocasiones en que no todos las personas que vienen a asociarse cuentan con un e-mail,
@@ -69,8 +69,9 @@ consultar a la base de datos si le enviamos un valor por ejemplo:
 SELECT * FROM asociado WHERE id_asociado = '/*/*mmm';
 
 Devolverá vacío, pero no generará un error. Con lo cual hasta este momento no veo la necesidad de validar si
-el id_asociado contiene un número entero positivo.
+el id_asociado contiene un número entero positivo. Sea cual fuere el valor se pasaría a través de la función escape
 A menos que solo quiera conectarme a la base de datos si y solo si existe un número entero positivo.
+
 El conectarse a la base de datos es una operación costosa, así que solo accederemos a ella, sí y solo sí el/los ids son
 números enteros positivos, o los campos de consulta son valores válidos.
 
