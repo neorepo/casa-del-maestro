@@ -1,4 +1,4 @@
-<section>
+﻿<section>
     <div class="row align-items-center mb-3">
         <div class="col">
             <h1 class="h2">Asociados<a href="/asociado_agregar_editar.php" title="Agregar asociado">
@@ -30,6 +30,7 @@
                     <th>Nombre</th>
                     <th>Documento</th>
                     <th>Cuil</th>
+                    <th>Tel. móvil</th>
                     <th>Condición</th>
                     <th></th>
                 </tr>
@@ -44,6 +45,7 @@
                     <td><?= htmlspecialchars($asociado['nombre'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     <td><?= htmlspecialchars($asociado['tipo_documento'] . ' - ' . $asociado['num_documento'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     <td><?= htmlspecialchars($asociado['num_cuil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    <td><?= htmlspecialchars($asociado['telefono_movil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     <td><?= htmlspecialchars($asociado['condicion_ingreso'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     <td class="text-center">
                         <a href="/asociado_detalle.php?aid=<?= htmlspecialchars($asociado['id_asociado']); ?>" title="Más">

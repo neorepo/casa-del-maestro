@@ -5,6 +5,7 @@ require '../includes/bootstrap.php';
 
 $asociado = [];
 $errors = [];
+$cantErrs = null;
 // Las localidades estarán disponibles solo cuando exista el id de la provincia.
 // Son 22793 localidades, solo listaremos las que pertenezcan a la provincia seleccionada
 $localidades = [];
@@ -32,6 +33,8 @@ if ($edit) {
  */
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+    // Revisar esta condición por que al presionar la tecla control + F5, me saca de la aplicación
+    // esto puede ser por que se genera otro token
     if (array_key_exists('token', $_POST)) {
         if (!Token::validate($_POST['token'])) {
             // Si el token CSRF que enviaron no coincide con el que enviamos.
@@ -189,9 +192,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Si no tengo el telefono de línea, puedo insertar un string vácio por que el campo no es unique
         // pero, para mantener la consistencia de los datos, se insertará un valor null
+        // Le devolvemos el estado inicial que es NULL
         $asociado['telefono_linea'] = null;
 
-    } else if ( !validar_tel( $asociado['telefono_linea'] ) ) {
+    }
+    // Si tenemos el teléfono de línea lo validamos
+    else if ( !validar_tel( $asociado['telefono_linea'] ) ) {
         $errors['telefono_linea'] = $messages['valid_phone'];
     }
 
@@ -250,6 +256,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             redirect('/');
         }
     }
+    else {
+        $n = count($errors);
+        $cantErrs = 'Tienes ' . $n . ' error';
+        $cantErrs .= $n == 1 ? '.' : 'es.';
+        $cantErrs .= ' Por favor, revise el formulario.';
+    }
 }
 
 $title = $edit ? 'Editar asociado' : 'Registrar asociado';
@@ -258,6 +270,7 @@ render('asociado/agregar-editar.html', [
     'title' => $title,
     'asociado' => $asociado,
     'errors' => $errors,
+    'cantErrs' => $cantErrs,
     'localidades' => $localidades,
     'edit' => $edit
 ]);
@@ -315,7 +328,8 @@ function insertarAsociado($asociado) {
         // Consulta 1
         $sql = 'INSERT INTO asociado (apellido, nombre, sexo, fecha_nacimiento, tipo_documento, num_documento, num_cuil, condicion_ingreso, 
         email, domicilio, id_localidad, created, last_modified) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    
+
+        // Run consulta 1
         Db::query($sql, capitalize($asociado['apellido']), capitalize($asociado['nombre']), $asociado['sexo'], $asociado['fecha_nacimiento'], 
         $asociado['tipo_documento'], $asociado['num_documento'], $asociado['num_cuil'], $asociado['condicion_ingreso'], $asociado['email'], 
         $asociado['domicilio'], $asociado['id_localidad'], $now, $now);
@@ -325,8 +339,9 @@ function insertarAsociado($asociado) {
 
         // Consulta 2
         $sql = 'INSERT INTO telefono (telefono_movil, telefono_linea, id_asociado, created, last_modified) VALUES(?, ?, ?, ?, ?)';
-    
-        Db::query($sql, $asociado['telefono_movil'], $asociado['telefono_linea'], $asociado['id_asociado'], $now, $now);
+
+        // Run consulta 2
+        Db::query($sql, $asociado['telefono_movil'], $asociado['telefono_linea'], (int) $asociado['id_asociado'], $now, $now);
     
         // commit the transaction
         $db->commit();

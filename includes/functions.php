@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 require_once("constants.php");
 
@@ -33,17 +33,17 @@ function existeEmailAsociado($email, $id_asociado = null) {
         $q = 'SELECT email FROM asociado WHERE email = ? AND id_asociado != ? LIMIT 1 ;';
         return Db::query($q, $email, $id_asociado);
     } else {
-        $q = 'SELECT email FROM asociado WHERE email = ? LIMIT 1 ;';
+        $q = 'SELECT email FROM asociado WHERE email = ? LIMIT 1;';
         return Db::query($q, $email);
     }
 }
 
 function existeTelefonoMovilAsociado($telefono_movil, $id_asociado = null) {
     if ($id_asociado) {
-        $q = 'SELECT telefono_movil FROM telefono WHERE telefono_movil = ? AND id_asociado != ? LIMIT 1 ;';
+        $q = 'SELECT telefono_movil FROM telefono WHERE telefono_movil = ? AND id_asociado != ? LIMIT 1;';
         return Db::query($q, $telefono_movil, $id_asociado);
     } else {
-        $q = 'SELECT telefono_movil FROM telefono WHERE telefono_movil = ? LIMIT 1 ;';
+        $q = 'SELECT telefono_movil FROM telefono WHERE telefono_movil = ? LIMIT 1;';
         return Db::query($q, $telefono_movil);
     }
 }
@@ -127,11 +127,12 @@ function eliminarAsociado($id_asociado) {
 }
 
 /**
- * Listar asociados
+ * Listar asociados, listamos también el campo teléfono móvil para buscar en el caso de que se intente ingresar 2 veces el
+ * número móvil y verificar a quién le pertenece
  */
 function listarAsociados() {
-    $q = 'SELECT id_asociado, apellido, nombre, tipo_documento, num_documento, num_cuil, 
-    condicion_ingreso FROM asociado WHERE deleted = 0 ORDER BY apellido, condicion_ingreso; ';
+    $q = 'SELECT a.id_asociado, a.apellido, a.nombre, a.tipo_documento, a.num_documento, a.num_cuil, t.telefono_movil, a.condicion_ingreso
+          FROM asociado a INNER JOIN telefono t ON a.id_asociado = t.id_asociado WHERE a.deleted = 0 ORDER BY a.apellido, a.condicion_ingreso;';
     return Db::query($q);
 }
 

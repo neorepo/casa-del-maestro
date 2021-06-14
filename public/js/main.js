@@ -156,10 +156,10 @@ function initShowPasswords() {
 }
 
 function initFlashes() {
-    const obj = document.querySelector('.alert');
-    if (obj) {
-        // obj.forEach(el => { setTimeout(function () { el.remove(); }, 7000); });
-        setTimeout(function () { obj.remove(); }, 7000);
+    const alert = document.querySelector('.alert');
+    if (alert) {
+        // alerts.forEach(alert => { setTimeout(function () { alert.remove(); }, 7000); });
+        setTimeout(function () { alert.remove(); }, 7000);
     }
 }
 

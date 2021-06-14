@@ -1,10 +1,12 @@
 <section class="section">
 
     <div class="mb-3">
-        <h1 class="h2">
-            <?= htmlspecialchars($title); ?>
-        </h1>
+        <h1 class="h2"><?= htmlspecialchars($title); ?></h1>
     </div>
+
+    <?php if($cantErrs): ?>
+    <div class="alert alert-danger"><?php echo $cantErrs; ?></div>
+    <?php endif ?>
 
     <form action="#" method="post" class="asociado">
         <input type="hidden" name="token" value="<?= htmlspecialchars(Token::csrf()); ?>" readonly spellcheck="false"
@@ -16,9 +18,7 @@
                 class="form-control <?= isset( $errors['apellido'] ) ? 'is-invalid' : ''; ?>"
                 value="<?= $asociado['apellido']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off" maxlength="40">
-            <div class="invalid-feedback">
-                <?= $errors['apellido'] ?? ''; ?>
-            </div>
+            <div class="invalid-feedback"><?= $errors['apellido'] ?? ''; ?></div>
         </div>
 
         <div class="mb-3">
@@ -27,9 +27,7 @@
                 class="form-control <?= isset($errors['nombre']) ? 'is-invalid' : ''; ?>"
                 value="<?= $asociado['nombre']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off" maxlength="40">
-            <div class="invalid-feedback">
-                <?= $errors['nombre'] ?? ''; ?>
-            </div>
+            <div class="invalid-feedback"><?= $errors['nombre'] ?? ''; ?></div>
         </div>
 
         <div class="mb-3">
@@ -38,9 +36,7 @@
                 class="form-control <?= isset($errors['fecha_nacimiento']) ? 'is-invalid' : ''; ?>"
                 value="<?= $asociado['fecha_nacimiento']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off">
-            <div class="invalid-feedback">
-                <?= $errors['fecha_nacimiento'] ?? ''; ?>
-            </div>
+            <div class="invalid-feedback"><?= $errors['fecha_nacimiento'] ?? ''; ?></div>
         </div>
 
         <div class="mb-3">
@@ -53,9 +49,7 @@
                 <option value="LE">LE (Libreta de Enrolamiento)</option>
                 <!-- <option value="PAS">PAS (Pasaporte)</option> -->
             </select>
-            <div class="invalid-feedback">
-                <?= $errors['tipo_documento'] ?? '';  ?>
-            </div>
+            <div class="invalid-feedback"><?= $errors['tipo_documento'] ?? '';  ?></div>
         </div>
 
         <div class="mb-3">
@@ -65,9 +59,7 @@
                 data-placement="left" title="Completar con ceros a la izquierda si es necesario"
                 value="<?= $asociado['num_documento']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off">
-            <div class="invalid-feedback">
-                <?= $errors['num_documento'] ?? '';  ?>
-            </div>
+            <div class="invalid-feedback"><?= $errors['num_documento'] ?? '';  ?></div>
         </div>
 
         <div class="mb-3">
@@ -79,13 +71,11 @@
                 data-placement="left" title="Sin guiones, puntos, espacios u otros símbolos"
                 value="<?= $asociado['num_cuil']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off">
-            <div class="invalid-feedback">
-                <?= $errors['num_cuil'] ?? '';  ?>
-            </div>
+            <div class="invalid-feedback"><?= $errors['num_cuil'] ?? '';  ?></div>
         </div>
 
         <div class="mb-3">
-            <label for="condicion-ingreso">Condición de ingreso *</label>
+            <label for="condicion-ingreso">Categoría de ingreso *</label>
             <select name="condicion_ingreso" id="condicion-ingreso"
                 class="custom-select <?= isset($errors['condicion_ingreso']) ? 'is-invalid' : ''; ?>">
                 <option value="">- Seleccionar -</option>
@@ -93,9 +83,7 @@
                 <option value="ADHERENTE">ADHERENTE</option>
                 <option value="JUBILADO">JUBILADO</option>
             </select>
-            <div class="invalid-feedback">
-                <?= $errors['condicion_ingreso'] ?? '';  ?>
-            </div>
+            <div class="invalid-feedback"><?= $errors['condicion_ingreso'] ?? '';  ?></div>
         </div>
 
         <div class="mb-3">
@@ -104,9 +92,7 @@
                 class="form-control <?= isset($errors['email']) ? 'is-invalid' : ''; ?>"
                 value="<?= $asociado['email']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off">
-            <div class="invalid-feedback">
-                <?= $errors['email'] ?? ''; ?>
-            </div>
+            <div class="invalid-feedback"><?= $errors['email'] ?? ''; ?></div>
         </div>
 
         <div class="mb-3">
@@ -116,9 +102,7 @@
                 value="<?= $asociado['telefono_movil']; ?>" data-toggle="tooltip" data-placement="left"
                 title="Ingresá tu número de celular con código de área, sin espacios, puntos u otros símbolos."
                 spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
-            <div class="invalid-feedback">
-                <?= $errors['telefono_movil'] ?? ''; ?>
-            </div>
+            <div class="invalid-feedback"><?= $errors['telefono_movil'] ?? ''; ?></div>
         </div>
 
         <div class="mb-3">
@@ -128,9 +112,7 @@
                 value="<?= $asociado['telefono_linea']; ?>" data-toggle="tooltip" data-placement="left"
                 title="Ingresá tu número de teléfono con código de área, sin espacios, puntos u otros símbolos."
                 spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
-            <div class="invalid-feedback">
-                <?= $errors['telefono_linea'] ?? ''; ?>
-            </div>
+            <div class="invalid-feedback"><?= $errors['telefono_linea'] ?? ''; ?></div>
         </div>
 
         <div class="mb-3">
@@ -139,9 +121,7 @@
                 class="form-control <?= isset($errors['domicilio']) ? 'is-invalid' : ''; ?>"
                 value="<?= $asociado['domicilio']; ?>" spellcheck="false" autocomplete="off" autocorrect="off"
                 autocapitalize="off">
-            <div class="invalid-feedback">
-                <?= $errors['domicilio'] ?? ''; ?>
-            </div>
+            <div class="invalid-feedback"><?= $errors['domicilio'] ?? ''; ?></div>
         </div>
 
         <div class="mb-3">
@@ -174,9 +154,7 @@
                 <option value="23">TIERRA DEL FUEGO</option>
                 <option value="24">TUCUMAN</option>
             </select>
-            <div class="invalid-feedback">
-                <?= $errors['id_provincia'] ?? ''; ?>
-            </div>
+            <div class="invalid-feedback"><?= $errors['id_provincia'] ?? ''; ?></div>
         </div>
 
         <div class="mb-3">
@@ -190,9 +168,7 @@
                 </option>
                 <?php endforeach; ?>
             </select>
-            <div class="invalid-feedback">
-                <?= $errors['id_localidad'] ?? ''; ?>
-            </div>
+            <div class="invalid-feedback"><?= $errors['id_localidad'] ?? ''; ?></div>
         </div>
 
         <div class="mb-3">
@@ -206,15 +182,11 @@
                 <input type="radio" class="custom-control-input <?= isset($errors['sexo']) ? 'is-invalid' : ''; ?>"
                     id="masculino" name="sexo" value="M">
                 <label class="custom-control-label" for="masculino" style="font-weight: normal;">Masculino</label>
-                <div class="invalid-feedback">
-                    <?= $errors['sexo'] ?? ''; ?>
-                </div>
+                <div class="invalid-feedback"><?= $errors['sexo'] ?? ''; ?></div>
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">
-            <?= $edit ? 'Guardar' : 'Registrar'; ?>
-        </button>
+        <button type="submit" class="btn btn-primary"><?= $edit ? 'Guardar' : 'Registrar'; ?></button>
         <!-- Bajo el atributo required en los elementos select, no se puede usar el botón cancelar que enviá al servidor
             la solicitud de cancelación, ya que si no se ha elegido alguna opción de las distintas listas desplegables
             no podremos cancelar la operación, por lo tanto se utiliza aquí un link con el atributo href a la raíz. -->
