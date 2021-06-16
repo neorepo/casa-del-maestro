@@ -149,8 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ( !$asociado['email'] ) {
         // $errors['email'] = $messages['required'];
 
-        // Si no tengo el email, no puedo insertar un string vácio por que el campo es unique. Leer README.txt
-        $asociado['email'] = null;
+        // Si no tengo el email, no puedo insertar un string vacío por que el campo es unique. Leer README.txt
         
     } else if ( valid_email( $asociado['email'] ) ) {
         
@@ -191,9 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // $errors['telefono_linea'] = $messages['required'];
 
         // Si no tengo el telefono de línea, puedo insertar un string vácio por que el campo no es unique
-        // pero, para mantener la consistencia de los datos, se insertará un valor null
-        // Le devolvemos el estado inicial que es NULL
-        $asociado['telefono_linea'] = null;
+        // pero, para mantener la consistencia de los datos, se insertará el valor por defecto del campo $asociado['telefono_linea'] que es null
 
     }
     // Si tenemos el teléfono de línea lo validamos

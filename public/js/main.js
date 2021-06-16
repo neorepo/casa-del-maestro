@@ -166,7 +166,10 @@ function initFlashes() {
 // Focus en el primer error que exista en los formularios de registro.
 function initErrorFields() {
     const obj = document.querySelector('.is-invalid');
-    if (obj) obj.focus();
+    if (obj)
+        // obj.scrollIntoView({behavior: 'smooth', block: 'start'});
+        // window.location.href = '#' + obj.id;
+        obj.focus({preventScroll:false});
 }
 
 function print(el, message) {
