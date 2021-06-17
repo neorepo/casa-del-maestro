@@ -31,7 +31,7 @@
                     <th>Documento</th>
                     <th>Cuil</th>
                     <th>Tel. móvil</th>
-                    <th>Condición</th>
+                    <th>Categoría</th>
                     <th></th>
                 </tr>
             </thead>
@@ -46,7 +46,7 @@
                     <td><?= htmlspecialchars($asociado['tipo_documento'] . ' - ' . $asociado['num_documento'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     <td><?= htmlspecialchars($asociado['num_cuil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     <td><?= htmlspecialchars($asociado['telefono_movil'], ENT_NOQUOTES, 'UTF-8'); ?></td>
-                    <td><?= htmlspecialchars($asociado['condicion_ingreso'], ENT_NOQUOTES, 'UTF-8'); ?></td>
+                    <td><?= htmlspecialchars($asociado['categoria_ingreso'], ENT_NOQUOTES, 'UTF-8'); ?></td>
                     <td class="text-center">
                         <a href="/asociado_detalle.php?aid=<?= htmlspecialchars($asociado['id_asociado']); ?>" title="Más">
                             <span class="information emoji">ℹ️</span>

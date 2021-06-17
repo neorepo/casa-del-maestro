@@ -22860,7 +22860,7 @@ CREATE TABLE "asociado" (
 	"tipo_documento"	TEXT NOT NULL CHECK("tipo_documento" IN('DNI', 'LC', 'LE', 'PAS')),
 	"num_documento"	TEXT NOT NULL UNIQUE,
 	"num_cuil"	TEXT NOT NULL UNIQUE,
-	"condicion_ingreso"	TEXT NOT NULL CHECK("condicion_ingreso" IN('ACTIVO', 'ADHERENTE', 'JUBILADO')),
+	"categoria_ingreso"	TEXT NOT NULL CHECK("categoria_ingreso" IN('ACTIVO', 'ADHERENTE', 'JUBILADO')),
   "email"	TEXT NULL UNIQUE,
 	"domicilio"	TEXT NOT NULL,
 	"id_localidad"	INTEGER NOT NULL,

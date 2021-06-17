@@ -23,7 +23,7 @@ if ($edit) {
 } else {
     $asociado = [
         'id_asociado' => null,'apellido' => null,'nombre' => null,'fecha_nacimiento' => null,'tipo_documento' => null,
-        'num_documento' => null,'num_cuil' => null,'condicion_ingreso' => null,'email' => null,'telefono_movil' => null,
+        'num_documento' => null,'num_cuil' => null,'categoria_ingreso' => null,'email' => null,'telefono_movil' => null,
         'telefono_linea' => null,'domicilio' => null,'id_provincia' => null,'id_localidad' => null,'sexo' => null
     ];
 }
@@ -139,10 +139,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Condición de ingreso
-    if ( !$asociado['condicion_ingreso'] ) {
-        $errors['condicion_ingreso'] = $messages['required'];
-    } else if ( !in_array( $asociado['condicion_ingreso'], ['ACTIVO', 'ADHERENTE', 'JUBILADO'] ) ) {
-        $errors['condicion_ingreso'] = $messages['valid_entry_condition'];
+    if ( !$asociado['categoria_ingreso'] ) {
+        $errors['categoria_ingreso'] = $messages['required'];
+    } else if ( !in_array( $asociado['categoria_ingreso'], ['ACTIVO', 'ADHERENTE', 'JUBILADO'] ) ) {
+        $errors['categoria_ingreso'] = $messages['valid_entry_condition'];
     }
 
     // E-mail, no es un campo requerido
@@ -150,6 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // $errors['email'] = $messages['required'];
 
         // Si no tengo el email, no puedo insertar un string vacío por que el campo es unique. Leer README.txt
+        $asociado['email'] = null;
         
     } else if ( valid_email( $asociado['email'] ) ) {
         
@@ -190,7 +191,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // $errors['telefono_linea'] = $messages['required'];
 
         // Si no tengo el telefono de línea, puedo insertar un string vácio por que el campo no es unique
-        // pero, para mantener la consistencia de los datos, se insertará el valor por defecto del campo $asociado['telefono_linea'] que es null
+        // pero, para mantener la consistencia de los datos, se insertará el valor por defecto null
+        $asociado['telefono_linea'] = null;
 
     }
     // Si tenemos el teléfono de línea lo validamos
@@ -291,10 +293,10 @@ function actualizarAsociado($asociado) {
 
         // Consulta 1
         $sql = 'UPDATE asociado set apellido = ?, nombre = ?, sexo = ?, fecha_nacimiento = ?, tipo_documento = ?, num_documento = ?, 
-        num_cuil = ?, condicion_ingreso = ?, email = ?, domicilio = ?, id_localidad = ?, last_modified = ? WHERE id_asociado = ? ; ';
+        num_cuil = ?, categoria_ingreso = ?, email = ?, domicilio = ?, id_localidad = ?, last_modified = ? WHERE id_asociado = ? ; ';
     
         Db::query($sql, capitalize($asociado['apellido']), capitalize($asociado['nombre']), $asociado['sexo'], $asociado['fecha_nacimiento'], 
-        $asociado['tipo_documento'], $asociado['num_documento'], $asociado['num_cuil'], $asociado['condicion_ingreso'], $asociado['email'], 
+        $asociado['tipo_documento'], $asociado['num_documento'], $asociado['num_cuil'], $asociado['categoria_ingreso'], $asociado['email'], 
         $asociado['domicilio'], $asociado['id_localidad'], $now, $asociado['id_asociado']);
 
         // Consulta 2
@@ -323,12 +325,12 @@ function insertarAsociado($asociado) {
         $db->beginTransaction();
 
         // Consulta 1
-        $sql = 'INSERT INTO asociado (apellido, nombre, sexo, fecha_nacimiento, tipo_documento, num_documento, num_cuil, condicion_ingreso, 
+        $sql = 'INSERT INTO asociado (apellido, nombre, sexo, fecha_nacimiento, tipo_documento, num_documento, num_cuil, categoria_ingreso, 
         email, domicilio, id_localidad, created, last_modified) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
         // Run consulta 1
         Db::query($sql, capitalize($asociado['apellido']), capitalize($asociado['nombre']), $asociado['sexo'], $asociado['fecha_nacimiento'], 
-        $asociado['tipo_documento'], $asociado['num_documento'], $asociado['num_cuil'], $asociado['condicion_ingreso'], $asociado['email'], 
+        $asociado['tipo_documento'], $asociado['num_documento'], $asociado['num_cuil'], $asociado['categoria_ingreso'], $asociado['email'], 
         $asociado['domicilio'], $asociado['id_localidad'], $now, $now);
 
         // Seteamos el id del nuevo asociado insertado en la base de datos, para re dirigir a la página de detalle

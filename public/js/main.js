@@ -170,6 +170,9 @@ function initErrorFields() {
         // obj.scrollIntoView({behavior: 'smooth', block: 'start'});
         // window.location.href = '#' + obj.id;
         obj.focus({preventScroll:false});
+        /*obj.setAttribute('tabindex', '-1');
+        obj.focus();
+        obj.removeAttribute('tabindex');*/
 }
 
 function print(el, message) {

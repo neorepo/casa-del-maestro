@@ -75,15 +75,15 @@
         </div>
 
         <div class="mb-3">
-            <label for="condicion-ingreso">Categoría de ingreso *</label>
-            <select name="condicion_ingreso" id="condicion-ingreso"
-                class="custom-select <?= isset($errors['condicion_ingreso']) ? 'is-invalid' : ''; ?>">
+            <label for="categoria-ingreso">Categoría de ingreso *</label>
+            <select name="categoria_ingreso" id="categoria-ingreso"
+                class="custom-select <?= isset($errors['categoria_ingreso']) ? 'is-invalid' : ''; ?>">
                 <option value="">- Seleccionar -</option>
                 <option value="ACTIVO">ACTIVO</option>
                 <option value="ADHERENTE">ADHERENTE</option>
                 <option value="JUBILADO">JUBILADO</option>
             </select>
-            <div class="invalid-feedback"><?= $errors['condicion_ingreso'] ?? '';  ?></div>
+            <div class="invalid-feedback"><?= $errors['categoria_ingreso'] ?? '';  ?></div>
         </div>
 
         <div class="mb-3">
@@ -197,7 +197,7 @@
 <script>
     // document.querySelector('#sexo').value = "<?= $asociado['sexo']; ?>";
     document.querySelector('#tipo-documento').value = "<?= $asociado['tipo_documento']; ?>";
-    document.querySelector('#condicion-ingreso').value = "<?= $asociado['condicion_ingreso']; ?>";
+    document.querySelector('#categoria-ingreso').value = "<?= $asociado['categoria_ingreso']; ?>";
     document.querySelector('#id-provincia').value = "<?= $asociado['id_provincia']; ?>";
     document.querySelector('#id-localidad').value = "<?= $asociado['id_localidad']; ?>";
 

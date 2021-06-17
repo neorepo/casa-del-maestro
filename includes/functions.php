@@ -58,7 +58,7 @@ function findById($id_asociado) {
           a.id_asociado, a.apellido, a.nombre,
           a.sexo, strftime("%d/%m/%Y",a.fecha_nacimiento) AS fecha_nacimiento, a.tipo_documento,
           a.num_documento, a.num_cuil, a.domicilio,
-          a.condicion_ingreso, a.email, strftime("%d/%m/%Y %H:%M",a.created) AS created, a.last_modified,
+          a.categoria_ingreso, a.email, strftime("%d/%m/%Y %H:%M",a.created) AS created, a.last_modified,
           t.telefono_movil, t.telefono_linea,
           p.id_provincia, p.nombre AS provincia,
           l.id_localidad, l.nombre AS localidad, l.cp
@@ -92,7 +92,7 @@ function getAsociadoPorId() {
     
     $rows = findById($id);
     
-    if ( count($rows) == 0 ) {
+    if ( !$rows ) {
         render('error/404.html', ['title' => 'Error', 'message' => 'se proporcionó un identificador de asociado desconocido.']);
     }
 
@@ -131,8 +131,8 @@ function eliminarAsociado($id_asociado) {
  * número móvil y verificar a quién le pertenece
  */
 function listarAsociados() {
-    $q = 'SELECT a.id_asociado, a.apellido, a.nombre, a.tipo_documento, a.num_documento, a.num_cuil, t.telefono_movil, a.condicion_ingreso
-          FROM asociado a INNER JOIN telefono t ON a.id_asociado = t.id_asociado WHERE a.deleted = 0 ORDER BY a.apellido, a.condicion_ingreso;';
+    $q = 'SELECT a.id_asociado, a.apellido, a.nombre, a.tipo_documento, a.num_documento, a.num_cuil, t.telefono_movil, a.categoria_ingreso
+          FROM asociado a INNER JOIN telefono t ON a.id_asociado = t.id_asociado WHERE a.deleted = 0 ORDER BY a.apellido, a.categoria_ingreso;';
     return Db::query($q);
 }
 
