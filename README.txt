@@ -13,7 +13,7 @@ ejemplo:
 INSERT INTO email (direccion de correo) VALUES('');
 INSERT INTO email (direccion de correo) VALUES('');
 
-También se produciría un error.
+También producirá un error.
 Entonces si un campo en nuestro formulario no es obligatorio, puede estar o no estar, deberemos setear el campo de la base
 de datos para que permita valores NULL, y en la inserción de los datos setear dicho campo a NULL, si es que el asociado no
 cuenta con un correo electrónico.

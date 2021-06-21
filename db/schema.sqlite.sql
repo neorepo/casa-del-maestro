@@ -22876,8 +22876,6 @@ CREATE TABLE "telefono" (
 	"telefono_movil"	TEXT NOT NULL,
 	"telefono_linea"	TEXT,
 	"id_asociado"	INTEGER NOT NULL,
-  "created" DATETIME NOT NULL,
-	"last_modified" DATETIME NOT NULL,
 	FOREIGN KEY("id_asociado") REFERENCES "asociado"("id_asociado") ON DELETE CASCADE
 );
 CREATE INDEX idx_tel_id_asociado_tipo ON telefono(id_asociado, telefono_movil);

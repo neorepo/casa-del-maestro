@@ -101,6 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Número de documento
+    $valid1 = false;
     if ( !$asociado['num_documento'] ) {
         $errors['num_documento'] = $messages['required'];
     } else if ( preg_match('/^[\d]{8}$/', $asociado['num_documento']) ) {
@@ -114,12 +115,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Unique
         if (count($rows) == 1) {
             $errors['num_documento'] = str_replace(':f', 'número de documento', $messages['unique'] );
+        } else {
+            $valid1 = true;
         }
     } else {
         $errors['num_documento'] = $messages['valid_document'];
     }
 
     // Número de cuil
+    $valid2 = false;
     if ( !$asociado['num_cuil'] ) {
         $errors['num_cuil'] = $messages['required'];
     } else if ( validar_cuit( $asociado['num_cuil'] ) ) {
@@ -133,9 +137,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Unique
         if (count($rows) == 1) {
             $errors['num_cuil'] = str_replace(':f', 'número de cuil', $messages['unique'] );
+        } else {
+            $valid2 = true;
         }
     } else {
         $errors['num_cuil'] = $messages['valid_cuil'];
+    }
+
+    if($valid1 && $valid2) {
+        $temp = substr( $asociado['num_cuil'], 2, -1 );
+        if( strcmp($temp, $asociado['num_documento']) !== 0 ) {
+            $errors['num_cuil'] = 'El número de cuil no se corresponde con el documento ingresado anteriormente.';
+        }
     }
 
     // Condición de ingreso
@@ -300,9 +313,9 @@ function actualizarAsociado($asociado) {
         $asociado['domicilio'], $asociado['id_localidad'], $now, $asociado['id_asociado']);
 
         // Consulta 2
-        $sql = 'UPDATE telefono set telefono_movil = ?, telefono_linea = ?, last_modified = ? WHERE id_asociado = ? ; ';
+        $sql = 'UPDATE telefono set telefono_movil = ?, telefono_linea = ? WHERE id_asociado = ? ; ';
     
-        Db::query($sql, $asociado['telefono_movil'], $asociado['telefono_linea'], $now, $asociado['id_asociado']);
+        Db::query($sql, $asociado['telefono_movil'], $asociado['telefono_linea'], $asociado['id_asociado']);
 
         // commit the transaction
         $db->commit();
@@ -337,10 +350,10 @@ function insertarAsociado($asociado) {
         $asociado['id_asociado'] = Db::getInstance()->lastInsertId();// ( lastInsertId() devuelve un tipo string ).
 
         // Consulta 2
-        $sql = 'INSERT INTO telefono (telefono_movil, telefono_linea, id_asociado, created, last_modified) VALUES(?, ?, ?, ?, ?)';
+        $sql = 'INSERT INTO telefono (telefono_movil, telefono_linea, id_asociado) VALUES(?, ?, ?)';
 
         // Run consulta 2
-        Db::query($sql, $asociado['telefono_movil'], $asociado['telefono_linea'], (int) $asociado['id_asociado'], $now, $now);
+        Db::query($sql, $asociado['telefono_movil'], $asociado['telefono_linea'], (int) $asociado['id_asociado']);
     
         // commit the transaction
         $db->commit();

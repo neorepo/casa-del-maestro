@@ -1,4 +1,4 @@
-CREATE DATABASE neo CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ;
+﻿CREATE DATABASE neo CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ;
 
 USE neo ;
 
@@ -22867,8 +22867,6 @@ CREATE TABLE telefono (
   telefono_movil VARCHAR (20) NOT NULL,
   telefono_linea VARCHAR (20),
   id_asociado INT NOT NULL,
-  created DATETIME NOT NULL,
-  last_modified DATETIME NOT NULL,
   PRIMARY KEY (id_telefono),
   UNIQUE INDEX telefono_numero_movil (telefono_movil),
   CONSTRAINT telefono_asociado_id FOREIGN KEY (id_asociado) REFERENCES asociado (id_asociado) ON DELETE CASCADE
