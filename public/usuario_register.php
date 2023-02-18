@@ -118,7 +118,7 @@ render('usuario/register.html', ['title' => 'Registro de Usuario', 'usuario' => 
 
 function insertarUsuario($usuario) {
     $current_date = date('Y-m-d H:i:s');
-    $admin = ['94269698', '41088522'];
+    $admin = ['01234', '56789'];
     // Definimos el rol de usuario común
     $usuario['rol'] = 'USUARIO';
     // Hasheamos la contraseña
